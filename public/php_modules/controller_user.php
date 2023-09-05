@@ -13,7 +13,7 @@
 
   if ($connection->connect_error) die($connection->connect_error);
 
-  $query  = 'SELECT * FROM users' . (isset($params['limit']) ? (' LIMIT ' . $params['limit']) : '') . (isset($params['offset']) ? (' OFFSET ' . $params['offset']) : '');
+  $query  = 'SELECT * FROM users' . (isset($params['_limit']) ? (' LIMIT ' . $params['_limit']) : '') . (isset($params['_page']) ? (' OFFSET ' . $params['_page']) : '');
   $data['params'] = $params; // для отладки
   //$data['params'] = $query; // для отладки
   $result = $connection->query($query);

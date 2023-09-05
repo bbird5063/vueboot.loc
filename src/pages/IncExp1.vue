@@ -59,10 +59,10 @@ export default {
       ],
       isLoading: false,
       page: 1, //
-      limit: 10, //
+      _limit: 10, //
       totalPages: 0, //
-      post: 'offset=0&limit=10', //
-      get: { params: { offset: 0, limit: 10 } },
+      post: '_page=0&_limit=10', //
+      get: { params: { _page: 0, _limit: 10 } },
       url: '/php_modules/controller_user.php',
       result: '', //
     };
@@ -81,14 +81,14 @@ export default {
         this.isLoading = true;
         const response = await axios.get(this.url, this.get);
         /*const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/posts?_limit=10'
+          'https://jsonplaceholder.typicode.com/posts?__limit=10'
         );*/
         // this.rows = [];
         // this.rows = response.data.rows;
         console.log(this.rows);
         console.log(response.data.rows);
         this.rows.push(response.data.rows);
-        this.get['params']['offset'] += this.get['params']['limit'];
+        this.get['params']['_page'] += this.get['params']['_limit'];
 
         //this.result = response.data.rows;
 

@@ -48,7 +48,7 @@ export default {
         //const response = await axios.post(url, { params: { test: 'axios-OK' } }) // контроллер не определил $_POST['test']
         //const response = await axios.post(url, { test: 'axios-OK' }); // контроллер не определил $_POST['test']
         //const response = await axios.post(url, { params: { test: 'axios-OK' }, }); // не работает
-        const response = await axios.post(url, 'limit=10&test=axios-OK'); // работает
+        const response = await axios.post(url, '_limit=10&test=axios-OK'); // работает
         //const response = await axios.get(url, 'test=axios-OK'); // контроллер не определил $_GET['test']
 
         //const response = await axios.post(url, 'test=axios-OK');
