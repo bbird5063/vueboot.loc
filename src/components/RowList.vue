@@ -3,12 +3,9 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr class="active">
-          <th style="width: 20%">Surname</th>
-          <th style="width: 20%">Name</th>
-          <th style="width: 20%">Patronymic</th>
-          <th style="width: 15%">Nickname</th>
-          <th style="width: 10%">Birth</th>
-          <th style="width: 15%">eMail</th>
+          <th style="width: 10%">ID</th>
+          <th style="width: 20%">Название</th>
+          <th style="width: 70%">Описание</th>
         </tr>
       </thead>
 

@@ -22,7 +22,16 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+
 .app {
   padding: 20px;
+}
+
+table,
+td,
+th {
+  border-collapse: collapse;
+  border: 3px solid #245488;
+  padding: 5px;
 }
 </style>

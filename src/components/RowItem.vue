@@ -1,11 +1,8 @@
 <template>
   <tr>
-    <td>{{ row.Surname }}</td>
-    <td>{{ row.Name }}</td>
-    <td>{{ row.Patronymic }}</td>
-    <td>{{ row.Nickname }}</td>
-    <td>{{ row.Birth }}</td>
-    <td>{{ row.eMail }}</td>
+    <td>{{ row.id }}</td>
+    <td>{{ row.title }}</td>
+    <td>{{ row.body }}</td>
   </tr>
 </template>
 

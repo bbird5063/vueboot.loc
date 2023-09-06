@@ -1,29 +1,22 @@
 <template>
   <div>
-    <button class="btn btn-primary" @click="loadRows" v-if="!is_refresh">
+    <button class="btn btn-primary" @click="loadRows" v-if="!isLoading">
       Загрузить таблицу
     </button>
-
     <table class="table table-bordered table-hover">
       <thead>
         <tr class="active">
-          <th style="width: 20%">Surname</th>
-          <th style="width: 20%">Name</th>
-          <th style="width: 20%">Patronymic</th>
-          <th style="width: 15%">Nickname</th>
-          <th style="width: 10%">Birth</th>
-          <th style="width: 15%">eMail</th>
+          <th style="width: 10%">ID</th>
+          <th style="width: 20%">Название</th>
+          <th style="width: 70%">Описание</th>
         </tr>
       </thead>
 
       <tbody>
         <tr v-for="row in rows">
-          <td>{{ row.Surname }}</td>
-          <td>{{ row.Name }}</td>
-          <td>{{ row.Patronymic }}</td>
-          <td>{{ row.Nickname }}</td>
-          <td>{{ row.Birth }}</td>
-          <td>{{ row.eMail }}</td>
+          <td>{{ row.id }}</td>
+          <td>{{ row.title }}</td>
+          <td>{{ row.body }}</td>
         </tr>
       </tbody>
     </table>
@@ -39,54 +32,26 @@ export default {
     return {
       rows: [
         {
-          Surname: 'Иванов',
-          Name: 'Иван',
-          Patronymic: 'Иванович',
-          Nickname: 'Ива',
-          Birth: '23.05.1996',
-          eMail: 'ivan@mail.ua',
+          id: 1000,
+          title: 'Название...',
+          body: 'Описание...',
         },
         {
-          Surname: 'Петров',
-          Name: 'Петр',
-          Patronymic: 'Петрович',
-          Nickname: 'Петр 1',
-          Birth: '24.05.1989',
-          eMail: 'petya@mail.ua',
-        },
-        {
-          Surname: 'Сидоров',
-          Name: 'Сидор',
-          Patronymic: 'Сидорович',
-          Nickname: 'Сидор',
-          Birth: '27.07.1977',
-          eMail: 'sidor@mail.ua',
-        },
-        {
-          Surname: 'Иванов',
-          Name: 'Иван',
-          Patronymic: 'Иванович',
-          Nickname: 'Ива',
-          Birth: '23.05.1996',
-          eMail: 'email@mail.ua',
-        },
-        {
-          Surname: 'Иванов',
-          Name: 'Иван',
-          Patronymic: 'Иванович',
-          Nickname: 'Ива',
-          Birth: '23.05.1996',
-          eMail: 'email@mail.ua',
+          id: 1001,
+          title: 'Название...',
+          body: 'Описание...',
         },
       ],
       isLoading: false,
+      isTest: true,
       page: 1, //
-      _limit: 10, //
+      limit: 10, //
       totalPages: 0, //
       post: '_page=0&_limit=10', //
-      get: { params: { _page: 0, _limit: 10 } },
-      url: '/php_modules/controller_user.php',
-      result: '', //
+      get: { params: { offset: 0, limit: 10 } },
+      getTest: { params: { _page: 1, _limit: 10 } },
+      url: '/php_modules/controller_posts.php',
+      urlTest: 'https://jsonplaceholder.typicode.com/posts',
     };
   },
   methods: {
@@ -95,23 +60,23 @@ export default {
         location.hostname.includes('192.168.0.100') ||
         location.hostname.includes('localhost')
       ) {
-        return alert(
-          'Сайт в режиме разработки. \nДля доступа к базе данных запустите локальный сервер с поддержкой PHP.'
-        );
+        this.isTest = true;
+      } else {
+        this.isTest = false;
       }
+
       try {
         this.isLoading = true;
-        const response = await axios.get(this.url, this.get);
-        /*const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/posts?__limit=10'
-        );*/
+        let url = this.isTest ? this.urlTest : this.url;
+        let get = this.isTest ? this.getTest : this.get;
+        const response = await axios.get(url, get);
         this.rows = [];
-        this.rows = response.data.rows;
-        this.get['params']['_page'] += this.get['params']['_limit'];
+        this.rows = this.isTest ? response.data : response.data.rows;
+        this.isTest
+          ? (this.getTest['params']['_page'] += 1)
+          : (this.get['params']['offset'] += this.get['params']['limit']);
 
-        this.result = response.data.rows;
-        console.table(response.data.rows);
-        console.log(response.data.params);
+        console.log(this.isTest ? response.data : response.data.rows);
       } catch (e) {
         alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
       } finally {
