@@ -1,8 +1,8 @@
 <template>
   <!-- ЗАМЕНИЛ select v-model="modelValue" @change="changeOption"-->
-  <select :value="modelValue" @change="changeOption">
-    <option disabled value="">Выберите из спска</option>
-    <option v-for="option in options" :key="option.value" value="option.value">
+  <select class="sel" :value="modelValue" @change="changeOption">
+    <option disabled value="">Выберите из списка</option>
+    <option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.name }}
     </option>
   </select>
@@ -13,20 +13,27 @@ export default {
   name: 'my-select',
   props: {
     modelValue: {
-      type: String
+      type: String,
     },
     options: {
       type: Array,
-      default: () => [] // для пустых массивов - стрелочная функция
-    }
+      default: () => [],
+    },
   },
   methods: {
     changeOption(event) {
       this.$emit('update:modelValue', event.target.value);
-    }
-  }
-
-}
+    },
+  },
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.sel {
+  height: 37px;
+  padding: 10px 15px;
+  background: none;
+  color: teal;
+  border: 1px solid teal;
+}
+</style>

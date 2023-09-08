@@ -27,12 +27,18 @@ export default {
   padding: 20px;
 }
 
+.app_btns {
+  display: flex;
+  /* кнопка и список напротив друга  */
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
 table,
 td,
 th {
   border-collapse: collapse;
   border: 3px solid #245488;
-  padding: 20 px;
 }
 td {
   padding: 5px;

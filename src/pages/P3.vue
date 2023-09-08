@@ -1,16 +1,17 @@
 <template>
   <div>
     <h1>Страница с постами</h1>
-    <my-button @click="showDialog" style="margin: 15px 0">
-      Создать пользователя
-    </my-button>
+    <div class="app_btns">
+      <my-button @click="showDialog" style="margin: 15px 0">
+        Создать пользователя
+      </my-button>
 
-    <!-- 
+      <!-- 
         1. v-model="selectedSort".  v-model:value = selectedSort - через $emit
         2. :options="sortOption". байдим options - пропс массив, который ждет MySelect (по нему будет v-for). sortOption - массив, который определяем здесь
        -->
-    <my-select v-model="selectedSort" :options="sortOption" />
-
+      <my-select v-model="selectedSort" :options="sortOption" />
+    </div>
     <my-dialog v-model:show="dialodVisible">
       <row-form @create="createRow" />
     </my-dialog>
@@ -40,6 +41,7 @@ export default {
       url: '/php_modules/controller_rows.php',
       urlTest: 'https://jsonplaceholder.typicode.com/posts',
       selectedSort: '',
+      isReverse: false,
       sortOption: [
         // массив option для нашего select
         { value: 'id', name: 'По порядку добавления' },
@@ -112,6 +114,26 @@ export default {
     }
 
     this.loadRows();
+  },
+  watch: {
+    selectedSort(newValue) {
+      // с именем, как свойство
+      if (newValue === 'id') {
+        // числовое поле
+        console.log(this.selectedSort === newValue); // но при this.selectedSort не работает
+        this.rows = this.rows.sort(function (row1, row2) {
+          return row1[newValue] - row2[newValue];
+        });
+        if (this.isReverse) this.rows.reverse();
+        this.isReverse = !this.isReverse;
+      } else {
+        this.rows.sort((row1, row2) => {
+          return row1[this.selectedSort]?.localeCompare(
+            row2[this.selectedSort]
+          );
+        });
+      }
+    },
   },
 };
 </script>

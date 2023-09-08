@@ -28,6 +28,7 @@
             3. Модальное окно для добавления;<br />
             4. Добавление в таблицу: controller_insert.php;<br />
             5. Удаление из таблицы: controller_delete.php;<br />
+            6. Сортировка в watch;<br />
           </td>
         </tr>
       </tbody>
