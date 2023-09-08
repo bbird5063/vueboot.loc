@@ -32,3 +32,4 @@
   $result->close();
   $connection->close();
   echo json_encode($data);
+  ?>

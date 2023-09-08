@@ -3,6 +3,7 @@
     <td>{{ row.id }}</td>
     <td>{{ row.title }}</td>
     <td>{{ row.body }}</td>
+    <td><my-button @click="$emit('remove', row)">Удалить</my-button></td>
   </tr>
 </template>
 
@@ -17,4 +18,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

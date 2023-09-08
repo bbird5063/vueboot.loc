@@ -15,6 +15,7 @@
 
 <script>
 import axios from 'axios'; // установить: npm i axios
+
 export default {
   data() {
     return {

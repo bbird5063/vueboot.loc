@@ -2,20 +2,25 @@
   <div class="navbar">
     <div style="cursor: pointer" @click="$router.push('/')">HS</div>
     <div class="navbar__btns">
-      <my-button @click="$router.push('/ajaxcomponent')"
-        >AjaxComponent</my-button
-      >
-      <my-button style="margin-left: 20px" @click="$router.push('/incexp0')"
-        >Inc/Exp0</my-button
-      >
-      <my-button style="margin-left: 20px" @click="$router.push('/incexp1')"
-        >Inc/Exp1</my-button
-      >
-      <my-button style="margin-left: 20px" @click="$router.push('/planpay')"
+      <my-button style="margin-left: 10px" @click="$router.push('/plan')"
         >План</my-button
       >
-      <my-button style="margin-left: 20px" @click="$router.push('/otherapp')"
-        >Прочее</my-button
+      <my-button
+        style="margin-left: 10px"
+        @click="$router.push('/ajaxcomponent')"
+        >Test</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p0')"
+        >P0</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p1')"
+        >P1</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p2')"
+        >P2</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p3')"
+        >P3</my-button
       >
     </div>
   </div>

@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+import Plan from '@/pages/Plan';
 import AjaxComponent from '@/components/AjaxComponent.vue';
-import IncExp0 from '@/pages/IncExp0';
-import IncExp1 from '@/pages/IncExp1';
-import PlanPay from '@/pages/PlanPay';
-import OtherApp from '@/pages/OtherApp';
+import P0 from '@/pages/P0';
+import P1 from '@/pages/P1';
+import P2 from '@/pages/P2';
+import P3 from '@/pages/P3';
 
 const routes = [
   {
@@ -12,27 +13,34 @@ const routes = [
     component: AjaxComponent,
   },
   {
+    path: '/plan',
+    name: 'Plan',
+    component: Plan,
+  },
+  {
     path: '/ajaxcomponent',
     name: 'AjaxComponent',
     component: AjaxComponent,
   },
   {
-    path: '/incexp0',
-    name: 'IncExp0',
-    component: IncExp0,
+    path: '/p0',
+    name: 'P0',
+    component: P0,
   },
   {
-    path: '/incexp1',
-    name: 'IncExp1',
-    component: IncExp1,
+    path: '/p1',
+    name: 'P1',
+    component: P1,
   },
   {
-    path: '/planpay',
-    component: PlanPay,
+    path: '/p2',
+    name: 'P2',
+    component: P2,
   },
   {
-    path: '/otherapp',
-    component: OtherApp,
+    path: '/p3',
+    name: 'P3',
+    component: P3,
   },
 ];
 

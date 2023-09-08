@@ -32,6 +32,9 @@ td,
 th {
   border-collapse: collapse;
   border: 3px solid #245488;
+  padding: 20 px;
+}
+td {
   padding: 5px;
 }
 </style>

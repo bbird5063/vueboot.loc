@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button class="btn btn-primary" @click="loadRows" v-if="!isLoading">
+    <my-button @click="loadRows" v-if="!isLoading">
       Загрузить таблицу
-    </button>
+    </my-button>
     <table class="table table-bordered table-hover">
       <thead>
         <tr class="active">
@@ -26,8 +26,13 @@
 </template>
 
 <script>
+import MyButton from '@/components/UI/MyButton';
 import axios from 'axios';
 export default {
+  components: {
+    MyButton,
+  },
+
   data() {
     return {
       rows: [

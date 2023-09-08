@@ -8,4 +8,4 @@ else
   $data['info'] = 'Не получили $_POST($_GET)[test]';
 
 echo json_encode($data);
-//echo '['.json_encode($data).']';
+?>

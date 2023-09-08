@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button class="btn btn-primary" @click="loadRows" v-if="!isLoading">
+    <my-button @click="loadRows" v-if="!isLoading">
       Загрузить таблицу
-    </button>
+    </my-button>
     <row-list :rows="rows" />
     <span v-if="isLoading">Обновляем...</span>
   </div>
@@ -20,7 +20,7 @@ export default {
       isTest: true,
       page: 1, //
       limit: 10, //
-      totalPages: 0, //
+      totalPages: 0,
       post: '_page=0&_limit=10', //
       get: { params: { offset: 0, limit: 10 } },
       getTest: { params: { _page: 1, _limit: 10 } },
@@ -46,14 +46,13 @@ export default {
         const response = await axios.get(url, get);
         console.log(response.headers['x-total-count']);
         this.totalPages = Math.ceil(
-          response.headers['x-total-count'] / this.limit
+          response.headers['x-total-count'] / this.getTest.params._limit
         );
-        //this.rows.push(this.isTest ? response.data : response.data.rows);
         let postRows = this.isTest ? response.data : response.data.rows;
         this.rows = [...this.rows, ...postRows];
         this.isTest
-          ? (this.getTest['params']['_page'] += 1)
-          : (this.get['params']['offset'] += this.get['params']['limit']);
+          ? (this.getTest.params._page += 1)
+          : (this.get.params.offset += this.get.params.limit);
 
         console.log(this.isTest ? response.data : response.data.rows);
       } catch (e) {
@@ -66,4 +65,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
