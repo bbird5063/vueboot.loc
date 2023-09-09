@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Страница с постами</h1>
+    <my-input v-model="searchQuery" placeholder="Поиск..." />
     <div class="app_btns">
       <my-button @click="showDialog" style="margin: 15px 0">
         Создать пользователя
@@ -15,7 +16,7 @@
     <my-dialog v-model:show="dialodVisible">
       <row-form @create="createRow" />
     </my-dialog>
-    <row-list :rows="sortedRows" @remove="removeRow" />
+    <row-list :rows="sortedAndSearchedPosts" @remove="removeRow" />
     <span v-if="isLoading">Обновляем...</span>
   </div>
 </template>
@@ -42,6 +43,7 @@ export default {
       urlTest: 'https://jsonplaceholder.typicode.com/posts',
       selectedSort: '',
       isReverse: false,
+      searchQuery: '',
       sortOption: [
         // массив option для нашего select
         { value: 'id', name: 'По порядку добавления' },
@@ -115,30 +117,9 @@ export default {
 
     this.loadRows();
   },
-  /*
-  watch: {
-    selectedSort(newValue) {
-      // с именем, как свойство
-      if (newValue === 'id') {
-        // числовое поле
-        console.log(this.selectedSort === newValue); // но при this.selectedSort не работает
-        this.rows = this.rows.sort(function (row1, row2) {
-          return row1[newValue] - row2[newValue];
-        });
-        if (this.isReverse) this.rows.reverse();
-        this.isReverse = !this.isReverse;
-      } else {
-        this.rows.sort((row1, row2) => {
-          return row1[this.selectedSort]?.localeCompare(
-            row2[this.selectedSort]
-          );
-        });
-      }
 
+  watch: {},
 
-    },
-  },
-*/
   computed: {
     sortedRows() {
       if (this.selectedSort === 'id') {
@@ -155,6 +136,12 @@ export default {
           row1[this.selectedSort]?.localeCompare(row2[this.selectedSort])
         );
       }
+    },
+
+    sortedAndSearchedPosts() {
+      return this.sortedRows.filter(post =>
+        post.title.includes(this.searchQuery)
+      );
     },
   },
 };

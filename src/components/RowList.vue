@@ -49,7 +49,7 @@ export default {
 .spab-enter-from,
 .spab-leave-to {
   opacity: 0;
-  transform: translateY(-130px);
+  transform: translateX(130px);
 }
 .spab-move {
   transition: transform 0.4s ease;
