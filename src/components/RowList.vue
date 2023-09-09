@@ -11,12 +11,14 @@
       </thead>
 
       <tbody>
-        <row-item
-          :row="row"
-          v-for="row in rows"
-          :key="row.id"
-          @remove="$emit('remove', row)"
-        />
+        <transition-group name="spab">
+          <row-item
+            :row="row"
+            v-for="row in rows"
+            :key="row.id"
+            @remove="$emit('remove', row)"
+          />
+        </transition-group>
       </tbody>
     </table>
   </div>
@@ -35,4 +37,21 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.spab-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.spab-enter-active,
+.spab-leave-active {
+  transition: all 0.4s ease;
+}
+.spab-enter-from,
+.spab-leave-to {
+  opacity: 0;
+  transform: translateY(-130px);
+}
+.spab-move {
+  transition: transform 0.4s ease;
+}
+</style>
