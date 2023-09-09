@@ -31,6 +31,10 @@
             6. Сортировка в watch;<br />
           </td>
         </tr>
+        <tr>
+          <td>P4</td>
+          <td>1. Сортировка в computed;<br /></td>
+        </tr>
       </tbody>
     </table>
   </div>

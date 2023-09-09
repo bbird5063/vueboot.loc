@@ -6,6 +6,7 @@ import P0 from '@/pages/P0';
 import P1 from '@/pages/P1';
 import P2 from '@/pages/P2';
 import P3 from '@/pages/P3';
+import P4 from '@/pages/P4';
 
 const routes = [
   {
@@ -41,6 +42,11 @@ const routes = [
     path: '/p3',
     name: 'P3',
     component: P3,
+  },
+  {
+    path: '/p4',
+    name: 'P4',
+    component: P4,
   },
 ];
 

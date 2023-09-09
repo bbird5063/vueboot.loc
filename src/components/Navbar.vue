@@ -22,6 +22,9 @@
       <my-button style="margin-left: 10px" @click="$router.push('/p3')"
         >P3</my-button
       >
+      <my-button style="margin-left: 10px" @click="$router.push('/p4')"
+        >P4</my-button
+      >
     </div>
   </div>
 </template>
