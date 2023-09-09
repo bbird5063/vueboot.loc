@@ -35,5 +35,6 @@ export default {
   background: none;
   color: teal;
   border: 1px solid teal;
+  cursor: pointer;
 }
 </style>

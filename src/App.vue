@@ -53,8 +53,10 @@ td {
 .page {
   border: 1px solid black;
   padding: 10px;
+  cursor: pointer;
 }
 .current-page {
   border: 2px solid teal;
+  cursor: pointer;
 }
 </style>

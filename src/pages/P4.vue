@@ -77,7 +77,7 @@ export default {
         this.totalPages = Math.ceil(this.cnt_rows / this.get.params.limit);
       }
       this.totalPages = this.isTest;
-
+      // console.log(row);
       this.rows.push(row);
       this.dialodVisible = false;
     },
