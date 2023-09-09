@@ -31,8 +31,8 @@
   $result = $conn->query($query);
   $row = $result->fetch_array(MYSQLI_ASSOC);
   $data['cnt_rows'] = $row['count'];
-
   $result->close();
+
   $conn->close();
   echo json_encode($data);
   ?>

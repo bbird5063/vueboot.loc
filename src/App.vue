@@ -31,7 +31,8 @@ export default {
   display: flex;
   /* кнопка и список напротив друга  */
   justify-content: space-between;
-  margin: 15px 0;
+  align-items: center;
+  margin: 0;
 }
 
 table,
@@ -42,5 +43,18 @@ th {
 }
 td {
   padding: 5px;
+}
+
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+  align-items: center;
+}
+.page {
+  border: 1px solid black;
+  padding: 10px;
+}
+.current-page {
+  border: 2px solid teal;
 }
 </style>

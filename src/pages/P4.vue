@@ -11,13 +11,25 @@
         1. v-model="selectedSort".  v-model:value = selectedSort - через $emit
         2. :options="sortOption". байдим options - пропс массив, который ждет MySelect (по нему будет v-for). sortOption - массив, который определяем здесь
        -->
-      <my-select v-model="selectedSort" :options="sortOption" />
+      <span v-if="isLoading">Обновляем...</span>
+      <my-select v-else v-model="selectedSort" :options="sortOption" />
     </div>
     <my-dialog v-model:show="dialodVisible">
       <row-form @create="createRow" />
     </my-dialog>
+    <br />
+    <div class="page__wrapper">
+      <div
+        class="page"
+        v-for="pageNumber in totalPages"
+        :key="page"
+        :class="{ 'current-page': page === pageNumber }"
+        @click="changePage(pageNumber)"
+      >
+        {{ pageNumber }}
+      </div>
+    </div>
     <row-list :rows="sortedAndSearchedPosts" @remove="removeRow" />
-    <span v-if="isLoading">Обновляем...</span>
   </div>
 </template>
 
@@ -33,9 +45,10 @@ export default {
       dialodVisible: false, // создали директиву
       isLoading: false,
       isTest: true,
-      page: 1, //
-      limit: 10, //
-      totalPages: 0, //
+      page: 1,
+      limit: 10,
+      totalRows: 0,
+      totalPages: 0,
       post: '_page=0&_limit=10', //
       get: { params: { offset: 0, limit: 10 } },
       getTest: { params: { _page: 1, _limit: 10 } },
@@ -54,26 +67,43 @@ export default {
   },
   methods: {
     async createRow(row) {
-      if (!this.isTest) {
+      if (this.isTest) {
+        this.totalPages++;
+      } else {
         let url = '/php_modules/controller_insert.php';
         let get = { params: row };
         const response = await axios.get(url, get);
         row.id = response.data.id;
+        this.totalPages = Math.ceil(this.cnt_rows / this.get.params.limit);
       }
+      this.totalPages = this.isTest;
+
       this.rows.push(row);
       this.dialodVisible = false;
     },
     async removeRow(row) {
-      if (!this.isTest) {
+      if (this.isTest) {
+        this.totalRows--;
+        this.totalPages = Math.ceil(
+          this.totalRows / this.getTest.params._limit
+        );
+      } else {
         let url = '/php_modules/controller_delete.php';
         let get = { params: row };
         const response = await axios.get(url, get);
-        console.log(response.data.result);
+        this.totalRows = response.data.cnt_rows;
+        this.totalPages = Math.ceil(this.totalRows / this.get.params.limit);
       }
+
       this.rows = this.rows.filter(p => p.id !== row.id); // filter создает новый массив
     },
     showDialog() {
       this.dialodVisible = true;
+    },
+    changePage(pageNumber) {
+      this.page = pageNumber;
+      this.getTest.params._page = pageNumber;
+      this.get.params.offset = (pageNumber - 1) * this.get.params.limit;
     },
 
     async loadRows() {
@@ -82,22 +112,18 @@ export default {
         let url = this.isTest ? this.urlTest : this.url;
         let get = this.isTest ? this.getTest : this.get;
         const response = await axios.get(url, get);
-        console.log(response.headers['x-total-count']);
-        console.log(response.data.cnt_rows);
 
-        this.totalPages = this.isTest
-          ? Math.ceil(
-              response.headers['x-total-count'] / this.getTest.params._limit
-            )
-          : Math.ceil(response.data.cnt_rows / this.get.params.limit);
+        this.rows = this.isTest ? response.data : response.data.rows;
 
-        let postRows = this.isTest ? response.data : response.data.rows;
-        this.rows = [...this.rows, ...postRows];
-        this.isTest
-          ? (this.getTest.params._page += 1)
-          : (this.get.params.offset += this.get.params.limit);
-
-        console.log(this.isTest ? response.data : response.data.rows);
+        if (this.isTest) {
+          this.totalRows = response.headers['x-total-count'];
+          this.totalPages = Math.ceil(
+            this.totalRows / this.getTest.params._limit
+          );
+        } else {
+          this.totalRows = response.data.cnt_rows;
+          this.totalPages = Math.ceil(this.totalRows / this.get.params.limit);
+        }
       } catch (e) {
         alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
       } finally {
@@ -118,7 +144,28 @@ export default {
     this.loadRows();
   },
 
-  watch: {},
+  watch: {
+    getTest: {
+      // глубокое отслеживание для массивов и объектров
+      handler(newGetTest) {
+        //this.page = newGetTest.params._page;
+        console.log(newGetTest);
+      },
+      deep: true,
+    },
+    get: {
+      // глубокое отслеживание для массивов и объектров
+      handler(newGet) {
+        //this.page = Math.ceil(this.get.params.offset / this.get.params.limit);
+        console.log(newGet);
+      },
+      deep: true,
+    },
+    page(newPage) {
+      //alert(newPage);
+      this.loadRows();
+    },
+  },
 
   computed: {
     sortedRows() {
