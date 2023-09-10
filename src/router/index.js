@@ -1,27 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import Plan from '@/pages/Plan';
-import AjaxComponent from '@/components/AjaxComponent.vue';
 import P0 from '@/pages/P0';
 import P1 from '@/pages/P1';
 import P2 from '@/pages/P2';
 import P3 from '@/pages/P3';
 import P4 from '@/pages/P4';
+import P5 from '@/pages/P5';
 
 const routes = [
   {
     path: '/',
-    component: AjaxComponent,
+    name: 'Plan',
+    component: Plan,
   },
   {
     path: '/plan',
     name: 'Plan',
     component: Plan,
-  },
-  {
-    path: '/ajaxcomponent',
-    name: 'AjaxComponent',
-    component: AjaxComponent,
   },
   {
     path: '/p0',
@@ -47,6 +43,11 @@ const routes = [
     path: '/p4',
     name: 'P4',
     component: P4,
+  },
+  {
+    path: '/p5',
+    name: 'P5',
+    component: P5,
   },
 ];
 

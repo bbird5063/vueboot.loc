@@ -5,11 +5,6 @@
       <my-button style="margin-left: 10px" @click="$router.push('/plan')"
         >План</my-button
       >
-      <my-button
-        style="margin-left: 10px"
-        @click="$router.push('/ajaxcomponent')"
-        >Test</my-button
-      >
       <my-button style="margin-left: 10px" @click="$router.push('/p0')"
         >P0</my-button
       >
@@ -24,6 +19,9 @@
       >
       <my-button style="margin-left: 10px" @click="$router.push('/p4')"
         >P4</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p5')"
+        >P5</my-button
       >
     </div>
   </div>
