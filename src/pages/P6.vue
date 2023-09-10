@@ -18,19 +18,9 @@
       <row-form @create="createRow" />
     </my-dialog>
     <br />
-    <!-- <div class="page__wrapper">
-      <div
-        class="page"
-        v-for="pageNumber in totalPages"
-        :key="page"
-        :class="{ 'current-page': page === pageNumber }"
-        @click="changePage(pageNumber)"
-      >
-        {{ pageNumber }}
-      </div>
-    </div> -->
     <row-list :rows="sortedAndSearchedPosts" @remove="removeRow" />
-    <div ref="observer" class="observer"></div>
+    <!-- <div ref="observer" class="observer"></div> -->
+    <div v-intersection="loadMoreRows" class="observer"></div>
   </div>
 </template>
 
@@ -188,7 +178,7 @@ export default {
 
     console.log(this.page);
     console.log(this.totalPages);
-
+    /*
     const callback = (entries, observer) => {
       console.log(entries[0].isIntersecting);
       // только стрелочная. при function не будет доступна loadMorePosts()
@@ -198,6 +188,7 @@ export default {
     };
     const observer = new IntersectionObserver(callback, options);
     observer.observe(this.$refs.observer); // передаем ссылку на нужный DOM-элемент
+    */
   },
 
   computed: {

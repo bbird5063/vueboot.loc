@@ -1,23 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Plan from '@/pages/Plan';
+import Main from '@/pages/Main';
 import P0 from '@/pages/P0';
 import P1 from '@/pages/P1';
 import P2 from '@/pages/P2';
 import P3 from '@/pages/P3';
 import P4 from '@/pages/P4';
 import P5 from '@/pages/P5';
+import P6 from '@/pages/P6';
+import RowIdPage from '@/pages/RowIdPage';
 
 const routes = [
   {
     path: '/',
-    name: 'Plan',
-    component: Plan,
-  },
-  {
-    path: '/plan',
-    name: 'Plan',
-    component: Plan,
+    name: 'Main',
+    component: Main,
   },
   {
     path: '/p0',
@@ -48,6 +45,16 @@ const routes = [
     path: '/p5',
     name: 'P5',
     component: P5,
+  },
+  {
+    path: '/p6',
+    name: 'P6',
+    component: P6,
+  },
+  {
+    // добавил (:id - динамический параметр)
+    path: '/rows/:id',
+    component: RowIdPage,
   },
 ];
 

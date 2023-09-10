@@ -2,9 +2,6 @@
   <div class="navbar">
     <div style="cursor: pointer" @click="$router.push('/')">HS</div>
     <div class="navbar__btns">
-      <my-button style="margin-left: 10px" @click="$router.push('/plan')"
-        >План</my-button
-      >
       <my-button style="margin-left: 10px" @click="$router.push('/p0')"
         >P0</my-button
       >
@@ -22,6 +19,9 @@
       >
       <my-button style="margin-left: 10px" @click="$router.push('/p5')"
         >P5</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p6')"
+        >P6</my-button
       >
     </div>
   </div>
