@@ -51,10 +51,14 @@
         <tr>
           <td>P6</td>
           <td>
-            1. Добавили directives\Vintersection.js. <br />
+            1. Добавили directives\Vintersection.js;<br />
             В нее вынесли отслеживание появление observer в зоне видимости;<br />
             2. Создаем собственные директивы V-INTERSECTION и V-FOCUS;<br />
           </td>
+        </tr>
+        <tr>
+          <td>P7</td>
+          <td>1. Vuex. Глобальное состояние приложения; <br /></td>
         </tr>
       </tbody>
     </table>
