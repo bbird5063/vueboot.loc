@@ -18,12 +18,13 @@
   if (!$result) die($conn->error);
 
   $cnt_rows = $result->num_rows;
-
-  for ($j = 0 ; $j < $cnt_rows ; ++$j) {
-    $row = [];
-    $result->data_seek($j);
-	  $row = $result->fetch_array(MYSQLI_ASSOC);
-    $data['rows'][] = $row;
+  if($cnt_rows > 0) {
+    for ($j = 0 ; $j < $cnt_rows ; ++$j) {
+      $row = [];
+      $result->data_seek($j);
+      $row = $result->fetch_array(MYSQLI_ASSOC);
+      $data['rows'][] = $row;
+    }
   }
   $result->close();
 

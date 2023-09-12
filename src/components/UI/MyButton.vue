@@ -14,6 +14,7 @@ export default {
 .btn {
   height: 37px;
   padding: 10px 15px;
+  margin: 5px;
   background: none;
   color: teal;
   border: 1px solid teal;

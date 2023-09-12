@@ -18,7 +18,18 @@
       <row-form @create="createRow" />
     </my-dialog>
     <br />
-    <row-list :rows="sortedAndSearchedPosts" @remove="removeRow" />
+    <!-- <div class="page__wrapper">
+      <div
+        class="page"
+        v-for="pageNumber in totalPages"
+        :key="page"
+        :class="{ 'current-page': page === pageNumber }"
+        @click="changePage(pageNumber)"
+      >
+        {{ pageNumber }}
+      </div>
+    </div> -->
+    <row-list :rows="sortedAndSearchedRows" @remove="removeRow" />
     <!-- <div ref="observer" class="observer"></div> -->
     <div v-intersection="loadMoreRows" class="observer"></div>
   </div>
@@ -36,7 +47,7 @@ export default {
       dialodVisible: false, // создали директиву
       isLoading: false,
       isTest: true,
-      page: 1,
+      page: 0,
       limit: 10,
       totalRows: 1,
       totalPages: 1,
@@ -99,19 +110,20 @@ export default {
       this.getTest.params._page = pageNumber;
       this.get.params.offset = (pageNumber - 1) * this.get.params.limit;
     },
-
+    /*
     async loadRows() {
       try {
         this.isLoading = true;
         let url = this.isTest ? this.urlTest : this.url;
         let get = this.isTest ? this.getTest : this.get;
+
         const response = await axios.get(url, get);
 
         this.rows = this.isTest ? response.data : response.data.rows;
 
         this.page++;
         this.getTest.params._page = this.page;
-        this.get.params.offset = (this.page - 1) * this.get.params.limit;
+        this.get.params.offset = this.page * this.get.params.limit;
 
         if (this.isTest) {
           this.totalRows = response.headers['x-total-count'];
@@ -128,22 +140,28 @@ export default {
         this.isLoading = false;
       }
     },
-
+*/
     async loadMoreRows() {
       try {
         // this.isLoading = true;
-        let url = this.isTest ? this.urlTest : this.url;
-        let get = this.isTest ? this.getTest : this.get;
-        const response = await axios.get(url, get);
-
-        this.rows = this.isTest
-          ? [...this.rows, ...response.data]
-          : [...this.rows, ...response.data.rows];
-
         this.page++;
         this.getTest.params._page = this.page;
         this.get.params.offset = (this.page - 1) * this.get.params.limit;
 
+        let url = this.isTest ? this.urlTest : this.url;
+        let get = this.isTest ? this.getTest : this.get;
+        const response = await axios.get(url, get);
+
+        if (this.isTest) {
+          this.rows = [...this.rows, ...response.data];
+        } else if (response.data.rows) {
+          this.rows = [...this.rows, ...response.data.rows];
+        }
+        /*
+        this.rows = this.isTest
+          ? [...this.rows, ...response.data]
+          : [...this.rows, ...response.data.rows];
+        */
         if (this.isTest) {
           this.totalRows = response.headers['x-total-count'];
           this.totalPages = Math.ceil(
@@ -169,26 +187,8 @@ export default {
       this.isTest = false;
     }
 
-    this.loadRows();
-    console.log(this.$refs.observer);
-    const options = {
-      rootMargin: '0px',
-      threshold: 1.0,
-    };
-
-    console.log(this.page);
-    console.log(this.totalPages);
-    /*
-    const callback = (entries, observer) => {
-      console.log(entries[0].isIntersecting);
-      // только стрелочная. при function не будет доступна loadMorePosts()
-      if (entries[0].isIntersecting && this.page < this.totalPages) {
-        this.loadMoreRows();
-      }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer); // передаем ссылку на нужный DOM-элемент
-    */
+    // this.loadRows();
+    this.loadMoreRows();
   },
 
   computed: {
@@ -209,7 +209,7 @@ export default {
       }
     },
 
-    sortedAndSearchedPosts() {
+    sortedAndSearchedRows() {
       return this.sortedRows.filter(post =>
         post.title.includes(this.searchQuery)
       );
