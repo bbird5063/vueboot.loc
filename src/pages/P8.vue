@@ -5,7 +5,6 @@
       :model-value="searchQuery"
       @update:model-value="setSearchQuery"
       placeholder="Поиск..."
-      v-focus
     />
 
     <div class="app_btns">
@@ -31,8 +30,8 @@
     />
 
     <div v-else>Идет загрузка...</div>
-
-    <div v-intersection="loadMoreRows" class="observer"></div>
+    <!-- v-if="!isLoading" - ЧТОБЫ В НАЧАЛЕ НЕ ЗАГРУЖАЛАСЬ ВТОРАЯ СТРАНИЦА -->
+    <div v-if="!isLoading" v-intersection="loadMoreRows" class="observer"></div>
   </div>
 </template>
 
@@ -108,7 +107,7 @@ export default {
 
   computed: {
     ...mapState({
-      posts: state => state.row.posts,
+      rows: state => state.row.rows,
       isLoading: state => state.row.isLoading,
       selectedSort: state => state.row.selectedSort,
       searchQuery: state => state.row.searchQuery,

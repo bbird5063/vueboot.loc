@@ -5,7 +5,7 @@ export const rowModule = {
     rows: [],
     isLoading: false,
     isTest: true,
-    page: 0,
+    page: 1,
     limit: 10,
     totalRows: 1,
     totalPages: 1,
@@ -132,7 +132,7 @@ export const rowModule = {
 
     async loadMoreRows({ state, commit }) {
       try {
-        commit('setIsLoading', true);
+        //commit('setIsLoading', true);
         commit('setPage', (state.page += 1));
         commit('setGetTestPage', state.page);
         commit('setGetOffset', (state.page - 1) * state.get.params.limit);
@@ -142,9 +142,9 @@ export const rowModule = {
         const response = await axios.get(url, get);
 
         if (state.isTest) {
-          commit('setRows', response.data);
+          commit('setRows', [...state.rows, ...response.data]);
         } else if (response.data.rows) {
-          commit('setRows', response.data.rows);
+          commit('setRows', [...state.rows, ...response.data.rows]);
         }
 
         if (state.isTest) {
@@ -163,7 +163,7 @@ export const rowModule = {
       } catch (e) {
         alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
       } finally {
-        commit('setIsLoading', false);
+        //commit('setIsLoading', false); ПРИ КАЖНДОМ ДОБАВЛЕНИИ - СТРАНИЦА С НАЧАЛА!
       }
     },
   },
