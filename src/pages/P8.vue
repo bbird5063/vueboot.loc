@@ -49,10 +49,16 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setPage: 'row/setPage',
-      setSearchQuery: 'row/setSearchQuery',
-      setSelectedSort: 'row/setSelectedSort',
       setRows: 'row/setRows',
+      setIsLoading: 'row/setIsLoading',
+      setIsTest: 'row/setIsTest',
+      setPage: 'row/setPage',
+      setTotalRows: 'row/setTotalRows',
+      setTotalPages: 'row/setTotalPages',
+      setGetTestPage: 'row/setGetTestPage',
+      setGetOffset: 'row/setGetOffset',
+      setGetTest: 'row/setGetTest',
+      setGet: 'row/setGet',
     }),
     ...mapActions({
       loadMoreRows: 'row/loadMoreRows',
@@ -61,40 +67,45 @@ export default {
 
     async createRow(row) {
       if (this.isTest) {
-        this.totalPages++;
+        this.$store.commit('row/setTotalPages', this.totalPages + 1);
       } else {
         let url = '/php_modules/controller_insert.php';
         let get = { params: row };
         const response = await axios.get(url, get);
         row.id = response.data.id;
-        this.totalPages = Math.ceil(this.cnt_rows / this.get.params.limit);
+        console.log(response.data);
+        console.table(row);
+        this.$store.commit(
+          'row/setTotalPages',
+          Math.ceil(response.data.cnt_rows / this.get.params.limit)
+        );
       }
-      // this.totalPages = this.isTest;
       this.rows.push(row);
       this.dialodVisible = false;
     },
 
     async removeRow(row) {
       if (this.isTest) {
-        this.totalRows--;
-        this.totalPages = Math.ceil(
-          this.totalRows / this.getTest.params._limit
+        this.$store.commit('row/setTotalRows', this.totalRows - 1);
+        this.$store.commit(
+          'row/setTotalPages',
+          Math.ceil(this.totalRows / this.getTest.params._limit)
         );
-        // this.$store.commit('row/setTotalRows',this.totalRows-=1},
       } else {
         let url = '/php_modules/controller_delete.php';
         let get = { params: row };
         const response = await axios.get(url, get);
-        this.totalRows = response.data.cnt_rows;
-        this.totalPages = Math.ceil(this.totalRows / this.get.params.limit);
+        this.$store.commit('setTotalRows', response.data.cnt_rows);
+        this.$store.commit(
+          'row/setTotalPages',
+          Math.ceil(response.data.cnt_rows / this.get.params.limit)
+        );
       }
-      this.$store.commit(
-        // commit только так
-        'row/setRows', // просто setRows не работает
-        this.rows.filter(p => p.id !== row.id) // this. - ???
-      );
 
-      this.rows = this.rows.filter(p => p.id !== row.id); // filter создает новый массив
+      this.$store.commit(
+        'row/setRows',
+        this.rows.filter(p => p.id !== row.id) // this. - filter создает новый массив
+      );
     },
 
     showDialog() {
@@ -109,11 +120,17 @@ export default {
     ...mapState({
       rows: state => state.row.rows,
       isLoading: state => state.row.isLoading,
-      selectedSort: state => state.row.selectedSort,
-      searchQuery: state => state.row.searchQuery,
+      isTest: state => state.row.isTest,
       page: state => state.row.page,
       limit: state => state.row.limit,
+      totalRows: state => state.row.totalRows,
       totalPages: state => state.row.totalPages,
+      get: state => state.row.get,
+      getTest: state => state.row.getTest,
+      url: state => state.row.url,
+      urlTest: state => state.row.urlTest,
+      selectedSort: state => state.row.selectedSort,
+      searchQuery: state => state.row.searchQuery,
       sortOption: state => state.row.sortOption,
     }),
 

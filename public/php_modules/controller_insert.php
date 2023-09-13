@@ -16,7 +16,6 @@
   if (!$result) die($conn->error);
 
   $data['id'] = $conn->insert_id;
-  $result->close();
 
   $query  = 'SELECT COUNT(*) AS count FROM posts';
   $result = $conn->query($query);
@@ -26,4 +25,4 @@
   
   $conn->close();
   echo json_encode($data);
-  ?>
+?>
