@@ -34,7 +34,6 @@ export default {
       limit: 10,
       totalRows: 1,
       totalPages: 1,
-      post: '_page=0&_limit=10', //
       get: { params: { offset: 0, limit: 10 } },
       getTest: { params: { _page: 1, _limit: 10 } },
       url: '/php_modules/controller_rows.php',
@@ -61,7 +60,6 @@ export default {
         this.totalPages = Math.ceil(this.cnt_rows / this.get.params.limit);
       }
       this.totalPages = this.isTest;
-      // console.log(row);
       this.rows.push(row);
       this.dialodVisible = false;
     },

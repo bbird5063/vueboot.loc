@@ -9,6 +9,7 @@ import P4 from '@/pages/P4';
 import P5 from '@/pages/P5';
 import P6 from '@/pages/P6';
 import P7 from '@/pages/P7';
+import P8 from '@/pages/P8';
 import RowIdPage from '@/pages/RowIdPage';
 
 const routes = [
@@ -56,6 +57,11 @@ const routes = [
     path: '/p7',
     name: 'P7',
     component: P7,
+  },
+  {
+    path: '/p8',
+    name: 'P8',
+    component: P8,
   },
   {
     // добавил (:id - динамический параметр)

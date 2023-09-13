@@ -24,7 +24,10 @@
         >P6</my-button
       >
       <my-button style="margin-left: 10px" @click="$router.push('/p7')"
-        >P7(Vuex)</my-button
+        >P7</my-button
+      >
+      <my-button style="margin-left: 10px" @click="$router.push('/p8')"
+        >P8(Vuex)</my-button
       >
     </div>
   </div>

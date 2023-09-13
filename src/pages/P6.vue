@@ -47,7 +47,7 @@ export default {
       dialodVisible: false, // создали директиву
       isLoading: false,
       isTest: true,
-      page: 0,
+      page: 1,
       limit: 10,
       totalRows: 1,
       totalPages: 1,
@@ -110,21 +110,23 @@ export default {
       this.getTest.params._page = pageNumber;
       this.get.params.offset = (pageNumber - 1) * this.get.params.limit;
     },
-    /*
+    /*this.rows = this.isTest ? response.data : response.data.rows;*/
     async loadRows() {
       try {
-        this.isLoading = true;
+        // this.isLoading = true;
+        // this.page += 1;
+        this.getTest.params._page = this.page;
+        this.get.params.offset = (this.page - 1) * this.get.params.limit;
+
         let url = this.isTest ? this.urlTest : this.url;
         let get = this.isTest ? this.getTest : this.get;
-
         const response = await axios.get(url, get);
 
-        this.rows = this.isTest ? response.data : response.data.rows;
-
-        this.page++;
-        this.getTest.params._page = this.page;
-        this.get.params.offset = this.page * this.get.params.limit;
-
+        if (this.isTest) {
+          this.rows = response.data;
+        } else if (response.data.rows) {
+          this.rows = response.data.rows;
+        }
         if (this.isTest) {
           this.totalRows = response.headers['x-total-count'];
           this.totalPages = Math.ceil(
@@ -136,15 +138,13 @@ export default {
         }
       } catch (e) {
         alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
-      } finally {
-        this.isLoading = false;
       }
     },
-*/
+
     async loadMoreRows() {
       try {
         // this.isLoading = true;
-        this.page++;
+        this.page += 1;
         this.getTest.params._page = this.page;
         this.get.params.offset = (this.page - 1) * this.get.params.limit;
 
@@ -187,8 +187,8 @@ export default {
       this.isTest = false;
     }
 
-    // this.loadRows();
-    this.loadMoreRows();
+    this.loadRows();
+    // this.loadMoreRows();
   },
 
   computed: {
