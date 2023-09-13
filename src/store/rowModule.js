@@ -24,18 +24,18 @@ export const rowModule = {
 
   getters: {
     sortedRows(state) {
-      /*if (state.selectedSort === 'id') {
+      if (state.selectedSort === 'id') {
         // числовое поле
         let sortRows = [...state.rows];
         sortRows = state.rows.sort(
           (row1, row2) => row1[state.selectedSort] - row2[state.selectedSort]
         );
         return sortRows;
-      } else {*/
-      return [...state.rows].sort((row1, row2) =>
-        row1[state.selectedSort]?.localeCompare(row2[state.selectedSort])
-      );
-      //}
+      } else {
+        return [...state.rows].sort((row1, row2) =>
+          row1[state.selectedSort]?.localeCompare(row2[state.selectedSort])
+        );
+      }
     },
     sortedAndSearchedRows(state, getters) {
       return getters.sortedRows.filter(
@@ -57,6 +57,9 @@ export const rowModule = {
     },
     setPage(state, page) {
       state.page = page;
+    },
+    setTotalRows(state, totalRows) {
+      state.totalRows = totalRows;
     },
     setTotalPages(state, totalPages) {
       state.totalPages = totalPages;

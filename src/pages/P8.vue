@@ -10,7 +10,7 @@
 
     <div class="app_btns">
       <my-button @click="showDialog" style="margin: 15px 0">
-        Создать поста
+        Создать пост
       </my-button>
 
       <my-select
@@ -81,6 +81,7 @@ export default {
         this.totalPages = Math.ceil(
           this.totalRows / this.getTest.params._limit
         );
+        // this.$store.commit('row/setTotalRows',this.totalRows-=1},
       } else {
         let url = '/php_modules/controller_delete.php';
         let get = { params: row };
