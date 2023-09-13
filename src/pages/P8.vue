@@ -57,7 +57,7 @@ export default {
     }),
     ...mapActions({
       loadMoreRows: 'row/loadMoreRows',
-      fetchRows: 'row/loadRows',
+      loadRows: 'row/loadRows',
     }),
 
     async createRow(row) {
@@ -114,12 +114,12 @@ export default {
       page: state => state.row.page,
       limit: state => state.row.limit,
       totalPages: state => state.row.totalPages,
-      sortOptions: state => state.row.sortOptions,
+      sortOption: state => state.row.sortOption,
     }),
 
     ...mapGetters({
-      sortedPosts: 'post/sortedPosts',
-      sortedAndSearchedPosts: 'post/sortedAndSearchedPosts',
+      sortedRows: 'row/sortedRows',
+      sortedAndSearchedRows: 'row/sortedAndSearchedRows',
     }),
   },
 };

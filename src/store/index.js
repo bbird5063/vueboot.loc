@@ -1,8 +1,8 @@
 import { createStore } from 'vuex';
-import { postModule } from '@/store/postModule';
+import { rowModule } from '@/store/rowModule';
 
 export default createStore({
   modules: {
-    post: postModule,
+    row: rowModule,
   },
 });

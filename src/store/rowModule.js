@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const postModule = {
+export const rowModule = {
   state: () => ({
     rows: [],
     isLoading: false,
@@ -23,34 +23,24 @@ export const postModule = {
   }),
 
   getters: {
-    sortedPosts(state) {
-      return [...state.posts].sort((post1, post2) =>
-        post1[state.selectedSort]?.localeCompare(post2[state.selectedSort])
-      );
-    },
-    sortedAndSearchedPosts(state, getters) {
-      return getters.sortedPosts.filter(post =>
-        post.title.toLowerCase().includes(state.searchQuery.toLowerCase())
-      );
-    },
-
     sortedRows(state) {
-      if (state.selectedSort === 'id') {
+      /*if (state.selectedSort === 'id') {
         // числовое поле
         let sortRows = [...state.rows];
         sortRows = state.rows.sort(
           (row1, row2) => row1[state.selectedSort] - row2[state.selectedSort]
         );
         return sortRows;
-      } else {
-        return [...state.rows].sort((row1, row2) =>
-          row1[state.selectedSort]?.localeCompare(row2[state.selectedSort])
-        );
-      }
+      } else {*/
+      return [...state.rows].sort((row1, row2) =>
+        row1[state.selectedSort]?.localeCompare(row2[state.selectedSort])
+      );
+      //}
     },
     sortedAndSearchedRows(state, getters) {
-      return getters.sortedRows.filter(post =>
-        post.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+      return getters.sortedRows.filter(
+        row => row.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+        //row.title.includes(state.searchQuery)
       );
     },
   },
