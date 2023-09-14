@@ -62,6 +62,14 @@
           <td>P7</td>
           <td>1. Vuex. Глобальное состояние приложения; <br /></td>
         </tr>
+        <tr>
+          <td>P8</td>
+          <td>1. Vuex. Все работает; <br /></td>
+        </tr>
+        <tr>
+          <td>P9</td>
+          <td>1. Composition API<br /></td>
+        </tr>
       </tbody>
     </table>
   </div>

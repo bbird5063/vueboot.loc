@@ -29,6 +29,9 @@
       <my-button style="margin-left: 10px" @click="$router.push('/p8')"
         >P8(Vuex)</my-button
       >
+      <my-button style="margin-left: 10px" @click="$router.push('/p9')"
+        >P9(Comp.API)</my-button
+      >
     </div>
   </div>
 </template>
