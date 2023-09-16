@@ -3,15 +3,27 @@
   <div class="app">
     <!-- <router-view> - в него будут встраиваться компоненты из router.js -->
     <router-view></router-view>
+    <!-- Кнопка-триггер модального окна -->
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#login-signup-modal"
+    >
+      Запустите демо модального окна
+    </button>
+    <auth-form></auth-form>
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar';
+import AuthForm from '@/components/register/AuthForm';
 
 export default {
   components: {
     Navbar,
+    AuthForm,
   },
 };
 </script>
