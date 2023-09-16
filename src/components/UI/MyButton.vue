@@ -11,6 +11,9 @@ export default {
 </script>
 
 <style scoped>
+/* button {
+  cursor: pointer;
+}
 .btn {
   height: 37px;
   padding: 10px 15px;
@@ -19,5 +22,5 @@ export default {
   color: teal;
   border: 1px solid teal;
   cursor: pointer;
-}
+} */
 </style>

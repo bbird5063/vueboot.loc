@@ -4,6 +4,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showContent: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     hideDialog() {
@@ -11,6 +15,7 @@ export default {
     },
   },
   mounted() {
+    // setTimeout(() => (this.showContent = true), 5000);
     console.log('mixin mounted'); // для проверки
   },
 };

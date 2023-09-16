@@ -14,7 +14,8 @@
       <span v-if="isLoading">Обновляем...</span>
       <my-select v-else v-model="selectedSort" :options="sortOption" />
     </div>
-    <my-dialog v-model:show="dialodVisible">
+
+    <my-dialog v-model:show="dialodVisible" :showContent="dialodVisible">
       <row-form @create="createRow" />
     </my-dialog>
     <br />
@@ -227,5 +228,21 @@ export default {
   display: none; */
   height: 10px;
   background: grey;
+}
+.spab-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.spab-enter-active,
+.spab-leave-active {
+  transition: all 0.4s ease;
+}
+.spab-enter-from,
+.spab-leave-to {
+  opacity: 0;
+  transform: translateX(130px);
+}
+.spab-move {
+  transition: transform 0.4s ease;
 }
 </style>

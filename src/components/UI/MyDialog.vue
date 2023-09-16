@@ -1,9 +1,11 @@
 <template>
-  <div class="dialog" v-if="show" @click.stop="hideDialog">
-    <div @click.stop class="dialog__content">
-      <slot></slot>
+  <transition name="spab">
+    <div class="dialog" v-if="show" @click.stop="hideDialog">
+      <div v-if="showContent" @click.stop class="dialog__content">
+        <slot></slot>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -37,5 +39,22 @@ export default {
   min-height: 50px;
   min-width: 300px;
   padding: 20px;
+}
+
+.spab-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.spab-enter-active,
+.spab-leave-active {
+  transition: all 0.4s ease;
+}
+.spab-enter-from,
+.spab-leave-to {
+  opacity: 0;
+  transform: translateY(-130px);
+}
+.spab-move {
+  transition: transform 0.4s ease;
 }
 </style>
