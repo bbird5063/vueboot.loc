@@ -6,7 +6,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна login -->
-        <div class="modal-content" id="login-modal-content">
+        <div v-show="$store.state.auth.currModal=='login-modal-content'" class="modal-content" id="login-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -86,8 +86,7 @@
 
               <div class="checkbox">
                 <label
-                  ><input name="remember" type="checkbox" value="1"
-                  >Запомнить
+                  ><input name="remember" type="checkbox" value="1" />Запомнить
                   меня</label
                 >
               </div>
@@ -121,7 +120,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна signup  for="signup"-->
-        <div class="modal-content" id="signup-modal-content">
+        <div v-show="$store.state.auth.currModal=='signup-modal-content'" class="modal-content" id="signup-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -264,7 +263,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна forgot password -->
-        <div class="modal-content" id="forgot-password-modal-content">
+        <div v-show="$store.state.auth.currModal=='forgot-password-modal-content'" class="modal-content" id="forgot-password-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -355,7 +354,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна code -->
-        <div class="modal-content" id="code-modal-content">
+        <div v-show="$store.state.auth.currModal=='code-modal-content'" class="modal-content" id="code-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -401,8 +400,7 @@
 
               <div class="checkbox">
                 <label
-                  ><input name="remember" type="checkbox" value="1"
-                  >Запомнить
+                  ><input name="remember" type="checkbox" value="1" />Запомнить
                   меня</label
                 >
               </div>
@@ -435,7 +433,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна password -->
-        <div class="modal-content" id="password-modal-content">
+        <div v-show="$store.state.auth.currModal=='password-modal-content'" class="modal-content" id="password-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -583,7 +581,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна user -->
-        <div class="modal-content" id="user-modal-content">
+        <div v-show="$store.state.auth.currModal=='user-modal-content'" class="modal-content" id="user-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -787,7 +785,7 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна exit -->
-        <div class="modal-content" id="exit-modal-content">
+        <div v-show="$store.state.auth.currModal=='exit-modal-content'" class="modal-content" id="exit-modal-content">
           <div class="modal-header">
             <button
               type="button"
@@ -856,4 +854,8 @@
 export default {};
 </script>
 
-<style scoped></style>
+<style scoped>
+  /*.modal-content {
+    display: none;
+  }*/
+</style>
