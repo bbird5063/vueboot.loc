@@ -6,14 +6,17 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна login -->
-        <div v-show="$store.state.auth.currModal=='login-modal-content'" class="modal-content" id="login-modal-content">
+        <!-- v-show="$store.state.auth.currModal == 'login-modal-content'" -->
+        <div
+          v-show="$store.state.auth.currModal == 'login-modal-content'"
+          class="modal-content"
+          id="login-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
@@ -32,8 +35,7 @@
               method="post"
               id="Login-Form"
               role="form_ajax"
-              for="login"
-            >
+              for="login">
               <!-- для проверки: сюда будет помещен ответ от хоста -->
               <div id="result_form"></div>
               <!--div id="err"></div-->
@@ -51,8 +53,7 @@
                     placeholder="Введите логин"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
               <div class="form-group">
@@ -70,16 +71,14 @@
                     required
                     data-parsley-length="[6, 10]"
                     data-parsley-trigger="keyup"
-                    autocomplete="off"
-                  />
+                    autocomplete="off" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="fa fa-eye"
                       for="password"
-                      id="eye_login-password"
-                    ></span>
+                      id="eye_login-password"></span>
                   </div>
                 </div>
               </div>
@@ -96,8 +95,7 @@
                 name="ok"
                 value="1"
                 type="submit"
-                class="btn btn-success btn-block btn-lg"
-              >
+                class="btn btn-success btn-block btn-lg">
                 LOGIN
               </button>
             </form>
@@ -120,14 +118,16 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна signup  for="signup"-->
-        <div v-show="$store.state.auth.currModal=='signup-modal-content'" class="modal-content" id="signup-modal-content">
+        <div
+          v-show="$store.state.auth.currModal == 'signup-modal-content'"
+          class="modal-content"
+          id="signup-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
@@ -143,8 +143,7 @@
               method="post"
               id="Signin-Form"
               role="form_ajax"
-              for="signup"
-            >
+              for="signup">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-addon">
@@ -158,8 +157,7 @@
                     placeholder="Введите логин"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
               <div class="form-group">
@@ -176,8 +174,7 @@
                     placeholder="Введите Email"
                     required
                     data-parsley-type="email"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
 
@@ -196,16 +193,14 @@
                     required
                     data-parsley-length="[6, 10]"
                     data-parsley-trigger="keyup"
-                    autocomplete="off"
-                  />
+                    autocomplete="off" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="fa fa-eye"
                       for="password"
-                      id="eye_signup-passwd"
-                    ></span>
+                      id="eye_signup-passwd"></span>
                   </div>
                 </div>
               </div>
@@ -224,16 +219,14 @@
                     required
                     data-parsley-equalto="#signup-passwd"
                     data-parsley-trigger="keyup"
-                    autocomplete="off"
-                  />
+                    autocomplete="off" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="fa fa-eye"
                       for="password"
-                      id="eye_signup-confirm-passwd"
-                    ></span>
+                      id="eye_signup-confirm-passwd"></span>
                   </div>
                 </div>
               </div>
@@ -242,8 +235,7 @@
                 name="ok"
                 value="1"
                 type="submit"
-                class="btn btn-success btn-block btn-lg"
-              >
+                class="btn btn-success btn-block btn-lg">
                 Создать аккаунт!
               </button>
             </form>
@@ -263,14 +255,18 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна forgot password -->
-        <div v-show="$store.state.auth.currModal=='forgot-password-modal-content'" class="modal-content" id="forgot-password-modal-content">
+        <div
+          v-show="
+            $store.state.auth.currModal == 'forgot-password-modal-content'
+          "
+          class="modal-content"
+          id="forgot-password-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 class="modal-title">
@@ -286,8 +282,7 @@
               method="post"
               id="Forgot-Password-Form"
               role="form_ajax"
-              for="forgot-password"
-            >
+              for="forgot-password">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-addon">
@@ -301,8 +296,7 @@
                     placeholder="Введите логин"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
               <div class="form-group">
@@ -318,8 +312,7 @@
                     placeholder="Введите Email"
                     required
                     data-parsley-type="email"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
               <!--br><input type="text" name="new_num" value="2"-->
@@ -327,8 +320,7 @@
                 name="ok"
                 value="1"
                 type="submit"
-                class="btn btn-success btn-block btn-lg"
-              >
+                class="btn btn-success btn-block btn-lg">
                 <span class="glyphicon glyphicon-send"></span> Отправить
               </button>
             </form>
@@ -354,14 +346,16 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна code -->
-        <div v-show="$store.state.auth.currModal=='code-modal-content'" class="modal-content" id="code-modal-content">
+        <div
+          v-show="$store.state.auth.currModal == 'code-modal-content'"
+          class="modal-content"
+          id="code-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
@@ -378,8 +372,7 @@
               method="post"
               id="Code-Form"
               role="form_ajax"
-              for="code"
-            >
+              for="code">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-addon">
@@ -393,8 +386,7 @@
                     required
                     data-parsley-type="name"
                     value=""
-                    autocomplete="off"
-                  />
+                    autocomplete="off" />
                 </div>
               </div>
 
@@ -409,8 +401,7 @@
                 name="ok"
                 value="1"
                 type="submit"
-                class="btn btn-success btn-block btn-lg"
-              >
+                class="btn btn-success btn-block btn-lg">
                 Восстановить доступ
               </button>
             </form>
@@ -433,14 +424,16 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна password -->
-        <div v-show="$store.state.auth.currModal=='password-modal-content'" class="modal-content" id="password-modal-content">
+        <div
+          v-show="$store.state.auth.currModal == 'password-modal-content'"
+          class="modal-content"
+          id="password-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
@@ -457,8 +450,7 @@
               method="post"
               id="Signin-Form"
               role="form_ajax"
-              for="password"
-            >
+              for="password">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-addon">
@@ -473,8 +465,7 @@
                     required
                     data-parsley-type="name"
                     value=""
-                    readonly
-                  />
+                    readonly />
                 </div>
               </div>
               <div class="form-group">
@@ -492,8 +483,7 @@
                     required
                     data-parsley-type="email"
                     value=""
-                    readonly
-                  />
+                    readonly />
                 </div>
               </div>
 
@@ -512,16 +502,14 @@
                     required
                     data-parsley-length="[6, 10]"
                     data-parsley-trigger="keyup"
-                    autocomplete="off"
-                  />
+                    autocomplete="off" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="fa fa-eye"
                       for="password"
-                      id="eye_passwd-1"
-                    ></span>
+                      id="eye_passwd-1"></span>
                   </div>
                 </div>
               </div>
@@ -540,16 +528,14 @@
                     required
                     data-parsley-equalto="#passwd-1"
                     data-parsley-trigger="keyup"
-                    autocomplete="off"
-                  />
+                    autocomplete="off" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="fa fa-eye"
                       for="password"
-                      id="eye_confirm-passwd-2"
-                    ></span>
+                      id="eye_confirm-passwd-2"></span>
                   </div>
                 </div>
               </div>
@@ -558,8 +544,7 @@
                 name="ok"
                 value="1"
                 type="submit"
-                class="btn btn-success btn-block btn-lg"
-              >
+                class="btn btn-success btn-block btn-lg">
                 Установить
               </button>
             </form>
@@ -581,14 +566,17 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна user -->
-        <div v-show="$store.state.auth.currModal=='user-modal-content'" class="modal-content" id="user-modal-content">
+
+        <div
+          v-show="$store.state.auth.currModal == 'user-modal-content'"
+          class="modal-content"
+          id="user-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
@@ -604,8 +592,7 @@
               method="post"
               id="User-Form"
               role="form_ajax"
-              for="user"
-            >
+              for="user">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-addon">
@@ -620,8 +607,7 @@
                     placeholder="Введите логин"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
               <div class="form-group">
@@ -639,8 +625,7 @@
                     placeholder="Введите Email"
                     required
                     data-parsley-type="email"
-                    value=""
-                  />
+                    value="" />
                 </div>
               </div>
 
@@ -659,16 +644,14 @@
                     placeholder="Введите фамилию"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="glyphicon glyphicon-pencil"
                       for="text"
-                      id="edit_user_name_last"
-                    ></span>
+                      id="edit_user_name_last"></span>
                   </div>
                 </div>
               </div>
@@ -688,16 +671,14 @@
                     placeholder="Введите имя"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="glyphicon glyphicon-pencil"
                       for="text"
-                      id="edit_user_name_first"
-                    ></span>
+                      id="edit_user_name_first"></span>
                   </div>
                 </div>
               </div>
@@ -717,16 +698,14 @@
                     placeholder="Введите отчество"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="glyphicon glyphicon-pencil"
                       for="text"
-                      id="edit_user_name_patr"
-                    ></span>
+                      id="edit_user_name_patr"></span>
                   </div>
                 </div>
               </div>
@@ -746,16 +725,14 @@
                     placeholder="Введите phone_1"
                     required
                     data-parsley-type="name"
-                    value=""
-                  />
+                    value="" />
 
                   <div class="input-group-addon">
                     <span
                       style="cursor: pointer"
                       class="glyphicon glyphicon-pencil"
                       for="text"
-                      id="edit_user_phone_1"
-                    ></span>
+                      id="edit_user_phone_1"></span>
                   </div>
                 </div>
               </div>
@@ -764,8 +741,7 @@
                 name="ok"
                 value="1"
                 type="submit"
-                class="btn btn-success btn-block btn-lg"
-              >
+                class="btn btn-success btn-block btn-lg">
                 Сохранить данные
               </button>
             </form>
@@ -785,14 +761,16 @@
         <!--======================================================================-->
 
         <!-- содержимое модального окна exit -->
-        <div v-show="$store.state.auth.currModal=='exit-modal-content'" class="modal-content" id="exit-modal-content">
+        <div
+          v-show="$store.state.auth.currModal == 'exit-modal-content'"
+          class="modal-content"
+          id="exit-modal-content">
           <div class="modal-header">
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
@@ -808,8 +786,7 @@
               method="post"
               id="Exit-Form"
               role="form_ajax"
-              for="exit"
-            >
+              for="exit">
               <div class="form-group">
                 <div class="input-group"></div>
               </div>
@@ -820,8 +797,7 @@
                   name="cancel"
                   value="1"
                   type="button"
-                  class="btn btn-success"
-                >
+                  class="btn btn-success">
                   Отмена
                 </button>
 
@@ -829,8 +805,7 @@
                   name="ok"
                   value="1"
                   type="submit"
-                  class="btn btn-success"
-                >
+                  class="btn btn-success">
                   &nbsp;Выйти&nbsp;&nbsp;
                 </button>
                 <!--p>
@@ -851,11 +826,58 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    fadeOut(el) {
+      var opacity = 1;
+
+      var timer = setInterval(function () {
+        if (opacity <= 0.1) {
+          clearInterval(timer);
+          document.querySelector(el).style.display = 'none';
+        }
+
+        document.querySelector(el).style.opacity = opacity;
+
+        opacity -= opacity * 0.1;
+      }, 10);
+    },
+
+    fadeIn(el) {
+      var opacity = 0.01;
+
+      document.querySelector(el).style.display = 'block';
+
+      var timer = setInterval(function () {
+        if (opacity >= 1) {
+          clearInterval(timer);
+        }
+
+        document.querySelector(el).style.opacity = opacity;
+
+        opacity += opacity * 0.1;
+      }, 10);
+    },
+  },
+  mounted() {
+    // fadeIn('#' + $store.state.auth.currModal);
+  },
+};
 </script>
 
 <style scoped>
-  /*.modal-content {
-    display: none;
-  }*/
+/* .modal-content {
+  display: none;
+} */
+/*
+#login-modal-content,
+#signup-modal-content,
+#forgot-password-modal-content,
+#code-modal-content,
+#password-modal-content,
+#user-modal-content,
+#exit-modal-content {
+  display: none;
+}
+*/
 </style>

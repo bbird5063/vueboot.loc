@@ -26,18 +26,61 @@
             >
           </li>
           <li v-if="$store.state.auth.dataUser" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Link
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarScrollingDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              User
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li>
+                <a
+                  @click.prevent="openAuthModal('user-modal-content')"
+                  class="nav-link"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#login-signup-modal"
+                  >Профиль</a
+                >
+              </li>
+              <li>
+                <a
+                  @click.prevent="
+                    openAuthModal('forgot-password-modal-content')
+                  "
+                  class="nav-link"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#login-signup-modal"
+                  >Изменить пароль</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a
+                  @click.prevent="openAuthModal('exit-modal-content')"
+                  class="nav-link"
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#login-signup-modal"
+                  >Выход</a
+                >
+              </li>
             </ul>
           </li>
           <li v-else class="nav-item navbar-right">
-            <a class="nav-link" href="#">Вход</a>
+            <a
+              @click.prevent="openAuthModal('login-modal-content')"
+              class="nav-link"
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#login-signup-modal"
+              >Вход</a
+            >
           </li>
         </ul>
       </div>
@@ -65,6 +108,35 @@ export default {
     activePoint(point) {
       this.$router.push(point.path);
       this.currentPoint = point.name;
+    },
+    openAuthModal(authModal) {
+      this.$store.commit('auth/setCurrModal', authModal);
+      /*
+      // const modal = document.querySelector('#login-signup-modal');
+      const modal = new bootstrap.Modal(
+        document.querySelector('#login-signup-modal')
+      );
+      modal.show();
+      */
+      // console.log('=======================');
+      /*
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('---------------');
+        // получим кнопку id="btn" с помощью которой будем открывать модальное окно
+        // const btn = document.querySelector('#btn');
+        // активируем контент id="modal" как модальное окно
+        const modal = new bootstrap.Modal(
+          document.querySelector('#login-signup-modal')
+        );
+        // при нажатии на кнопку
+        // btn.addEventListener('click', function() {
+        // открываем модальное окно
+
+        console.log(modal);
+        modal.show();
+        // });
+      });
+      */
     },
   },
 };

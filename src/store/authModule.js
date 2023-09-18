@@ -6,8 +6,8 @@ export const authModule = {
     currModal: 'login-modal-content',
     likes: 128, // test
   }),
-/*
-#login-modal-content, #signup-modal-content, #forgot-password-modal-content, #code-modal-content, #password-modal-content, #user-modal-content
+  /*
+#login-modal-content, #signup-modal-content, #forgot-password-modal-content, #code-modal-content, #password-modal-content, #user-modal-content, #exit-modal-content
 */
   mutations: {
     setDataUser(state, dataUser) {

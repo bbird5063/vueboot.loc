@@ -2,6 +2,7 @@
   <navbar></navbar>
   <h1>{{ $store.state.auth.likes }}</h1>
   <div class="app">
+    <auth-form></auth-form>
     <!-- <router-view> - в него будут встраиваться компоненты из router.js -->
     <router-view></router-view>
     <!-- Кнопка-триггер модального окна -->
@@ -13,7 +14,6 @@
     >
       Запустите демо модального окна
     </button>
-    <auth-form></auth-form>
   </div>
 </template>
 
