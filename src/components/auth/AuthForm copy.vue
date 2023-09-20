@@ -1,71 +1,45 @@
 <template>
 	<div>
 		<!-- ./skins/tpl/register/form_modal_register.tpl begin -->
-		<div id="login-signup-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div id="login-signup-modal" class="modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна login -->
-				<!-- v-show="$store.state.auth.currModal == 'login-modal-content'" -->
-				<div v-show="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">
+				<div v-show="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">>
 					<div class="modal-header">
-						<h4 class="modal-title">
-							<span class="fa fa-lock"></span><b> Вход в аккаунт!</b>
-						</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
-						</button>
-
+						<h5 class="modal-title">Вход в аккаунт!</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
+					<div class="modal-body">
 
-					<div class=" modal-body">
-						<div id="Login-Form-Error" for="error"></div>
-						<!-- по id='err' будет удаляться при переходе на др.форму -->
 
-						<form @submit.prevent="onSubmit" action="/modules/register/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
+						<form action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
 							<!-- для проверки: сюда будет помещен ответ от хоста -->
 							<div id="result_form"></div>
 							<!--div id="err"></div-->
 
 							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="fa fa-user"></span>
-									</div>
-									<input name="login" id="login-login" type="text" class="form-control input-lg" placeholder="Введите логин" required data-parsley-type="name" value="" />
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">@</span>
+									<input name="login" id="login-login" type="text" class="form-control" placeholder="Введите логин" required data-parsley-type="name" value="" />
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">$</span>
+									<input name="password" id="login-password" type="password" class="form-control" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+									<span class="input-group-text">0</span>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="fa fa-lock"></span>
-									</div>
-
-									<input name="password" id="login-password" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="fa fa-eye" for="password" id="eye_login-password"></span>
-									</div>
-								</div>
-							</div>
-
-							<div class="checkbox">
-								<label><input name="remember" type="checkbox" value="1" />Запомнить
-									меня</label>
-							</div>
-							<!--br><input for="Login-Form" type="text" name="new_num" value="0"-->
-							<!--input for="Login-Form" type="hidden" name="new_num" value="0"-->
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
 								LOGIN
 							</button>
 						</form>
 					</div>
-
 					<div class="modal-footer">
 						<p>
-							<a id="FPModal" href="javascript:void(0)" for="nextPage">Забыли пароль?</a>
+							<a id="FPModal" href="#" for="nextPage">Забыли пароль?</a>
 							|
-							<a id="signupModal" href="javascript:void(0)" for="nextPage">Регистрация</a>
+							<a id="signupModal" href="#" for="nextPage">Регистрация</a>
 						</p>
 					</div>
 				</div>
@@ -87,7 +61,7 @@
 
 					<div class="modal-body">
 						<div id="Signin-Form-Error" for="error"></div>
-						<form action="/modules/register/registration_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="signup">
+						<form action="/php_modules/auth/registration_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="signup">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -164,7 +138,7 @@
 
 					<div class="modal-body">
 						<div id="Forgot-Password-Form-Error" for="error"></div>
-						<form action="/modules/register/restoration_controller_ajax.php" method="post" id="Forgot-Password-Form" role="form_ajax" for="forgot-password">
+						<form action="/php_modules/auth/restoration_controller_ajax.php" method="post" id="Forgot-Password-Form" role="form_ajax" for="forgot-password">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -217,7 +191,7 @@
 
 					<div class="modal-body">
 						<div id="Code-Form-Error" for="error"></div>
-						<form action="/modules/register/activate_controller_ajax.php" method="post" id="Code-Form" role="form_ajax" for="code">
+						<form action="/php_modules/auth/activate_controller_ajax.php" method="post" id="Code-Form" role="form_ajax" for="code">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -264,7 +238,7 @@
 
 					<div class="modal-body">
 						<div id="Signin-Form-Error" for="error"></div>
-						<form action="/modules/register/new_pw_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="password">
+						<form action="/php_modules/auth/new_pw_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="password">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -344,7 +318,7 @@
 
 					<div class="modal-body">
 						<div id="User-Form-Error" for="error"></div>
-						<form action="/modules/register/user_controller_ajax.php" method="post" id="User-Form" role="form_ajax" for="user">
+						<form action="/php_modules/auth/user_controller_ajax.php" method="post" id="User-Form" role="form_ajax" for="user">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -450,7 +424,7 @@
 
 					<div class="modal-body">
 						<div id="Exit-Form-Error" for="error"></div>
-						<form action="/modules/register/exit_controller_ajax.php" method="post" id="Exit-Form" role="form_ajax" for="exit">
+						<form action="/php_modules/auth/exit_controller_ajax.php" method="post" id="Exit-Form" role="form_ajax" for="exit">
 							<div class="form-group">
 								<div class="input-group"></div>
 							</div>
@@ -484,30 +458,6 @@
 <script>
 export default {
 	methods: {
-		onSubmit(formElem) {
-			const url = formElem.srcElement.attributes.action.nodeValue; // /modules/register/login_controller_ajax.php
-
-			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/modules/register/login_controller_ajax.php
-
-			const objData = {}; // можно удалить
-			let post = '';
-			for (let key = 0; key < formElem.target.length; key++) {
-				if (formElem.target[key].type !== 'submit' && formElem.target[key].type !== 'checkbox') {
-					objData[formElem.target[key].name] = formElem.target[key].value; // можно удалить
-					post += '&' + formElem.target[key].name + '=' + formElem.target[key].value;
-				}
-				if (formElem.target[key].type == 'checkbox') {
-					objData[formElem.target[key].name] = formElem.target[key].checked; // можно удалить
-					post += '&' + formElem.target[key].name + '=' + formElem.target[key].checked;
-				}
-			}
-			post = post.slice(1); // удаляем '&' в начале
-
-			const jsonData = JSON.stringify(objData); // можно удалить // {"login":"bbird5063@gmail.com","password":"Spab1433","remember":"1"}
-			console.log('url: ' + url + '  |  post: ' + post);
-
-		},
-
 		fadeOut(el) {
 			var opacity = 1;
 
