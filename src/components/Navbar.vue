@@ -64,31 +64,32 @@ export default {
 		},
 		openAuthModal(authModal, authMode) {
 			this.$store.commit('auth/setCurrModal', authModal);
+			this.$store.commit('auth/setAuthShow', true);
 			this.$store.commit('auth/setAuthMode', authMode);
 			/*
 			// const modal = document.querySelector('#login-signup-modal');
 			const modal = new bootstrap.Modal(
-			  document.querySelector('#login-signup-modal')
+				document.querySelector('#login-signup-modal')
 			);
 			modal.show();
 			*/
 			// console.log('=======================');
 			/*
 			document.addEventListener('DOMContentLoaded', function () {
-			  console.log('---------------');
-			  // получим кнопку id="btn" с помощью которой будем открывать модальное окно
-			  // const btn = document.querySelector('#btn');
-			  // активируем контент id="modal" как модальное окно
-			  const modal = new bootstrap.Modal(
+				console.log('---------------');
+				// получим кнопку id="btn" с помощью которой будем открывать модальное окно
+				// const btn = document.querySelector('#btn');
+				// активируем контент id="modal" как модальное окно
+				const modal = new bootstrap.Modal(
 				 document.querySelector('#login-signup-modal')
-			  );
-			  // при нажатии на кнопку
-			  // btn.addEventListener('click', function() {
-			  // открываем модальное окно
+				);
+				// при нажатии на кнопку
+				// btn.addEventListener('click', function() {
+				// открываем модальное окно
 	
-			  console.log(modal);
-			  modal.show();
-			  // });
+				console.log(modal);
+				modal.show();
+				// });
 			});
 			*/
 		},

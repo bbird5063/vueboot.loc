@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- ./skins/tpl/register/form_modal_register.tpl begin -->
-		<div id="login-signup-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div v-if="$store.state.auth.authShow" id="login-signup-modal" class="modal fade" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<!--======================================================================-->
 
@@ -20,7 +20,7 @@
 
 					<div class=" modal-body">
 						<div id="Login-Form-Error" for="error">
-							<div id="reg_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							<div v-if="errHtml" id="reg_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 								{{ this.errHtml }}
 							</div>
 						</div>
@@ -29,7 +29,7 @@
 						<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
 							<!-- для проверки: сюда будет помещен ответ от хоста -->
 							<div id="result_form"></div>
-							<div id="err">{{ this.infoHtml }}</div>
+							<div v-if="infoHtml" id="err">{{ this.infoHtml }}</div>
 
 							<div class="form-group">
 								<div class="input-group">
