@@ -29,11 +29,11 @@
 
     if($ok)  
     {  
-        if(!$POST['password'] || !$POST['password2'])  
+        if(!$_POST['password'] || !$_POST['password2'])  
             $reg_info[] = 'Введите пароль!'; 
-        elseif(mb_strlen($POST['password']) < 8)  
+        elseif(mb_strlen($_POST['password']) < 8)  
             $reg_info[] = 'Пароли должны содержать не менее восьми символов!';   
-        elseif($POST['password'] !== $POST['password2'])  
+        elseif($_POST['password'] !== $_POST['password2'])  
             $reg_info[] = 'Пароли не совпадают!';  
 
 /**   
@@ -46,11 +46,11 @@
             //include_once './modules/register/functions.php';  
             require './functions.php';            
             mysqlQuery("UPDATE `". BBR_DBPREFIX ."user`    
-                        SET  `password` = '". md5($POST['password'] . BBR_SALT) ."'   
+                        SET  `password` = '". md5($_POST['password'] . BBR_SALT) ."'   
                         WHERE `id` = '". $_SESSION['user_data']['id'] ."'   
                        ") ;             
 			
-			$POST['new_num'] = 0;
+			$_POST['new_num'] = 0;
 			//$data['contentIn'] = $for_contentIn[''];
 			//reDirect('reg=off', 'id=0', 'num=0');
         } 

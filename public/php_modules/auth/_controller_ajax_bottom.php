@@ -1,7 +1,7 @@
 <?php
 $data['ajaxSuccess'] = true;
-$data['num'] = !empty($POST['new_num']) ? $POST['new_num'] : 1;
-//$data['num'] = $POST['new_num'];
+$data['num'] = !empty($_POST['new_num']) ? $_POST['new_num'] : 1;
+//$data['num'] = $_POST['new_num'];
 
 if (isset($_SESSION['user_data']))
 	$data['user_data'] = $_SESSION['user_data'];

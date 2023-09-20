@@ -39,10 +39,10 @@ require_once 'mysql.php';
  * Проверка введенных данных  
  */
 if ($ok) {
-	if (!$POST['login'])
+	if (!$_POST['login'])
 		$reg_info[] = 'Вы не ввели логин.';
 
-	elseif (!$POST['password'])
+	elseif (!$_POST['password'])
 		$reg_info[] = 'Введите пароль!';
 }
 
@@ -59,19 +59,19 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 } elseif ($ok && !count($reg_info)) /* !isset($_COOKIE['hash']) когда-то при правильном входе пользователь не поставил причку "запомнить" */ {
 	$res = mysqlQuery("SELECT *   
                            FROM `" . BBR_DBPREFIX . "user`  
-                           WHERE `login`    = '" . escapeString($POST['login']) . "'");
+                           WHERE `login`    = '" . escapeString($_POST['login']) . "'");
 
 	if (mysqli_num_rows($res) > 0) {
 		mysqli_data_seek($res, 0); // Перемещает указатель результата на выбранную (0) строку
 		//$row = mysqli_fetch_array($res);
 		$row = mysqli_fetch_array($res, MYSQLI_ASSOC);  // получаем массив из 1 строки таблицы
 
-		if ($row['password'] == md5($POST['password'] . BBR_SALT) && !empty($row['activate'])) {
+		if ($row['password'] == md5($_POST['password'] . BBR_SALT) && !empty($row['activate'])) {
 			/* в случае наличия в таблице user записи login, password, activate: присваиваем данные пользователя в $_SESSION['user_data'] */
 			/*$_SESSION['user_data'] = mysqli_fetch_assoc($res);*/
 			$_SESSION['user_data'] = $row;
 
-			if ($POST['remember']) /* юзер поставил причку "запомнить" */ {
+			if ($_POST['remember']) /* юзер поставил причку "запомнить" */ {
 				//include_once './modules/register/functions.php';
 				//require_once 'modules/register/functions.php';
 				require_once './functions.php';
@@ -80,7 +80,7 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 					*/
 			}
 		} elseif (empty($row['activate']) && !empty($row['email'])) {
-			$POST['new_num'] = 2;
+			$_POST['new_num'] = 2;
 
 			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!
 				<br>Активировать?<br><br><a id='forgotModal-num_0' href='javascript:void(0)'>Активация</a><br><br>";
@@ -91,10 +91,10 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 			$reg_info[] = 'Пароль не совпадает!';
 		}
 	} else
-		$reg_info[] = 'Пользователя с логином <b>' . escapeString($POST['login']) . '</b> нет в нашей базе!';
+		$reg_info[] = 'Пользователя с логином <b>' . $_POST['login'] . '</b> нет в нашей базе!';
 }
 if (isset($_SESSION['user_data'])) {
-	$reg_info_page[] = "Здорово, <b>" . htmlspecialchars($_SESSION['user_data']['login']) . "</b>! Где шлялся?";
+	$reg_info_page[] = "Здорово, <b>" . $_SESSION['user_data']['login'] . "</b>! Где шлялся?";
 	//reDirect('page=guest', 'rem=read');
 } else
 	$reg_info_page[] = 'Введите логин и пароль:';
