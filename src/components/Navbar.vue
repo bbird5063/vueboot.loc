@@ -17,23 +17,23 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
 							<li>
-								<a @click.prevent="openAuthModal('user-modal-content')" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Профиль</a>
+								<a @click.prevent="openAuthModal('user-modal-content', 3)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Профиль</a>
 							</li>
 							<li>
 								<a @click.prevent="
-									openAuthModal('forgot-password-modal-content')
+									openAuthModal('forgot-password-modal-content', 3)
 									" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Изменить пароль</a>
 							</li>
 							<li>
 								<hr class="dropdown-divider" />
 							</li>
 							<li>
-								<a @click.prevent="openAuthModal('exit-modal-content')" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Выход</a>
+								<a @click.prevent="openAuthModal('exit-modal-content', $store.state.auth.authMode)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Выход</a>
 							</li>
 						</ul>
 					</li>
 					<li v-else class="nav-item navbar-right">
-						<a @click.prevent="openAuthModal('login-modal-content')" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a>
+						<a @click.prevent="openAuthModal('login-modal-content', 1)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a>
 					</li>
 				</ul>
 			</div>
@@ -62,8 +62,9 @@ export default {
 			this.$router.push(point.path);
 			this.currentPoint = point.name;
 		},
-		openAuthModal(authModal) {
+		openAuthModal(authModal, authMode) {
 			this.$store.commit('auth/setCurrModal', authModal);
+			this.$store.commit('auth/setAuthMode', authMode);
 			/*
 			// const modal = document.querySelector('#login-signup-modal');
 			const modal = new bootstrap.Modal(

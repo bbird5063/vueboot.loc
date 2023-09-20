@@ -6,8 +6,8 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна login -->
-				<!-- v-show="$store.state.auth.currModal == 'login-modal-content'" -->
-				<div v-show="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">
+				<!-- v-if="$store.state.auth.currModal == 'login-modal-content'" -->
+				<div v-if="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title">
 							<span class="fa fa-lock"></span><b> Вход в аккаунт!</b>
@@ -19,13 +19,17 @@
 					</div>
 
 					<div class=" modal-body">
-						<div id="Login-Form-Error" for="error"></div>
+						<div id="Login-Form-Error" for="error">
+							<div id="reg_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+								{{ this.errHtml }}
+							</div>
+						</div>
 						<!-- по id='err' будет удаляться при переходе на др.форму -->
 
 						<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
 							<!-- для проверки: сюда будет помещен ответ от хоста -->
 							<div id="result_form"></div>
-							<!--div id="err"></div-->
+							<div id="err">{{ this.infoHtml }}</div>
 
 							<div class="form-group">
 								<div class="input-group">
@@ -74,7 +78,7 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна signup  for="signup"-->
-				<div v-show="$store.state.auth.currModal == 'signup-modal-content'" class="modal-content" id="signup-modal-content">
+				<div v-if="$store.state.auth.currModal == 'signup-modal-content'" class="modal-content" id="signup-modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -151,7 +155,7 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна forgot password -->
-				<div v-show="$store.state.auth.currModal == 'forgot-password-modal-content'
+				<div v-if="$store.state.auth.currModal == 'forgot-password-modal-content'
 					" class="modal-content" id="forgot-password-modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -204,7 +208,7 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна code -->
-				<div v-show="$store.state.auth.currModal == 'code-modal-content'" class="modal-content" id="code-modal-content">
+				<div v-if="$store.state.auth.currModal == 'code-modal-content'" class="modal-content" id="code-modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -251,7 +255,7 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна password -->
-				<div v-show="$store.state.auth.currModal == 'password-modal-content'" class="modal-content" id="password-modal-content">
+				<div v-if="$store.state.auth.currModal == 'password-modal-content'" class="modal-content" id="password-modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -331,7 +335,7 @@
 
 				<!-- содержимое модального окна user -->
 
-				<div v-show="$store.state.auth.currModal == 'user-modal-content'" class="modal-content" id="user-modal-content">
+				<div v-if="$store.state.auth.currModal == 'user-modal-content'" class="modal-content" id="user-modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -437,7 +441,7 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна exit -->
-				<div v-show="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content">
+				<div v-if="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -487,6 +491,9 @@ export default {
 	data() {
 		return {
 			isLoading: false,
+			divErrId: '',
+			errHtml: '',
+			infoHtml: '',
 		}
 	},
 	methods: {
@@ -507,19 +514,24 @@ export default {
 					post += '&' + formElem.target[key].name + '=' + formElem.target[key].checked;
 				}
 			}
-			post = post.slice(1); // удаляем '&' в начале
-
+			post = post.slice(1); // удаляем '&' в началеthis.$store.state.auth.authMode
+			post += post ? '&' : '';
+			post += 'num=' + this.$store.state.auth.authMode;
 			const jsonData = JSON.stringify(objData); // можно удалить // {"login":"bbird5063@gmail.com","password":"Spab1433","remember":"1"}
 			console.log('url: ' + url + '  |  post: ' + post);
 			console.log(this.$store.state.auth.isLocalhost);
-
+			console.log('=================================');
+			console.log(formElem);
+			console.log(formElem.target.id); // 'Login-Form'
+			console.log(formElem.target.role); // 'form_ajax'
+			console.log('=================================');
 			if (!this.$store.state.auth.isLocalhost) {
-				this.authAxios(url, post);
+				this.authAxios(url, post, formElem.target.id);
 			}
 
 		},
 
-		async authAxios(url, post) {
+		async authAxios(url, post, formId) {
 			// alert('url: ' + url + '  |  post: ' + post);
 
 			try {
@@ -527,6 +539,21 @@ export default {
 				const response = await axios.post(url, post);
 				alert(response.data.test);
 				console.log(response.data);
+				let
+					divRegInfoStart = '<div id="reg_info" style="text-align:center; vertical-align:middle;" class="alert alert-warning">',
+					divRegInfoPageStart = '<div id="reg_info_page" style="text-align:left; vertical-align:middle;" class="">',
+					divRegInfoEnd = '</div>',
+					errHtml = '',
+					divErrId = '#' + formId + '-Error';
+
+				response.data.num ? this.$store.commit('auth/setAuthMode', response.data.num) : '';
+				errHtml += response.data.reg_error ? response.data.reg_error : '';
+				errHtml += response.data.reg_info ? response.data.reg_info : '';
+				// errHtml += response.data.reg_info_page ? response.data.reg_info_page : '';
+				this.errHtml = errHtml ? errHtml : '';
+				this.infoHtml = response.data.reg_info_page ? response.data.reg_info_page : '';
+				!errHtml && response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
 			} finally {
