@@ -8,7 +8,7 @@
  * Database prefix.
  * Префикс таблиц БД.
  */
-define('BBR_DBPREFIX', 'irbis_');
+define('BBR_DBPREFIX', '');
 
 /**
  * Database server.
@@ -32,7 +32,7 @@ define('BBR_DBPASSWORD', '');
  * Database name.
  * Название базы
  */
-define('BBR_DATABASE', 'homesystem');
+define('BBR_DATABASE', 'hs');
 
 ///////////////////////////////////////////////////////////////
 //                       NOT TO CHANGE

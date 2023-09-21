@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export const authModule = {
 	state: () => ({
-		dataUser: null,
-		currModal: null,
+		dataUser: '',
+		currModal: 'login-modal-content',
 		isLocalhost: false,
 		authMode: 1,
 		authShow: false,

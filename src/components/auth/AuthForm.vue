@@ -21,7 +21,7 @@
 					<div class=" modal-body">
 						<div id="Login-Form-Error" for="error">
 							<div v-if="errHtml" id="reg_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
-								{{ this.errHtml }}
+								{{ errHtml }}
 							</div>
 						</div>
 						<!-- по id='err' будет удаляться при переходе на др.форму -->
@@ -29,7 +29,7 @@
 						<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
 							<!-- для проверки: сюда будет помещен ответ от хоста -->
 							<div id="result_form"></div>
-							<div v-if="infoHtml" id="err">{{ this.infoHtml }}</div>
+							<div v-if="infoHtml" id="err">{{ infoHtml }}</div>
 
 							<div class="form-group">
 								<div class="input-group">
@@ -67,9 +67,9 @@
 
 					<div class="modal-footer">
 						<p>
-							<a id="FPModal" href="javascript:void(0)" for="nextPage">Забыли пароль?</a>
+							<a id="FPModal" href="#" for="nextPage">Забыли пароль?</a>
 							|
-							<a id="signupModal" href="javascript:void(0)" for="nextPage">Регистрация</a>
+							<a id="signupModal" href="#" for="nextPage">Регистрация</a>
 						</p>
 					</div>
 				</div>
@@ -146,7 +146,7 @@
 					<div class="modal-footer">
 						<p>
 							Имеете аккаунт?
-							<a id="loginModal" href="javascript:void(0)" for="nextPage">Войти в аккаунт</a>
+							<a id="loginModal" href="#" for="nextPage">Войти в аккаунт</a>
 						</p>
 					</div>
 				</div>
@@ -195,11 +195,11 @@
 					<div class="modal-footer">
 						<p>
 							Вспомнили пароль?
-							<a id="loginModal1" href="javascript:void(0)" for="nextPage">Войти в аккаунт</a>
+							<a id="loginModal1" href="#" for="nextPage">Войти в аккаунт</a>
 						</p>
 						<p>
 							Ваши личные данные:
-							<a id="userModal" href="javascript:void(0)" for="nextPage">ваш профиль</a>
+							<a id="userModal" href="#" for="nextPage">ваш профиль</a>
 						</p>
 					</div>
 				</div>
@@ -244,9 +244,9 @@
 
 					<div class="modal-footer">
 						<p>
-							<a id="FPModal1" href="javascript:void(0)" for="nextPage">Забыли пароль?</a>
+							<a id="FPModal1" href="#" for="nextPage">Забыли пароль?</a>
 							|
-							<a id="signupModal1" href="javascript:void(0)" for="nextPage">Регистрация</a>
+							<a id="signupModal1" href="#" for="nextPage">Регистрация</a>
 						</p>
 					</div>
 				</div>
@@ -323,7 +323,7 @@
 					<div class="modal-footer">
 						<p>
 							Имеете аккаунт?
-							<a id="loginModal" href="javascript:void(0)" for="nextPage">Войти в аккаунт</a>
+							<a id="loginModal" href="#" for="nextPage">Войти в аккаунт</a>
 						</p>
 					</div>
 				</div>
@@ -432,7 +432,7 @@
 					<div class="modal-footer">
 						<p>
 							Имеете аккаунт?
-							<a id="FPModal2" href="javascript:void(0)" for="nextPage">Изменить пароль?</a>
+							<a id="FPModal2" href="#" for="nextPage">Изменить пароль?</a>
 						</p>
 					</div>
 				</div>
@@ -469,8 +469,8 @@
 									&nbsp;Выйти&nbsp;&nbsp;
 								</button>
 								<!--p>
-          	<a id="FPModal1" href="javascript:void(0)" for="nextPage">Забыли пароль?</a> | 
-          	<a id="signupModal1" href="javascript:void(0)" for="nextPage">Регистрация</a>
+          	<a id="FPModal1" href="#" for="nextPage">Забыли пароль?</a> | 
+          	<a id="signupModal1" href="#" for="nextPage">Регистрация</a>
           	</p-->
 							</div>
 						</form>
@@ -522,8 +522,9 @@ export default {
 			console.log(this.$store.state.auth.isLocalhost);
 			console.log('=================================');
 			console.log(formElem);
-			console.log(formElem.target.id); // 'Login-Form'
-			console.log(formElem.target.role); // 'form_ajax'
+			console.log(formElem.target.id); // Login-Form
+			console.log(formElem.target.role); // form_ajax
+			console.log(formElem.target.for); // undefined
 			console.log('=================================');
 			if (!this.$store.state.auth.isLocalhost) {
 				this.authAxios(url, post, formElem.target.id);
@@ -544,15 +545,21 @@ export default {
 					divRegInfoPageStart = '<div id="reg_info_page" style="text-align:left; vertical-align:middle;" class="">',
 					divRegInfoEnd = '</div>',
 					errHtml = '',
-					divErrId = '#' + formId + '-Error';
+					divErrId = '#' + formId + '-Error',
+					contentOut = formElem.target.for + '-modal-content'; // не будет работать(for)
 
-				response.data.num ? this.$store.commit('auth/setAuthMode', response.data.num) : '';
 				errHtml += response.data.reg_error ? response.data.reg_error : '';
 				errHtml += response.data.reg_info ? response.data.reg_info : '';
 				// errHtml += response.data.reg_info_page ? response.data.reg_info_page : '';
 				this.errHtml = errHtml ? errHtml : '';
 				this.infoHtml = response.data.reg_info_page ? response.data.reg_info_page : '';
-				!errHtml && response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+				// !errHtml && response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+
+				if (!errHtml) {
+					response.data.num ? this.$store.commit('auth/setAuthMode', response.data.num) : '';
+					response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+				}
+
 
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);

@@ -1,6 +1,6 @@
 <template>
 	<navbar></navbar>
-	<h1>{{ $store.state.auth.likes }}</h1>
+	<h1>asasas {{ $store.state.auth.likes }}</h1>
 	<div class="app">
 		<auth-form></auth-form>
 		<!-- <router-view> - в него будут встраиваться компоненты из router.js -->
