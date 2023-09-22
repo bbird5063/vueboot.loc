@@ -15,7 +15,7 @@
 							{{ errHtml }}
 						</div>
 					</div>
-					<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="login-modal-content">
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_login.php" method="post" id="Login-Form" role="login-modal-content">
 						<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -59,7 +59,7 @@
 							{{ errHtml }}
 						</div>
 					</div>
-					<form action="/php_modules/auth/registration_controller_ajax.php" method="post" id="Signin-Form" role="signup-modal-content">
+					<form action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
 						<div v-if="infoHtml" id="Signin-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -105,7 +105,7 @@
 							{{ errHtml }}
 						</div>
 					</div>
-					<form @submit.prevent="onSubmit" action="/php_modules/auth/restoration_controller_ajax.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_restoration.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
 						<div v-if="infoHtml" id="Forgot-Password-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -150,9 +150,9 @@ export default {
 	},
 	methods: {
 		onSubmit(formElem) {
-			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/login_controller_ajax.php
+			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/controller_login.php
 
-			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/php_modules/auth/login_controller_ajax.php
+			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/php_modules/auth/controller_login.php
 
 			const objData = {}; // можно удалить
 			let post = '';

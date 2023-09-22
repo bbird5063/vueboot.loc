@@ -14,7 +14,7 @@
 					<div class="modal-body">
 
 
-						<form action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
+						<form action="/php_modules/auth/controller_login.php" method="post" id="Login-Form" role="form_ajax" for="login">
 							<!-- для проверки: сюда будет помещен ответ от хоста -->
 							<div id="result_form"></div>
 							<!--div id="err"></div-->
@@ -61,7 +61,7 @@
 
 					<div class="modal-body">
 						<div id="Signin-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/registration_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="signup">
+						<form action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="form_ajax" for="signup">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -138,7 +138,7 @@
 
 					<div class="modal-body">
 						<div id="Forgot-Password-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/restoration_controller_ajax.php" method="post" id="Forgot-Password-Form" role="form_ajax" for="forgot-password">
+						<form action="/php_modules/auth/controller_restoration.php" method="post" id="Forgot-Password-Form" role="form_ajax" for="forgot-password">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -191,7 +191,7 @@
 
 					<div class="modal-body">
 						<div id="Code-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/activate_controller_ajax.php" method="post" id="Code-Form" role="form_ajax" for="code">
+						<form action="/php_modules/auth/controller_activate.php" method="post" id="Code-Form" role="form_ajax" for="code">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -238,7 +238,7 @@
 
 					<div class="modal-body">
 						<div id="Signin-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/new_pw_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="password">
+						<form action="/php_modules/auth/controller_new_pw.php" method="post" id="Signin-Form" role="form_ajax" for="password">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -318,7 +318,7 @@
 
 					<div class="modal-body">
 						<div id="User-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/user_controller_ajax.php" method="post" id="User-Form" role="form_ajax" for="user">
+						<form action="/php_modules/auth/controller_user.php" method="post" id="User-Form" role="form_ajax" for="user">
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -424,7 +424,7 @@
 
 					<div class="modal-body">
 						<div id="Exit-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/exit_controller_ajax.php" method="post" id="Exit-Form" role="form_ajax" for="exit">
+						<form action="/php_modules/auth/controller_exit.php" method="post" id="Exit-Form" role="form_ajax" for="exit">
 							<div class="form-group">
 								<div class="input-group"></div>
 							</div>

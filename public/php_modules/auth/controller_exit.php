@@ -1,5 +1,5 @@
 <?php
-	require_once 'require_ajax.php';
+	require_once '_inc_first.php';
 	
 	/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
 	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
@@ -53,7 +53,7 @@
 	
 	
 
-require '_inc_menu.php';
-require './_controller_ajax_bottom.php';
+// require '_inc_menu.php';
+require './_inc_end_echo.php';
 
 ?>

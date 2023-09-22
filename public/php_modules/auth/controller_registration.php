@@ -1,6 +1,6 @@
 <?php
-	//require 'require_ajax.php';
-	require 'require_ajax.php';
+	//require '_inc_first.php';
+	require '_inc_first.php';
 	
 	/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
 	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
@@ -31,7 +31,7 @@
 * We connect a file of the MySQL functions 
 * Подключаем файл функций MySQL 
 */   
-   require 'libs/mysql.php';  
+   require 'mysql.php';  
     
 /**   
 * Check of the entered data   
@@ -159,7 +159,7 @@
 "#password-modal-content"
 "#user-modal-content"
 */
-require '_inc_menu.php';
-require './_controller_ajax_bottom.php';
+// require '_inc_menu.php';
+require './_inc_end_echo.php';
 
 ?>
