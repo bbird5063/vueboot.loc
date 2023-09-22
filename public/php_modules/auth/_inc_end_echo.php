@@ -15,6 +15,4 @@ if (!empty($info_in))
 if (!empty($info_page_in))
 	$data['info_page_in'] = $info_page_in;
 
-$data['test'] = $_POST;
-
 echo json_encode($data);

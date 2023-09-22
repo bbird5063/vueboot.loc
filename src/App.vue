@@ -1,6 +1,5 @@
 <template>
 	<navbar></navbar>
-	<h1>asasas {{ $store.state.auth.likes }}</h1>
 	<div class="app">
 		<auth-form></auth-form>
 		<!-- <router-view> - в него будут встраиваться компоненты из router.js -->
@@ -29,7 +28,11 @@ export default {
 			this.$store.commit('auth/setIsLocalhost', true);
 		} else {
 			this.$store.commit('auth/setIsLocalhost', false);
+			// this.$store.actions.auth.updateUser();
+			this.$store.dispatch('auth/updateUser')
 		}
+		console.log('==dataUser========================');
+		console.table(this.$store.state.auth.dataUser);
 	}
 };
 </script>
