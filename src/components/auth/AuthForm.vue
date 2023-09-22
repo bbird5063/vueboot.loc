@@ -59,7 +59,7 @@
 							{{ errHtml }}
 						</div>
 					</div>
-					<form action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
 						<div v-if="infoHtml" id="Signin-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -133,6 +133,40 @@
 			</div>
 			<!-- END FORGOT PASSWORD -->
 
+
+
+
+			<!-- START EXIT -->
+			<div v-if="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Выход</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
+						</div>
+					</div>
+
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_exit.php" id="Exit-Form" method="post" role="exit-modal-content">
+						<div v-if="infoHtml" id="Exit-Form_info">{{ infoHtml }}</div>
+						<div class="input-group mb-3">
+							<!-- <input type="hidden" name="test" value="1" /> -->
+						</div>
+						<button name="cancel" value="1" type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">
+							Отмена
+						</button>
+						<button name="ok" value="1" type="submit" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">
+							Выйти
+						</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+			<!-- END EXIT -->
+
 		</div>
 	</div>
 </template>
@@ -154,6 +188,10 @@ export default {
 
 			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/php_modules/auth/controller_login.php
 
+			console.log('==onSubmit(formElem)===========================');
+			console.log(formElem.srcElement.attributes.action.nodeValue);
+			console.log(formElem.target.length);
+
 			const objData = {}; // можно удалить
 			let post = '';
 			for (let key = 0; key < formElem.target.length; key++) {
@@ -166,17 +204,18 @@ export default {
 					post += '&' + formElem.target[key].name + '=' + formElem.target[key].checked;
 				}
 			}
-			post = post.slice(1); // удаляем '&' в началеthis.$store.state.auth.authMode
+			post = post ? post.slice(1) : ''; // удаляем '&' в началеthis.$store.state.auth.authMode(при exit - post пустой)
 			post += post ? '&' : '';
-			post += 'num=' + this.$store.state.auth.authMode;
-			const jsonData = JSON.stringify(objData); // можно удалить // {"login":"bbird5063@gmail.com","password":"Spab1433","remember":"1"}
+			post += 'new_num=' + this.$store.state.auth.authMode;
+			// const jsonData = JSON.stringify(objData); // можно удалить // {"login":"bbird5063@gmail.com","password":"Spab1433","remember":"1"}
 			console.log('url: ' + url + '  |  post: ' + post);
 			console.log(this.$store.state.auth.isLocalhost);
+			console.log(this.$store.state.auth.authMode);
 			console.log('=================================');
 			console.log(formElem);
 			console.log(formElem.target.id); // Login-Form
-			console.log(formElem.target.role); // form_ajax
-			console.log(formElem.target.for); // undefined нестандартный аргумент
+			// console.log(formElem.target.role); // form_ajax
+			// console.log(formElem.target.for); // undefined нестандартный аргумент
 			console.log('=================================');
 			if (!this.$store.state.auth.isLocalhost) {
 				this.authAxios(url, post, formElem.target.id);
@@ -185,8 +224,6 @@ export default {
 		},
 
 		async authAxios(url, post, formId) {
-			// alert('url: ' + url + '  |  post: ' + post);
-
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
@@ -212,13 +249,15 @@ export default {
 				console.log('-----------------------');
 				console.log(errHtml);
 				console.log('-----------------------');
-				console.log(response.data.num);
+				console.log(response.data.new_num);
 				console.log('-----------------------');
 				console.table(response.data.user_data);
 
 				if (!errHtml) {
-					response.data.num ? this.$store.commit('auth/setAuthMode', response.data.num) : '';
-					response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+					response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
+					// response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+
+					this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
 				}
 
 
