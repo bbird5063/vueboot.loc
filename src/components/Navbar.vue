@@ -67,13 +67,13 @@ export default {
 			this.currentPoint = point.name;
 		},
 		openAuthModal(authModal, authMode) {
-			// let myModal = document.getElementById('login-signup-modal');
-			// let myInput = document.getElementById('login-login');
-			// console.log('----------openAuthModal---------');
-			// console.log(myModal);
-			// myModal.addEventListener('shown.bs.modal', function () {
-			// 	myInput.focus()
-			// })
+			let myModal = document.getElementById('login-signup-modal');
+			let myInput = document.getElementById('login-login');
+			console.log('----------openAuthModal---------');
+			console.log(myModal);
+			myModal.addEventListener('shown.bs.modal', function () {
+				myInput.focus()
+			})
 
 			this.$store.commit('auth/setAuthShow', true);
 			this.$store.commit('auth/setCurrModal', authModal);

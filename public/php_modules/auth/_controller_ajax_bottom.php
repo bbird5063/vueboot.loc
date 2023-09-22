@@ -1,5 +1,5 @@
 <?php
-$data['ajaxSuccess'] = true;
+// $data['ajaxSuccess'] = true;
 $data['num'] = !empty($_POST['new_num']) ? $_POST['new_num'] : 1;
 //$data['num'] = $_POST['new_num'];
 

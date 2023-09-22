@@ -19,7 +19,7 @@
 						<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus id="login-login" name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
@@ -39,9 +39,9 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="FPModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'forgot-password-modal-content')" href="#" for="nextPage">Забыли пароль?</a>
+						<a id="FPModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'forgot-password-modal-content')" href="#">Забыли пароль?</a>
 						|
-						<a id="signupModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'signup-modal-content')" href="#" for="nextPage">Регистрация</a>
+						<a id="signupModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'signup-modal-content')" href="#">Регистрация</a>
 					</p>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 						<div v-if="infoHtml" id="Signin-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus id="signin-login" name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
@@ -109,7 +109,7 @@
 						<div v-if="infoHtml" id="Forgot-Password-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus id="forgot-login" name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
