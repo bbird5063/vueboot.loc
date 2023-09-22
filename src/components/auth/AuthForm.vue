@@ -176,7 +176,7 @@ export default {
 			console.log(formElem);
 			console.log(formElem.target.id); // Login-Form
 			console.log(formElem.target.role); // form_ajax
-			console.log(formElem.target.for); // undefined
+			console.log(formElem.target.for); // undefined нестандартный аргумент
 			console.log('=================================');
 			if (!this.$store.state.auth.isLocalhost) {
 				this.authAxios(url, post, formElem.target.id);
@@ -190,15 +190,18 @@ export default {
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
-				alert(response.data.test);
+				// alert(response.data.test);
 				console.log(response.data);
 				let
 					divRegInfoStart = '<div id="reg_info" style="text-align:center; vertical-align:middle;" class="alert alert-warning">',
 					divRegInfoPageStart = '<div id="reg_info_page" style="text-align:left; vertical-align:middle;" class="">',
 					divRegInfoEnd = '</div>',
 					errHtml = '',
-					divErrId = '#' + formId + '-Error',
-					contentOut = formElem.target.for + '-modal-content'; // не будет работать(for)
+					divErrId = '#' + formId + '-Error';
+				// contentOut = formElem.target.for + '-modal-content'; // не будет работать(for)
+
+				console.log('-----------------------');
+				console.log(divRegInfoStart);
 
 				errHtml += response.data.reg_error ? response.data.reg_error : '';
 				errHtml += response.data.reg_info ? response.data.reg_info : '';
@@ -206,6 +209,12 @@ export default {
 				this.errHtml = errHtml ? errHtml : '';
 				this.infoHtml = response.data.reg_info_page ? response.data.reg_info_page : '';
 				// !errHtml && response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+				console.log('-----------------------');
+				console.log(errHtml);
+				console.log('-----------------------');
+				console.log(response.data.num);
+				console.log('-----------------------');
+				console.table(response.data.user_data);
 
 				if (!errHtml) {
 					response.data.num ? this.$store.commit('auth/setAuthMode', response.data.num) : '';
