@@ -34,8 +34,10 @@
 					</li>
 					<li v-else class="nav-item navbar-right">
 						<!-- <a @click.prevent="openAuthModal('login-modal-content', 1)" class="nav-link" href="#">Вход</a> -->
-					<!--a @click.prevent="openAuthModal('login-modal-content', 1)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a-->
-						<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a>
+						<!-- <a @click.prevent="openAuthModal('login-modal-content', 1)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a> -->
+						<!-- <a @click.prevent="openAuthModal('login-modal-content', 1)" class="nav-link" href="#">Вход</a> -->
+						<a @click.prevent="openAuthModal('login-modal-content', 1)" href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a>
+						<!-- <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a> -->
 					</li>
 				</ul>
 			</div>
@@ -65,17 +67,18 @@ export default {
 			this.currentPoint = point.name;
 		},
 		openAuthModal(authModal, authMode) {
-			// let myModal = document.getElementById('login-signup-modal')
-			// let myInput = document.getElementById('login-login')
-
+			// let myModal = document.getElementById('login-signup-modal');
+			// let myInput = document.getElementById('login-login');
+			// console.log('----------openAuthModal---------');
+			// console.log(myModal);
 			// myModal.addEventListener('shown.bs.modal', function () {
 			// 	myInput.focus()
 			// })
-			/*
+
 			this.$store.commit('auth/setAuthShow', true);
 			this.$store.commit('auth/setCurrModal', authModal);
 			this.$store.commit('auth/setAuthMode', authMode);
-			*/
+
 			/*
 			// const modal = document.querySelector('#login-signup-modal');
 			const modal = new bootstrap.Modal(

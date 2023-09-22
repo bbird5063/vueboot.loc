@@ -1,0 +1,286 @@
+<template>
+	<div>
+		<!-- Modal -->
+		<div v-if="$store.state.auth.authShow" id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+
+				<!-- START LOGIN -->
+				<div v-if="$store.state.auth.currModal == 'login-modal-content'" id="login-modal-content" class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Вход в аккаунт</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div>
+							<div v-if="errHtml" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+								{{ errHtml }}
+							</div>
+						</div>
+						<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="login-modal-content">
+							<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-user"></i></span>
+								<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-lock"></i></span>
+								<input name="password" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+								<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							</div>
+							<div class="checkbox">
+								<input name="remember" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
+								<label class="form-check-label" for="flexCheckDefault">Запомнить меня</label>
+							</div>
+							<div class="d-flex justify-content-end">
+								<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+									Вход
+								</button>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<p>
+							<a id="FPModal" href="#" for="nextPage">Забыли пароль?</a>
+							|
+							<a id="signupModal" href="#" for="nextPage">Регистрация</a>
+						</p>
+					</div>
+				</div>
+				<!-- END LOGIN -->
+
+				<!-- START SIGNUP -->
+				<div v-if="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Регистрация</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div>
+							<div v-if="errHtml" id="Signin-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+								{{ errHtml }}
+							</div>
+						</div>
+						<form action="/php_modules/auth/registration_controller_ajax.php" method="post" id="Signin-Form" role="signup-modal-content">
+							<div v-if="infoHtml" id="Signin-Form_info">{{ infoHtml }}</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-user"></i></span>
+								<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+								<input name="email" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+							</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-lock"></i></span>
+								<input name="password" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+								<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-lock"></i></span>
+								<input name="password2" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+								<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							</div>
+							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+								Создать аккаунт!
+							</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<p>
+							Имеете аккаунт?
+							<a id="loginModal" href="#" for="nextPage">Войти в аккаунт</a>
+						</p>
+					</div>
+				</div>
+				<!-- END SIGNUP -->
+
+				<!-- START FORGOT PASSWORD -->
+				<div v-if="$store.state.auth.currModal == 'forgot-password-modal-content'" id="forgot-password-modal-content" class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Установка доступа</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div>
+							<div v-if="errHtml" id="Forgot-Password-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+								{{ errHtml }}
+							</div>
+						</div>
+						<form @submit.prevent="onSubmit" action="/php_modules/auth/restoration_controller_ajax.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
+							<div v-if="infoHtml" id="Forgot-Password-Form_info">{{ infoHtml }}</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-user"></i></span>
+								<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							</div>
+							<div class="input-group mb-3">
+								<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+								<input name="email" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+							</div>
+							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+								Отправить
+							</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<p>
+							Вспомнили пароль?
+							<a v-if="$store.state.auth.authMode <= 2" Forgot-Password-Formid="loginModal1" href="#" for="nextPage">Войти в аккаунт</a>
+						</p>
+						<p>
+							Ваши личные данные:
+							<a v-if="$store.state.auth.authMode == 3" id="userModal" href="#" for="nextPage">ваш профиль</a>
+						</p>
+					</div>
+				</div>
+				<!-- END FORGOT PASSWORD -->
+
+			</div>
+		</div>
+
+	</div>
+</template>
+
+<script>
+import axios from 'axios';
+export default {
+	data() {
+		return {
+			isLoading: false,
+			divErrId: '',
+			errHtml: '',
+			infoHtml: '',
+		}
+	},
+	methods: {
+		onSubmit(formElem) {
+			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/login_controller_ajax.php
+
+			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/php_modules/auth/login_controller_ajax.php
+
+			const objData = {}; // можно удалить
+			let post = '';
+			for (let key = 0; key < formElem.target.length; key++) {
+				if (formElem.target[key].type !== 'submit' && formElem.target[key].type !== 'checkbox') {
+					objData[formElem.target[key].name] = formElem.target[key].value; // можно удалить
+					post += '&' + formElem.target[key].name + '=' + formElem.target[key].value;
+				}
+				if (formElem.target[key].type == 'checkbox') {
+					objData[formElem.target[key].name] = formElem.target[key].checked; // можно удалить
+					post += '&' + formElem.target[key].name + '=' + formElem.target[key].checked;
+				}
+			}
+			post = post.slice(1); // удаляем '&' в началеthis.$store.state.auth.authMode
+			post += post ? '&' : '';
+			post += 'num=' + this.$store.state.auth.authMode;
+			const jsonData = JSON.stringify(objData); // можно удалить // {"login":"bbird5063@gmail.com","password":"Spab1433","remember":"1"}
+			console.log('url: ' + url + '  |  post: ' + post);
+			console.log(this.$store.state.auth.isLocalhost);
+			console.log('=================================');
+			console.log(formElem);
+			console.log(formElem.target.id); // Login-Form
+			console.log(formElem.target.role); // form_ajax
+			console.log(formElem.target.for); // undefined
+			console.log('=================================');
+			if (!this.$store.state.auth.isLocalhost) {
+				this.authAxios(url, post, formElem.target.id);
+			}
+
+		},
+
+		async authAxios(url, post, formId) {
+			// alert('url: ' + url + '  |  post: ' + post);
+
+			try {
+				this.isLoading = true;
+				const response = await axios.post(url, post);
+				alert(response.data.test);
+				console.log(response.data);
+				let
+					divRegInfoStart = '<div id="reg_info" style="text-align:center; vertical-align:middle;" class="alert alert-warning">',
+					divRegInfoPageStart = '<div id="reg_info_page" style="text-align:left; vertical-align:middle;" class="">',
+					divRegInfoEnd = '</div>',
+					errHtml = '',
+					divErrId = '#' + formId + '-Error',
+					contentOut = formElem.target.for + '-modal-content'; // не будет работать(for)
+
+				errHtml += response.data.reg_error ? response.data.reg_error : '';
+				errHtml += response.data.reg_info ? response.data.reg_info : '';
+				// errHtml += response.data.reg_info_page ? response.data.reg_info_page : '';
+				this.errHtml = errHtml ? errHtml : '';
+				this.infoHtml = response.data.reg_info_page ? response.data.reg_info_page : '';
+				// !errHtml && response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+
+				if (!errHtml) {
+					response.data.num ? this.$store.commit('auth/setAuthMode', response.data.num) : '';
+					response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+				}
+
+
+			} catch (e) {
+				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
+			} finally {
+				this.isLoading = false;
+			}
+
+		},
+
+
+		fadeOut(el) {
+			var opacity = 1;
+
+			var timer = setInterval(function () {
+				if (opacity <= 0.1) {
+					clearInterval(timer);
+					document.querySelector(el).style.display = 'none';
+				}
+
+				document.querySelector(el).style.opacity = opacity;
+
+				opacity -= opacity * 0.1;
+			}, 10);
+		},
+
+		fadeIn(el) {
+			var opacity = 0.01;
+
+			document.querySelector(el).style.display = 'block';
+
+			var timer = setInterval(function () {
+				if (opacity >= 1) {
+					clearInterval(timer);
+				}
+
+				document.querySelector(el).style.opacity = opacity;
+
+				opacity += opacity * 0.1;
+			}, 10);
+		},
+	},
+	mounted() {
+		// fadeIn('#' + $store.state.auth.currModal);
+	},
+};
+</script>
+
+<style scoped>
+button.close
+{
+	border-width: 0;
+	background-color: white;
+}
+
+/* .modal-content {
+  display: none;
+} */
+/*
+#login-modal-content,
+#signup-modal-content,
+#forgot-password-modal-content,
+#code-modal-content,
+#password-modal-content,
+#user-modal-content,
+#exit-modal-content {
+  display: none;
+}
+*/
+</style>

@@ -1,487 +1,139 @@
 <template>
-	<div>
-		<!-- ./skins/tpl/register/form_modal_register.tpl begin -->
-		<div v-if="$store.state.auth.authShow" id="login-signup-modal" class="modal fade" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<!--======================================================================-->
+	<!-- Modal v-if="$store.state.auth.authShow" -->
+	<div id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
 
-				<!-- содержимое модального окна login -->
-				<!-- v-if="$store.state.auth.currModal == 'login-modal-content'" -->
-				<div v-if="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">
-							<span class="fa fa-lock"></span><b> Вход в аккаунт!</b>
-						</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
-						</button>
-
-					</div>
-
-					<div class=" modal-body">
-						<div id="Login-Form-Error" for="error">
-							<div v-if="errHtml" id="reg_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
-								{{ errHtml }}
-							</div>
+			<!-- START LOGIN -->
+			<div v-if="$store.state.auth.currModal == 'login-modal-content'" id="login-modal-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Вход в аккаунт</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
 						</div>
-						<!-- по id='err' будет удаляться при переходе на др.форму -->
-
-						<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="form_ajax" for="login">
-							<!-- для проверки: сюда будет помещен ответ от хоста -->
-							<div id="result_form"></div>
-							<div v-if="infoHtml" id="err">{{ infoHtml }}</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="fa fa-user"></span>
-									</div>
-									<input name="login" id="login-login" type="text" class="form-control input-lg" placeholder="Введите логин" required data-parsley-type="name" value="" />
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="fa fa-lock"></span>
-									</div>
-
-									<input name="password" id="login-password" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="fa fa-eye" for="password" id="eye_login-password"></span>
-									</div>
-								</div>
-							</div>
-
-							<div class="checkbox">
-								<label><input name="remember" type="checkbox" value="1" />Запомнить
-									меня</label>
-							</div>
-							<!--br><input for="Login-Form" type="text" name="new_num" value="0"-->
-							<!--input for="Login-Form" type="hidden" name="new_num" value="0"-->
+					</div>
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/login_controller_ajax.php" method="post" id="Login-Form" role="login-modal-content">
+						<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-lock"></i></span>
+							<input name="password" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+						<div class="checkbox">
+							<input name="remember" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
+							<label class="form-check-label" for="flexCheckDefault">Запомнить меня</label>
+						</div>
+						<div class="d-flex justify-content-end">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								LOGIN
+								Вход
 							</button>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<p>
-							<a id="FPModal" href="#" for="nextPage">Забыли пароль?</a>
-							|
-							<a id="signupModal" href="#" for="nextPage">Регистрация</a>
-						</p>
-					</div>
+						</div>
+					</form>
 				</div>
-				<!-- содержимое модального окна login END -->
-
-				<!--======================================================================-->
-
-				<!-- содержимое модального окна signup  for="signup"-->
-				<div v-if="$store.state.auth.currModal == 'signup-modal-content'" class="modal-content" id="signup-modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-
-						<h4 class="modal-title">
-							<span class="glyphicon glyphicon-lock"></span><b> Регистрация</b>
-						</h4>
-					</div>
-
-					<div class="modal-body">
-						<div id="Signin-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/registration_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="signup">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-user"></span>
-									</div>
-									<input name="login" id="signup-login" type="text" class="form-control input-lg" placeholder="Введите логин" required data-parsley-type="name" value="" />
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-envelope"></span>
-									</div>
-
-									<input name="email" id="signup-email" type="email" class="form-control input-lg" placeholder="Введите Email" required data-parsley-type="email" value="" />
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-lock"></span>
-									</div>
-
-									<input name="password" id="signup-passwd" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="fa fa-eye" for="password" id="eye_signup-passwd"></span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-lock"></span>
-									</div>
-
-									<input name="password2" id="signup-confirm-passwd" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-equalto="#signup-passwd" data-parsley-trigger="keyup" autocomplete="off" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="fa fa-eye" for="password" id="eye_signup-confirm-passwd"></span>
-									</div>
-								</div>
-							</div>
-							<!--br><input type="text" name="new_num" value="1"-->
-							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Создать аккаунт!
-							</button>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<p>
-							Имеете аккаунт?
-							<a id="loginModal" href="#" for="nextPage">Войти в аккаунт</a>
-						</p>
-					</div>
+				<div class="modal-footer">
+					<p>
+						<a id="FPModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'forgot-password-modal-content')" href="#" for="nextPage">Забыли пароль?</a>
+						|
+						<a id="signupModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'signup-modal-content')" href="#" for="nextPage">Регистрация</a>
+					</p>
 				</div>
-				<!-- содержимое модального окна signup END -->
-
-				<!--======================================================================-->
-
-				<!-- содержимое модального окна forgot password -->
-				<div v-if="$store.state.auth.currModal == 'forgot-password-modal-content'
-					" class="modal-content" id="forgot-password-modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title">
-							<span class="glyphicon glyphicon-lock"></span><b> Установка доступа!</b>
-						</h4>
-					</div>
-
-					<div class="modal-body">
-						<div id="Forgot-Password-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/restoration_controller_ajax.php" method="post" id="Forgot-Password-Form" role="form_ajax" for="forgot-password">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-user"></span>
-									</div>
-									<input name="login" id="forgot-login" type="text" class="form-control input-lg" placeholder="Введите логин" required data-parsley-type="name" value="" />
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-envelope"></span>
-									</div>
-									<input name="email" id="forgot-email" type="email" class="form-control input-lg" placeholder="Введите Email" required data-parsley-type="email" value="" />
-								</div>
-							</div>
-							<!--br><input type="text" name="new_num" value="2"-->
-							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								<span class="glyphicon glyphicon-send"></span> Отправить
-							</button>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<p>
-							Вспомнили пароль?
-							<a id="loginModal1" href="#" for="nextPage">Войти в аккаунт</a>
-						</p>
-						<p>
-							Ваши личные данные:
-							<a id="userModal" href="#" for="nextPage">ваш профиль</a>
-						</p>
-					</div>
-				</div>
-				<!-- содержимое модального окна forgot password END -->
-
-				<!--======================================================================-->
-
-				<!-- содержимое модального окна code -->
-				<div v-if="$store.state.auth.currModal == 'code-modal-content'" class="modal-content" id="code-modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-
-						<h4 class="modal-title">
-							<span class="glyphicon glyphicon-lock"></span><b> Восстановление доступа</b>
-						</h4>
-					</div>
-
-					<div class="modal-body">
-						<div id="Code-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/activate_controller_ajax.php" method="post" id="Code-Form" role="form_ajax" for="code">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-pencil"></span>
-									</div>
-									<input name="code" type="text" class="form-control input-lg" placeholder="Введите код" required data-parsley-type="name" value="" autocomplete="off" />
-								</div>
-							</div>
-
-							<div class="checkbox">
-								<label><input name="remember" type="checkbox" value="1" />Запомнить
-									меня</label>
-							</div>
-							<!--br><input type="text" name="new_num" value="1"-->
-							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Восстановить доступ
-							</button>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<p>
-							<a id="FPModal1" href="#" for="nextPage">Забыли пароль?</a>
-							|
-							<a id="signupModal1" href="#" for="nextPage">Регистрация</a>
-						</p>
-					</div>
-				</div>
-				<!-- содержимое модального окна code END -->
-
-				<!--======================================================================-->
-
-				<!-- содержимое модального окна password -->
-				<div v-if="$store.state.auth.currModal == 'password-modal-content'" class="modal-content" id="password-modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-
-						<h4 class="modal-title">
-							<span class="glyphicon glyphicon-lock"></span><b> Установка пароля</b>
-						</h4>
-					</div>
-
-					<div class="modal-body">
-						<div id="Signin-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/new_pw_controller_ajax.php" method="post" id="Signin-Form" role="form_ajax" for="password">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-user"></span>
-									</div>
-									<input name="login" id="password-login" type="text" class="form-control input-lg" placeholder="Введите логин" required data-parsley-type="name" value="" readonly />
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-envelope"></span>
-									</div>
-
-									<input name="email" id="password-email" type="email" class="form-control input-lg" placeholder="Введите Email" required data-parsley-type="email" value="" readonly />
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-lock"></span>
-									</div>
-
-									<input name="password" id="passwd-1" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="fa fa-eye" for="password" id="eye_passwd-1"></span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-lock"></span>
-									</div>
-
-									<input name="password2" id="confirm-passwd-2" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-equalto="#passwd-1" data-parsley-trigger="keyup" autocomplete="off" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="fa fa-eye" for="password" id="eye_confirm-passwd-2"></span>
-									</div>
-								</div>
-							</div>
-							<!--br><input type="text" name="new_num" value="2"-->
-							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Установить
-							</button>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<p>
-							Имеете аккаунт?
-							<a id="loginModal" href="#" for="nextPage">Войти в аккаунт</a>
-						</p>
-					</div>
-				</div>
-				<!-- содержимое модального окна password END -->
-
-				<!--======================================================================-->
-
-				<!--======================================================================-->
-
-				<!-- содержимое модального окна user -->
-
-				<div v-if="$store.state.auth.currModal == 'user-modal-content'" class="modal-content" id="user-modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-
-						<h4 class="modal-title">
-							<span class="glyphicon glyphicon-lock"></span><b> Ваш профиль</b>
-						</h4>
-					</div>
-
-					<div class="modal-body">
-						<div id="User-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/user_controller_ajax.php" method="post" id="User-Form" role="form_ajax" for="user">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="fa fa-user-circle"></span>
-									</div>
-									<input readonly name="login" id="user-login" type="text" class="form-control input-lg" placeholder="Введите логин" required data-parsley-type="name" value="" />
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-envelope"></span>
-									</div>
-
-									<input readonly name="email" id="user-email" type="email" class="form-control input-lg" placeholder="Введите Email" required data-parsley-type="email" value="" />
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-user"></span>
-									</div>
-
-									<input readonly name="name_last" id="user_name_last" type="text" class="form-control input-lg" placeholder="Введите фамилию" required data-parsley-type="name" value="" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="glyphicon glyphicon-pencil" for="text" id="edit_user_name_last"></span>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-user"></span>
-									</div>
-
-									<input readonly name="name_first" id="user_name_first" type="text" class="form-control input-lg" placeholder="Введите имя" required data-parsley-type="name" value="" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="glyphicon glyphicon-pencil" for="text" id="edit_user_name_first"></span>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-user"></span>
-									</div>
-
-									<input readonly name="name_patr" id="user_name_patr" type="text" class="form-control input-lg" placeholder="Введите отчество" required data-parsley-type="name" value="" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="glyphicon glyphicon-pencil" for="text" id="edit_user_name_patr"></span>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-earphone"></span>
-									</div>
-
-									<input readonly name="phone_1" id="user_phone_1" type="text" class="form-control input-lg" placeholder="Введите phone_1" required data-parsley-type="name" value="" />
-
-									<div class="input-group-addon">
-										<span style="cursor: pointer" class="glyphicon glyphicon-pencil" for="text" id="edit_user_phone_1"></span>
-									</div>
-								</div>
-							</div>
-							<!--br><input type="text" name="new_num" value="3"-->
-							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Сохранить данные
-							</button>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<p>
-							Имеете аккаунт?
-							<a id="FPModal2" href="#" for="nextPage">Изменить пароль?</a>
-						</p>
-					</div>
-				</div>
-				<!-- содержимое модального окна user END -->
-
-				<!--======================================================================-->
-
-				<!-- содержимое модального окна exit -->
-				<div v-if="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-
-						<h4 class="modal-title">
-							<span class="glyphicon glyphicon-lock"></span><b> Выход</b>
-						</h4>
-					</div>
-
-					<div class="modal-body">
-						<div id="Exit-Form-Error" for="error"></div>
-						<form action="/php_modules/auth/exit_controller_ajax.php" method="post" id="Exit-Form" role="form_ajax" for="exit">
-							<div class="form-group">
-								<div class="input-group"></div>
-							</div>
-
-							<!--br><input type="text" name="new_num" value="0"><br-->
-							<div class="modal-footer">
-								<button name="cancel" value="1" type="button" class="btn btn-success">
-									Отмена
-								</button>
-
-								<button name="ok" value="1" type="submit" class="btn btn-success">
-									&nbsp;Выйти&nbsp;&nbsp;
-								</button>
-								<!--p>
-          	<a id="FPModal1" href="#" for="nextPage">Забыли пароль?</a> | 
-          	<a id="signupModal1" href="#" for="nextPage">Регистрация</a>
-          	</p-->
-							</div>
-						</form>
-					</div>
-				</div>
-				<!-- содержимое модального окна exit END -->
-
-				<!--======================================================================-->
 			</div>
+			<!-- END LOGIN -->
+
+			<!-- START SIGNUP -->
+			<div v-if="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Регистрация</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Signin-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
+						</div>
+					</div>
+					<form action="/php_modules/auth/registration_controller_ajax.php" method="post" id="Signin-Form" role="signup-modal-content">
+						<div v-if="infoHtml" id="Signin-Form_info">{{ infoHtml }}</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+							<input name="email" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-lock"></i></span>
+							<input name="password" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-lock"></i></span>
+							<input name="password2" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+						<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+							Создать аккаунт!
+						</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<p>
+						Имеете аккаунт?
+						<a id="loginModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'login-modal-content')" href="#" for="nextPage">Войти в аккаунт</a>
+					</p>
+				</div>
+			</div>
+			<!-- END SIGNUP -->
+
+			<!-- START FORGOT PASSWORD -->
+			<div v-if="$store.state.auth.currModal == 'forgot-password-modal-content'" id="forgot-password-modal-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Установка доступа</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Forgot-Password-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
+						</div>
+					</div>
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/restoration_controller_ajax.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
+						<div v-if="infoHtml" id="Forgot-Password-Form_info">{{ infoHtml }}</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+							<input name="email" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+						</div>
+						<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+							Отправить
+						</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<p v-if="$store.state.auth.authMode <= 2">
+						Вспомнили пароль?
+						<a id="loginModal1" @click.prevent="this.$store.commit('auth/setCurrModal', 'login-modal-content')" href="#" for="nextPage">Войти в аккаунт</a>
+					</p>
+					<p v-if="$store.state.auth.authMode == 3">
+						Ваши личные данные:
+						<a id="userModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'user-modal-content')" href="#" for="nextPage">ваш профиль</a>
+					</p>
+				</div>
+			</div>
+			<!-- END FORGOT PASSWORD -->
+
 		</div>
-		<!-- ./skins/tpl/register/form_modal_register.tpl begin -->
 	</div>
 </template>
 
@@ -608,11 +260,16 @@ export default {
 </script>
 
 <style scoped>
-button.close
+.fa
+{
+	cursor: pointer;
+}
+
+/* button.close
 {
 	border-width: 0;
 	background-color: white;
-}
+} */
 
 /* .modal-content {
   display: none;
