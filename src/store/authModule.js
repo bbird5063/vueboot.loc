@@ -6,7 +6,7 @@ export const authModule = {
 		currModal: 'login-modal-content',
 		isLocalhost: false,
 		authMode: 1,
-		authShow: false,
+		authShow: true,
 	}),
 	/*
 	#login-modal-content, #signup-modal-content, #forgot-password-modal-content, #code-modal-content, #password-modal-content, #user-modal-content, #exit-modal-content

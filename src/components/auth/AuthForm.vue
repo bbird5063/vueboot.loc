@@ -4,7 +4,7 @@
 		<div class="modal-dialog">
 
 			<!-- START LOGIN -->
-			<div v-if="$store.state.auth.currModal == 'login-modal-content'" id="login-modal-content" class="modal-content">
+			<div v-show="$store.state.auth.currModal == 'login-modal-content'" id="login-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Вход в аккаунт</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -30,7 +30,7 @@
 							<input name="remember" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
 							<label class="form-check-label" for="flexCheckDefault">Запомнить меня</label>
 						</div>
-						<div class="d-flex justify-content-end">
+						<div class="d-grid gap-2">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
 								Вход
 							</button>
@@ -48,7 +48,7 @@
 			<!-- END LOGIN -->
 
 			<!-- START SIGNUP -->
-			<div v-if="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content">
+			<div v-show="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Регистрация</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -79,9 +79,11 @@
 							<input name="password2" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
 							<span class="input-group-text"><i class="fa fa-eye"></i></span>
 						</div>
-						<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-							Создать аккаунт!
-						</button>
+						<div class="d-grid gap-2">
+							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+								Создать аккаунт!
+							</button>
+						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -94,7 +96,7 @@
 			<!-- END SIGNUP -->
 
 			<!-- START FORGOT PASSWORD -->
-			<div v-if="$store.state.auth.currModal == 'forgot-password-modal-content'" id="forgot-password-modal-content" class="modal-content">
+			<div v-show="$store.state.auth.currModal == 'forgot-password-modal-content'" id="forgot-password-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Установка доступа</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -115,9 +117,11 @@
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
 							<input name="email" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
 						</div>
-						<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-							Отправить
-						</button>
+						<div class="d-grid gap-2">
+							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+								Отправить
+							</button>
+						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -133,11 +137,8 @@
 			</div>
 			<!-- END FORGOT PASSWORD -->
 
-
-
-
 			<!-- START EXIT -->
-			<div v-if="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content">
+			<div v-show="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Выход</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -154,18 +155,117 @@
 						<div class="input-group mb-3">
 							<!-- <input type="hidden" name="test" value="1" /> -->
 						</div>
-						<button name="cancel" value="1" type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">
-							Отмена
-						</button>
-						<button name="ok" value="1" type="submit" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">
-							Выйти
-						</button>
+						<div class="d-grid gap-2">
+							<button name="cancel" value="1" type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">
+								Отмена
+							</button>
+							<button name="ok" value="1" type="submit" class="btn btn-success">
+								Выйти
+							</button>
+						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
 				</div>
 			</div>
 			<!-- END EXIT -->
+
+			<!-- START CODE -->
+			<div v-show="$store.state.auth.currModal == 'code-modal-content'" class="modal-content" id="code-modal-content">
+
+				<div class="modal-header">
+					<h5 class="modal-title">Восстановление доступа</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Code-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
+						</div>
+					</div>
+
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_activate.php" id="Code-Form" method="post" role="code-modal-content">
+						<div v-if="infoHtml" id="Code-Form_info">{{ infoHtml }}</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
+							<input v-focus id="code" name="code" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="">
+						</div>
+
+						<div class="d-grid gap-2">
+							<div class="d-grid gap-2">
+								<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+									Отправить
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+			<!-- END CODE -->
+
+			<!-- START USER -->
+			<div v-show="$store.state.auth.currModal == 'user-modal-content'" id="user-modal-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Ваш профиль</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Signin-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
+						</div>
+					</div>
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
+						<div v-if="infoHtml" id="Signin-Form_info">{{ infoHtml }}</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input v-focus readonly id="signin-login" name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+							<input name="email" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+						</div>
+
+						<div class="d-grid gap-2">
+							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+								Создать аккаунт!
+							</button>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<p>
+						Имеете аккаунт?
+						<a id="loginModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'login-modal-content')" href="#" for="nextPage">Войти в аккаунт</a>
+					</p>
+				</div>
+			</div>
+			<!-- END USER -->
 
 		</div>
 	</div>
@@ -255,20 +355,29 @@ export default {
 
 				if (!errHtml) {
 					response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
-					// response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+					// response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';data.contentIn
 
 					this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
+
+					if (response.data.contentIn) {
+						this.fadeOut('#' + this.$store.state.auth.currModal);
+						this.fadeIn('#' + response.data.contentIn);
+						this.$store.commit('auth/setCurrModal', response.data.contentIn);
+					}
+					else {
+						this.fadeOut('#' + this.$store.state.auth.currModal);
+						this.$store.commit('auth/setCurrModal', '');
+						document.querySelector(".btn-close").dispatchEvent(new Event("click"));
+						// this.$store.commit('auth/setAuthShow', false);
+					}
+					this.$store.commit('auth/setCurrModal', response.data.contentIn ? response.data.contentIn : '');
 				}
-
-
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
 			} finally {
 				this.isLoading = false;
 			}
-
 		},
-
 
 		fadeOut(el) {
 			var opacity = 1;

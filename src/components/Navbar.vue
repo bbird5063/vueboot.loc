@@ -75,7 +75,7 @@ export default {
 			// 	myInput.focus()
 			// })
 
-			this.$store.commit('auth/setAuthShow', true);
+			// this.$store.commit('auth/setAuthShow', true);
 			this.$store.commit('auth/setCurrModal', authModal);
 			this.$store.commit('auth/setAuthMode', authMode);
 
