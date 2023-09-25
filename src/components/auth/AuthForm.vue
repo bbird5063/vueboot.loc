@@ -366,6 +366,11 @@ export default {
 
 					this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
 
+					if (response.data.url_act) {
+						console.log('--url_act---------------------');
+						console.log(response.data.url_act);
+					}
+
 					if (response.data.contentIn) {
 						response.data.contentIn = response.data.contentIn.slice(1);
 						this.fadeOut('#' + this.$store.state.auth.currModal);
@@ -382,7 +387,7 @@ export default {
 					}
 					*/
 					else {
-						this.fadeOut('#' + this.$store.state.auth.currModal);
+						// this.fadeOut('#' + this.$store.state.auth.currModal);
 						this.$store.commit('auth/setCurrModal', '');
 						document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 						// this.$store.commit('auth/setAuthShow', false);
