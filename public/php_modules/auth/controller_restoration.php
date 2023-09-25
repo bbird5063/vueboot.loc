@@ -100,8 +100,8 @@
 				file_put_contents('' . $subject . '.html', $message);
 			else
 			{
-				//include_once './libs/bbr_mailer.php'; 
-				require 'libs/bbr_mailer.php';				
+				//include_once './bbr_mailer.php'; 
+				require 'bbr_mailer.php';				
             	$mail = new BBR_Mailer($message); 
    
             	$mail -> createTo($row['email']);  

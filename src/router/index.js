@@ -10,38 +10,38 @@ import RowIdPage from '@/pages/RowIdPage';
 
 const routes = [
 	{
-		path: '/',
+		path: '/:authMode/:id',
 		name: 'Main',
 		component: Main,
 	},
 	{
-		path: '/PageTest5',
+		path: '/PageTest5/:authMode/:id',
 		name: 'P5',
 		component: P5,
 	},
 	{
-		path: '/PageTest6',
+		path: '/PageTest6/:authMode/:id',
 		name: 'P6',
 		component: P6,
 	},
 	{
-		path: '/PageTest7',
+		path: '/PageTest7/:authMode/:id',
 		name: 'P7',
 		component: P7,
 	},
 	{
-		path: '/PageTest8',
+		path: '/PageTest8/:authMode/:id',
 		name: 'P8',
 		component: P8,
 	},
 	{
-		path: '/PageTest9',
+		path: '/PageTest9/:authMode/:id',
 		name: 'P9',
 		component: P9,
 	},
 	{
 		// добавил (:id - динамический параметр)
-		path: '/rows/:id',
+		path: '/rows/:authMode/:id',
 		component: RowIdPage,
 	},
 ];

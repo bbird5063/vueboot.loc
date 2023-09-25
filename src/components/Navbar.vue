@@ -51,13 +51,20 @@ export default {
 	data() {
 		return {
 			currentPoint: '',
-			likes: 128,
 			menu: [
+				/*
 				{ path: '/PageTest5', name: 'P5' },
 				{ path: '/PageTest6', name: 'P6' },
 				{ path: '/PageTest7', name: 'P7' },
 				{ path: '/PageTest8', name: 'P8' },
 				{ path: '/PageTest9', name: 'P9' },
+				*/
+				{ path: '/PageTest5/1/0', name: 'P5' },
+				{ path: '/PageTest6/1/0', name: 'P6' },
+				{ path: '/PageTest7/1/0', name: 'P7' },
+				{ path: '/PageTest8/1/0', name: 'P8' },
+				{ path: '/PageTest9/1/0', name: 'P9' },
+
 			],
 		};
 	},
@@ -65,6 +72,10 @@ export default {
 		activePoint(point) {
 			this.$router.push(point.path);
 			this.currentPoint = point.name;
+			if (this.$route.params.id > 0) {
+				this.$store.commit('auth/setCurrentPath', point.path);
+			}
+			// alert('Navbar.vue  ' + this.$route.params.id);
 		},
 		openAuthModal(authModal, authMode) {
 			// let myModal = document.getElementById('login-signup-modal');
@@ -107,6 +118,9 @@ export default {
 			*/
 		},
 	},
+	mounted() {
+		// alert('Nav = ' + this.$route.params.id);
+	}
 };
 </script>
 

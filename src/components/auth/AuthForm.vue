@@ -11,6 +11,7 @@
 				</div>
 				<div class="modal-body">
 					<div>
+						<h1>ID = {{ $route.params.id }}</h1>
 						<div v-if="errHtml" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 							{{ errHtml }}
 						</div>
@@ -19,7 +20,7 @@
 						<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus id="login-login" name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="login-login" name="login" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
@@ -189,7 +190,7 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
-							<input v-focus id="code" name="code" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="">
+							<input v-focus id="code" name="code" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ $route.params.id }}">
 						</div>
 
 						<div class="d-grid gap-2">
@@ -232,23 +233,19 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							<input v-focus readonly id="signin-login" name="name_last" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							<input v-focus readonly id="signin-login" name="name_first" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							<input v-focus readonly id="signin-login" name="name_patr" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input readonly name="" type="text" class="form-control input-lg" placeholder="" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							<input v-focus readonly id="signin-login" name="phone_1" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 
 						<div class="d-grid gap-2">
@@ -280,9 +277,14 @@ export default {
 			divErrId: '',
 			errHtml: '',
 			infoHtml: '',
+			errHtmlIn: '',
+			infoHtmlIn: '',
+			id: '',
 		}
 	},
 	methods: {
+
+
 		onSubmit(formElem) {
 			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/controller_login.php
 
@@ -334,7 +336,12 @@ export default {
 					divRegInfoPageStart = '<div id="reg_info_page" style="text-align:left; vertical-align:middle;" class="">',
 					divRegInfoEnd = '</div>',
 					errHtml = '',
-					divErrId = '#' + formId + '-Error';
+					infoHtml = '',
+					divErrId = '#' + formId + '-Error',
+					divInfoId = '#' + formId + '_info';
+
+
+
 				// contentOut = formElem.target.for + '-modal-content'; // не будет работать(for)
 
 				console.log('-----------------------');
@@ -360,15 +367,26 @@ export default {
 					this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
 
 					if (response.data.contentIn) {
+						response.data.contentIn = response.data.contentIn.slice(1);
 						this.fadeOut('#' + this.$store.state.auth.currModal);
-						this.fadeIn('#' + response.data.contentIn);
+						this.fadeIn(response.data.contentIn);
 						this.$store.commit('auth/setCurrModal', response.data.contentIn);
+						let divErr = document.querySelector('#' + response.data.contentIn + '_error');
+						divErr.innerHTML = response.data.info_in;
+						let divInfo = document.querySelector('#' + response.data.contentIn + '_info');
+						divErr.divInfo = response.data.info_page_in;
 					}
+					/*
+					else if (this.$store.state.auth.currModal == 'exit-modal-content') {
+
+					}
+					*/
 					else {
 						this.fadeOut('#' + this.$store.state.auth.currModal);
 						this.$store.commit('auth/setCurrModal', '');
 						document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 						// this.$store.commit('auth/setAuthShow', false);
+
 					}
 					this.$store.commit('auth/setCurrModal', response.data.contentIn ? response.data.contentIn : '');
 				}
@@ -411,7 +429,12 @@ export default {
 		},
 	},
 	mounted() {
+		// alert('Auth = ' + this.$route.params.id);
 		// fadeIn('#' + $store.state.auth.currModal);
+		// alert('src\components\auth\AuthForm.vue  ' + this.$route.params.id);
+	},
+	created() {
+		// alert('src\components\auth\AuthForm.vue  ' + this.$route.params.id);
 	},
 };
 </script>

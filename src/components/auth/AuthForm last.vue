@@ -6,7 +6,7 @@
 				<!--======================================================================-->
 
 				<!-- содержимое модального окна login -->
-				<div v-show="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">>
+				<div v-show="$store.state.auth.currModal == 'login-modal-content'" class="modal-content" id="login-modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Вход в аккаунт!</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -155,7 +155,6 @@
 									<input name="email" id="forgot-email" type="email" class="form-control input-lg" placeholder="Введите Email" required data-parsley-type="email" value="" />
 								</div>
 							</div>
-							<!--br><input type="text" name="new_num" value="2"-->
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
 								<span class="glyphicon glyphicon-send"></span> Отправить
 							</button>

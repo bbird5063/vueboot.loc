@@ -161,8 +161,8 @@ export default {
 				}
 				/*
 				this.rows = this.isTest
-				  ? [...this.rows, ...response.data]
-				  : [...this.rows, ...response.data.rows];
+					? [...this.rows, ...response.data]
+					: [...this.rows, ...response.data.rows];
 				*/
 				if (this.isTest) {
 					this.totalRows = response.headers['x-total-count'];
@@ -181,6 +181,12 @@ export default {
 
 	mounted() {
 		//alert(document.location.hostname + '/p10'); // http://192.168.0.100:8080 (можно без document.)
+		// fadeIn('#' + $store.state.auth.currModal);
+		alert('P9 = ' + this.$route.params.id);
+		console.log('##################');
+		console.log(this.$route);
+
+
 		console.log(location);
 		if (
 			location.hostname.includes('192.168.0.100') ||
@@ -253,4 +259,5 @@ export default {
 .spab-move
 {
 	transition: transform 0.4s ease;
-}</style>
+}
+</style>

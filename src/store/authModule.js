@@ -6,7 +6,9 @@ export const authModule = {
 		currModal: 'login-modal-content',
 		isLocalhost: false,
 		authMode: 1,
+		id: 0,
 		authShow: true,
+		currentPath: '',
 	}),
 	/*
 	#login-modal-content, #signup-modal-content, #forgot-password-modal-content, #code-modal-content, #password-modal-content, #user-modal-content, #exit-modal-content
@@ -25,9 +27,15 @@ export const authModule = {
 		setAuthMode(state, authMode) {
 			state.authMode = authMode;
 		},
+		setId(state, id) {
+			state.id = id;
+		},
 		setAuthShow(state, authShow) {
 			state.authShow = authShow;
 		},
+		setCurrentPath(state, currentPath) {
+			state.currentPath = currentPath;
+		}
 	},
 
 	actions: {

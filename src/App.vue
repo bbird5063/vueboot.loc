@@ -1,9 +1,11 @@
 <template>
 	<navbar></navbar>
 	<div class="app">
-		<auth-form></auth-form>
+		<h1>ID = {{ $route.params.id }}</h1>
 		<!-- <router-view> - в него будут встраиваться компоненты из router.js -->
 		<router-view></router-view>
+		<auth-form></auth-form>
+
 		<!-- Кнопка-триггер модального окна -->
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-signup-modal">
 			Запустите демо модального окна
@@ -21,6 +23,8 @@ export default {
 		AuthForm,
 	},
 	mounted() {
+		// alert('App = ' + this.$route.params.id);
+		// alert(location);
 		if (
 			location.hostname.includes('192.168.0.100') ||
 			location.hostname.includes('localhost')
