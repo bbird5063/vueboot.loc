@@ -3,11 +3,11 @@ import axios from 'axios';
 export const authModule = {
 	state: () => ({
 		dataUser: '',
-		currModal: 'login-modal-content',
+		currModal: '',
 		isLocalhost: false,
 		authMode: 1,
 		id: 0,
-		authShow: true,
+		authShow: false,
 		currentPath: '',
 	}),
 	/*
@@ -21,8 +21,8 @@ export const authModule = {
 		setCurrModal(state, currModal) {
 			state.currModal = currModal;
 		},
-		setIsLocalhost(state, isLocalhost) {
-			state.isLocalhost = isLocalhost;
+		setIsLocalhost(state, bool) {
+			state.isLocalhost = bool;
 		},
 		setAuthMode(state, authMode) {
 			state.authMode = authMode;
@@ -30,12 +30,12 @@ export const authModule = {
 		setId(state, id) {
 			state.id = id;
 		},
-		setAuthShow(state, authShow) {
-			state.authShow = authShow;
+		setAuthShow(state, bool) {
+			state.authShow = bool;
 		},
 		setCurrentPath(state, currentPath) {
 			state.currentPath = currentPath;
-		}
+		},//
 	},
 
 	actions: {

@@ -1,13 +1,13 @@
 <template>
-	<navbar></navbar>
+	<navbar @openModal="openModal"></navbar>
 	<div class="app">
 		<h1>ID = {{ $route.params.id }}</h1>
 		<!-- <router-view> - в него будут встраиваться компоненты из router.js -->
 		<router-view></router-view>
-		<auth-form></auth-form>
+		<auth-form :nameModal="nameModal"></auth-form>
 
 		<!-- Кнопка-триггер модального окна -->
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-signup-modal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 			Запустите демо модального окна
 		</button>
 	</div>
@@ -21,6 +21,17 @@ export default {
 	components: {
 		Navbar,
 		AuthForm,
+	},
+	data() {
+		return {
+			nameModal: '',
+		}
+	},
+	methods: {
+		openModal(openNameModal) {
+			// alert('openNameModal ' + openNameModal);
+			this.nameModal = openNameModal;
+		}
 	},
 	mounted() {
 		// alert('App = ' + this.$route.params.id);

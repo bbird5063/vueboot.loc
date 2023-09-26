@@ -74,7 +74,8 @@ export default {
 			// this.$store.commit('auth/setAuthShow', true);
 			this.$store.commit('auth/setCurrModal', authModal);
 			this.$store.commit('auth/setAuthMode', authMode);
-
+			this.$emit('openModal', authModal);
+			// 'signup-modal-content''login-modal-content'
 			/*
 			// const modal = document.querySelector('#login-signup-modal');
 			const modal = new bootstrap.Modal(

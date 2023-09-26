@@ -280,6 +280,13 @@
 <script>
 import axios from 'axios';
 export default {
+	props: {
+		nameModal: {
+			type: String,
+			required: true,
+		},
+	},
+
 	data() {
 		return {
 			isLoading: false,
@@ -291,8 +298,16 @@ export default {
 			id: '',
 		}
 	},
-	methods: {
 
+	watch: {
+		nameModal(newNameModal) {
+			this.fadeIn('#' + newNameModal);
+			// this.nameModal = '';
+			// this.fadeOutIn(newNameModal);
+		}
+	},
+
+	methods: {
 
 		onSubmit(formElem) {
 			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/controller_login.php
@@ -442,7 +457,7 @@ export default {
 		fadeOutIn(elOut, elIn = '') {
 			console.log('== fadeOutIn ===========');
 			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
-			this.fadeOut('#' + elOut);
+			elOut ? this.fadeOut('#' + elOut) : false;
 			this.fadeIn('#' + elIn);
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
 			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
@@ -450,6 +465,7 @@ export default {
 	},
 
 	mounted() {
+		// alert(this.nameModal);
 		// alert('Auth = ' + this.$route.params.id);
 		// fadeIn('#' + $store.state.auth.currModal);
 		// alert('src\components\auth\AuthForm.vue  ' + this.$route.params.id);
@@ -478,6 +494,7 @@ export default {
 /*
 #login-modal-content,
 */
+#login-modal-content,
 #signup-modal-content,
 #forgot-password-modal-content,
 #code-modal-content,
