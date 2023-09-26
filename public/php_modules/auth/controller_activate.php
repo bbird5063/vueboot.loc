@@ -1,9 +1,9 @@
 <?php
 	require '_inc_first.php';
 	
-	/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
-	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
-	$ok = !empty($_POST)?true:false; 
+	/* Заменяем $ok т.к. в variables.php: $ok = !empty($POST['ok'])?true:false; , 
+	а в Ajax и "<button name="ok"...":	$POST['ok'] не передается */
+	$ok = !empty($POST)?true:false; 
 
 ////////////////////////////////////////////////////////////////////
 
@@ -38,11 +38,11 @@
 * Проверка введенных данных  
 */         
 	
-	if($ok && !empty($_POST['code']))
+	if($ok && !empty($POST['code']))
 	{
 		$sql = "SELECT *   
                 FROM `". BBR_DBPREFIX ."user`   
-                WHERE `hash` = '". escapeString($_POST['code']) ."'";  
+                WHERE `hash` = '". escapeString($POST['code']) ."'";  
         
 		$result = mysqlQuery($sql);
 		
@@ -50,7 +50,7 @@
         if($cnt_rows==0) 
 			$reg_error = 'Неправильный код!';
 	}
-	elseif($ok && empty($_POST['code']))
+	elseif($ok && empty($POST['code']))
 		$reg_error = 'Введите код!';
 		
     if($ok && empty($reg_error)) // при "...&& !isset($reg_error)" не работало!!!
@@ -58,10 +58,10 @@
             include_once './functions.php';
 			//require './functions.php';
 			
-            if($user_data = getLogin($_POST['code'], true)) /* getLogin - Функция автологина, которая по "user.hash = $_POST['code'] ("AND `activate` = 1" - это false по умолчанию )" получает записть $res */
+            if($user_data = getLogin($POST['code'], true)) /* getLogin - Функция автологина, которая по "user.hash = $POST['code'] ("AND `activate` = 1" - это false по умолчанию )" получает записть $res */
             {
                 
-				//if($_POST['new_num'] == 1) // Активация в любом случае
+				//if($POST['new_num'] == 1) // Активация в любом случае
 					mysqlQuery("UPDATE `". BBR_DBPREFIX ."user`   
                             	SET  `activate` = 1  
                             	WHERE `id` = '". $user_data['id'] ."'  
@@ -69,7 +69,7 @@
                                    
                 $_SESSION['user_data'] = $user_data;                
                 
-           		if($_POST['remember']) 
+           		if($POST['remember']) 
 			/* 
 			setAutologin: 
 			получает аргумент user.id, 
@@ -87,19 +87,19 @@
                                WHERE `activate` != 1
                                AND `date` < NOW() - INTERVAL 10 DAY
                               ");                    
-                if($_POST['new_num'] == 1) {
-					$_POST['new_num'] = 0;
+                if($POST['new_num'] == 1) {
+					$POST['new_num'] = 0;
 					//$data['contentIn'] = $for_contentIn[''];
 					//reDirect('reg=off', 'num=0', 'id=0');
 				}	
-				elseif($_POST['new_num'] == 2) {
-					$_POST['new_num'] = 0;
+				elseif($POST['new_num'] == 2) {
+					$POST['new_num'] = 0;
 					//$data['contentIn'] = $for_contentIn['new_pw'];
 					$data['contentIn'] = '#password-modal-content';
 					//reDirect('reg=new_pw', 'num=0', 'id=0'); '#password-modal-content'
 				}
-				elseif($_POST['new_num'] == 3) {
-					$_POST['new_num'] = 0;
+				elseif($POST['new_num'] == 3) {
+					$POST['new_num'] = 0;
 					//$data['contentIn'] = $for_contentIn['new_pw'];
 					$data['contentIn'] = '#password-modal-content';
 					//reDirect('reg=new_pw', 'num=0', 'id=0'); '#password-modal-content'

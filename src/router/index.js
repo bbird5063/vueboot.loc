@@ -15,33 +15,33 @@ const routes = [
 		component: Main,
 	},
 	{
-		path: '/PageTest5/:authMode/:id',
+		path: '/PageTest5',
 		name: 'P5',
 		component: P5,
 	},
 	{
-		path: '/PageTest6/:authMode/:id',
+		path: '/PageTest6',
 		name: 'P6',
 		component: P6,
 	},
 	{
-		path: '/PageTest7/:authMode/:id',
+		path: '/PageTest7',
 		name: 'P7',
 		component: P7,
 	},
 	{
-		path: '/PageTest8/:authMode/:id',
+		path: '/PageTest8',
 		name: 'P8',
 		component: P8,
 	},
 	{
-		path: '/PageTest9/:authMode/:id',
+		path: '/PageTest9',
 		name: 'P9',
 		component: P9,
 	},
 	{
 		// добавил (:id - динамический параметр)
-		path: '/rows/:authMode/:id',
+		path: '/rows/:id',
 		component: RowIdPage,
 	},
 ];

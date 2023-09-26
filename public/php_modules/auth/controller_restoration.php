@@ -1,9 +1,9 @@
 <?php
 	require '_inc_first.php';
 	
-	/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
-	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
-	$ok = !empty($_POST)?true:false; 
+	/* Заменяем $ok т.к. в variables.php: $ok = !empty($POST['ok'])?true:false; , 
+	а в Ajax и "<button name="ok"...":	$POST['ok'] не передается */
+	$ok = !empty($POST)?true:false; 
 
 ////////////////////////////////////////////////////////////////////
 
@@ -40,13 +40,13 @@
 
     if($ok)  
     {  
-		if($_POST['new_num'] != 3) { // не "восстановление пароля"
-        	if(!$_POST['login'])  
+		if($POST['new_num'] != 3) { // не "восстановление пароля"
+        	if(!$POST['login'])  
             	$reg_info[] = 'Вы не ввели логин.';  
   
-        	if(!$_POST['email'])  
+        	if(!$POST['email'])  
             	$reg_info[] = 'Для восстановления пароля нужен почтовый адрес.';  
-        	elseif(!preg_match("/^[a-z0-9_.-]+@([a-z0-9]+.)+[a-z]{2,6}$/i", $_POST['email']))  
+        	elseif(!preg_match("/^[a-z0-9_.-]+@([a-z0-9]+.)+[a-z]{2,6}$/i", $POST['email']))  
             	$reg_info[] = 'Неверный формат e-mail.'; 
 		}			
     }
@@ -55,8 +55,8 @@
 	if($ok && !count($reg_info))
 	{             
 
-		$login = ($_POST['new_num']==3)?($_SESSION['user_data']['login']):(escapeString($_POST['login']));
-		$email = ($_POST['new_num']==3)?($_SESSION['user_data']['email']):(escapeString($_POST['email']));
+		$login = ($POST['new_num']==3)?($_SESSION['user_data']['login']):(escapeString($POST['login']));
+		$email = ($POST['new_num']==3)?($_SESSION['user_data']['email']):(escapeString($POST['email']));
 		
         $res = mysqlQuery("SELECT *   
                             FROM `". BBR_DBPREFIX ."user`   
@@ -88,13 +88,13 @@
                         WHERE `id` = '". $row['id'] ."'  
                        ") ;      
       
-            $subject = ($_POST['new_num'] == 3?"Изменение пароля":"Восстановление доступа");      
+            $subject = ($POST['new_num'] == 3?"Изменение пароля":"Восстановление доступа");      
             $message = "С Вашего электронного почтового адреса поступила заявка на восстановление  
                         доступа к аккаунту на сайте <b>". $_SERVER['HTTP_HOST'] ."</b><br>\n     
                         Для доступа в аккаунт пройдите по 
                         <a href=\"". href("reg=activate", "id=$hash", "num=2") ."\" >этой ссылке</a><br />
                         и введите в поле активации этот код: <b>". $hash ."</b>";                         
- 			//$_POST['new_num'] = 2;
+ 			//$POST['new_num'] = 2;
 			
             if(BBR_DBSERVER == 'localhost')
 				file_put_contents('' . $subject . '.html', $message);
@@ -115,7 +115,7 @@
 			{				
                 $info_in = 'На почтовый адрес <b>'. $row['email'] .'</b> отправлен код восстановления';
 				
-				//$_POST['new_num'] = 2;
+				//$POST['new_num'] = 2;
 				//$data['contentIn'] = "#code-modal-content";
 				//$data['contentIn'] = $for_contentIn['activate'];
 				$data['contentIn'] = '#code-modal-content';
@@ -128,8 +128,8 @@
    elseif(!empty($_SESSION['login'])) /* регистрироваля пользователь, логин которового был в базе, но он не был активирован.  */
    {
 		//dbg($_SESSION['login'], true); // не наступит - наступил: регистрация логина, который есть в базе, в модальном называем "Активировать" 
-		$_POST['login'] = $_SESSION['login'];	
-		$_POST['email'] = $_SESSION['email'];	
+		$POST['login'] = $_SESSION['login'];	
+		$POST['email'] = $_SESSION['email'];	
    }
    
 ////////////////////////////////////////////////////////////////////

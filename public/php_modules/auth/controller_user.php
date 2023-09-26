@@ -1,9 +1,9 @@
 <?php
 	require '_inc_first.php';
 	
-	/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
-	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
-	$ok = !empty($_POST)?true:false; 
+	/* Заменяем $ok т.к. в variables.php: $ok = !empty($POST['ok'])?true:false; , 
+	а в Ajax и "<button name="ok"...":	$POST['ok'] не передается */
+	$ok = !empty($POST)?true:false; 
 
 ////////////////////////////////////////////////////////////////////
 
@@ -39,27 +39,27 @@
 
     if($ok)  
     {  
-        if(!$_POST['login'])  
+        if(!$POST['login'])  
             $reg_info[] = 'Вы не ввели логин.';  
-        elseif(mb_strlen($_POST['login']) > 30)  
+        elseif(mb_strlen($POST['login']) > 30)  
             $reg_info[] = 'Длина логина не должна превышать 30 символов';  
 
-        if(!$_POST['password'])  
+        if(!$POST['password'])  
             $reg_info[] = 'Введите пароль.'; 
-        elseif(mb_strlen($_POST['password']) < 8)  
+        elseif(mb_strlen($POST['password']) < 8)  
             $reg_info[] = 'Пароли должны содержать не менее восьми символов.';   
-        elseif($_POST['password'] !== $_POST['password2'])  
+        elseif($POST['password'] !== $POST['password2'])  
             $reg_info[] = 'Пароли не совпадают!';  
   
-        if(!$_POST['email'])  
+        if(!$POST['email'])  
             $reg_info[] = 'Для восстановления пароля нужен почтовый адрес.'; 
-        elseif(!preg_match("/^[a-z0-9_.-]+@([a-z0-9]+.)+[a-z]{2,6}$/i", $_POST['email']))  
+        elseif(!preg_match("/^[a-z0-9_.-]+@([a-z0-9]+.)+[a-z]{2,6}$/i", $POST['email']))  
             $reg_info[] = 'Не верный формат E-mail';         
                  
           
         $res = mysqlQuery("SELECT *   
                             FROM `". BBR_DBPREFIX ."user`   
-                            WHERE `login` = '". escapeString($_POST['login']) ."'"  
+                            WHERE `login` = '". escapeString($POST['login']) ."'"  
                             );  
                      
         if(mysqli_num_rows($res) > 0)
@@ -69,14 +69,14 @@
 	 		$row = mysqli_fetch_array($res, MYSQLI_ASSOC);  // получаем массив из 1(0) строки
 			
 			$addstr = '';
-			if(empty($row['activate']) && !empty($row['email']) && $row['email'] == trim($_POST['email']))
+			if(empty($row['activate']) && !empty($row['email']) && $row['email'] == trim($POST['email']))
 			{
 				$addstr = ' с e-mail: <b>' . $row['email'] . '</b>, но он не активирован! <br>Активировать?<br><br><a href=' . href('reg=restoration','id=0') . '>Активация</a><br><br>';
 				$_SESSION['login'] = $row['login'];
 				$_SESSION['email'] = $row['email'];
 			}
-            $reg_info[] = 'Есть у нас уже один <b>'. htmlspecialchars($_POST['login']) . '!</b><br>' . $addstr;
-			$_POST['login'] = '';
+            $reg_info[] = 'Есть у нас уже один <b>'. htmlspecialchars($POST['login']) . '!</b><br>' . $addstr;
+			$POST['login'] = '';
 		}
 
 /**   
@@ -91,9 +91,9 @@
 			
              $res = mysqlQuery("INSERT INTO `". BBR_DBPREFIX ."user`  
                          SET 
-                         `login`    = '". escapeString($_POST['login']) ."',  
-                         `password` = '". md5($_POST['password'] . BBR_SALT) ."',   
-                         `email`    = '". escapeString($_POST['email']) ."'"); 
+                         `login`    = '". escapeString($POST['login']) ."',  
+                         `password` = '". md5($POST['password'] . BBR_SALT) ."',   
+                         `email`    = '". escapeString($POST['email']) ."'"); 
  			
 			$id =  mysqli_insert_id($_SESSION['db_connect']);              
             $hash = md5(randStr() . $id);  
@@ -102,7 +102,7 @@
                         SET  `hash` = '". $hash ."'   
                         WHERE `id` = '". $id ."'   
                        ") ;             
-			$_SESSION['email'] = $_POST['email']; /*  activate_controller.php: 'На почтовый адрес ' . (isset($_SESSION['email'])? ... */
+			$_SESSION['email'] = $POST['email']; /*  activate_controller.php: 'На почтовый адрес ' . (isset($_SESSION['email'])? ... */
 			$subject = "Активация учетной записи";       
             $message = "С Вашего электронного почтового адреса поступила заявка на 
                         aктивацию учетной записи на сайте <b>". $_SERVER['HTTP_HOST'] ."</b><br>\n 
@@ -121,7 +121,7 @@
 				require 'bbr_mailer.php';				
             	$mail = new BBR_Mailer($message); 
    
-            	$mail -> createTo($_POST['email']);  
+            	$mail -> createTo($POST['email']);  
             	$mail -> createSubject($subject);  
             	$mail -> createFrom(BBR_SUPPORT_EMAIL, BBR_SUPPORT_EMAIL); 
             	$mail -> setHtml();  
@@ -130,8 +130,8 @@
 
             if(!$reg_error) 
 			{				
-                $reg_info_page[] = 'На почтовый адрес '. $_POST['email'] .' отправлен код регистрации';
-				$_POST['new_num'] = 1;
+                $reg_info_page[] = 'На почтовый адрес '. $POST['email'] .' отправлен код регистрации';
+				$POST['new_num'] = 1;
 				//$data['contentIn'] = $for_contentIn['activate'];
 				$data['contentIn'] = '#code-modal-content';
 				//reDirect('reg=activate', 'id=0', 'num=1'); '#code-modal-content'

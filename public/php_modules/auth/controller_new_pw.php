@@ -1,9 +1,9 @@
 <?php
 	require '_inc_first.php';
 	
-	/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
-	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
-	$ok = !empty($_POST)?true:false; 
+	/* Заменяем $ok т.к. в variables.php: $ok = !empty($POST['ok'])?true:false; , 
+	а в Ajax и "<button name="ok"...":	$POST['ok'] не передается */
+	$ok = !empty($POST)?true:false; 
 
 ////////////////////////////////////////////////////////////////////
 
@@ -29,11 +29,11 @@
 
     if($ok)  
     {  
-        if(!$_POST['password'] || !$_POST['password2'])  
+        if(!$POST['password'] || !$POST['password2'])  
             $reg_info[] = 'Введите пароль!'; 
-        elseif(mb_strlen($_POST['password']) < 8)  
+        elseif(mb_strlen($POST['password']) < 8)  
             $reg_info[] = 'Пароли должны содержать не менее восьми символов!';   
-        elseif($_POST['password'] !== $_POST['password2'])  
+        elseif($POST['password'] !== $POST['password2'])  
             $reg_info[] = 'Пароли не совпадают!';  
 
 /**   
@@ -46,11 +46,11 @@
             //include_once './modules/register/functions.php';  
             require './functions.php';            
             mysqlQuery("UPDATE `". BBR_DBPREFIX ."user`    
-                        SET  `password` = '". md5($_POST['password'] . BBR_SALT) ."'   
+                        SET  `password` = '". md5($POST['password'] . BBR_SALT) ."'   
                         WHERE `id` = '". $_SESSION['user_data']['id'] ."'   
                        ") ;             
 			
-			$_POST['new_num'] = 0;
+			$POST['new_num'] = 0;
 			//$data['contentIn'] = $for_contentIn[''];
 			//reDirect('reg=off', 'id=0', 'num=0');
         } 

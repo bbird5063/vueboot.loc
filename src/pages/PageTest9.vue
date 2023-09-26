@@ -182,9 +182,7 @@ export default {
 	mounted() {
 		//alert(document.location.hostname + '/p10'); // http://192.168.0.100:8080 (можно без document.)
 		// fadeIn('#' + $store.state.auth.currModal);
-		alert('P9 = ' + this.$route.params.id);
-		console.log('##################');
-		console.log(this.$route);
+		// alert('P9 = ' + this.$route.params.id);
 
 
 		console.log(location);

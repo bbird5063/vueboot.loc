@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<h1>Страница с постами</h1>
-		<h2>ID = {{ $route.params.id }}</h2>
 		<my-input v-model="searchQuery" placeholder="Поиск..." />
 		<div class="app_btns">
 			<my-button @click="showDialog" style="margin: 15px 0">

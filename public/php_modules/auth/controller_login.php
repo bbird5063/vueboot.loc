@@ -1,9 +1,9 @@
 <?php
 require_once '_inc_first.php';
 
-/* Заменяем $ok т.к. в variables.php: $ok = !empty($_POST['ok'])?true:false; , 
-	а в Ajax и "<button name="ok"...":	$_POST['ok'] не передается */
-$ok = !empty($_POST) ? true : false;
+/* Заменяем $ok т.к. в variables.php: $ok = !empty($POST['ok'])?true:false; , 
+	а в Ajax и "<button name="ok"...":	$POST['ok'] не передается */
+$ok = !empty($POST) ? true : false;
 
 ////////////////////////////////////////////////////////////////////
 
@@ -39,10 +39,10 @@ require_once 'mysql.php';
  * Проверка введенных данных  
  */
 if ($ok) {
-	if (!$_POST['login'])
+	if (!$POST['login'])
 		$reg_info[] = 'Вы не ввели логин.';
 
-	elseif (!$_POST['password'])
+	elseif (!$POST['password'])
 		$reg_info[] = 'Введите пароль!';
 }
 
@@ -59,19 +59,19 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 } elseif ($ok && !count($reg_info)) /* !isset($_COOKIE['hash']) когда-то при правильном входе пользователь не поставил причку "запомнить" */ {
 	$res = mysqlQuery("SELECT *   
                            FROM `" . BBR_DBPREFIX . "user`  
-                           WHERE `login`    = '" . escapeString($_POST['login']) . "'");
+                           WHERE `login`    = '" . escapeString($POST['login']) . "'");
 
 	if (mysqli_num_rows($res) > 0) {
 		mysqli_data_seek($res, 0); // Перемещает указатель результата на выбранную (0) строку
 		//$row = mysqli_fetch_array($res);
 		$row = mysqli_fetch_array($res, MYSQLI_ASSOC);  // получаем массив из 1 строки таблицы
 
-		if ($row['password'] == md5($_POST['password'] . BBR_SALT) && !empty($row['activate'])) {
+		if ($row['password'] == md5($POST['password'] . BBR_SALT) && !empty($row['activate'])) {
 			/* в случае наличия в таблице user записи login, password, activate: присваиваем данные пользователя в $_SESSION['user_data'] */
 			/*$_SESSION['user_data'] = mysqli_fetch_assoc($res);*/
 			$_SESSION['user_data'] = $row;
 
-			if ($_POST['remember']) /* юзер поставил причку "запомнить" */ {
+			if ($POST['remember']) /* юзер поставил причку "запомнить" */ {
 				//include_once './modules/register/functions.php';
 				//require_once 'modules/register/functions.php';
 				require_once './functions.php';
@@ -80,7 +80,7 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 					*/
 			}
 		} elseif (empty($row['activate']) && !empty($row['email'])) {
-			$_POST['new_num'] = 2;
+			$POST['new_num'] = 2;
 
 			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!
 				<br>Активировать?<br><br><a id='forgotModal-num_0' href='javascript:void(0)'>Активация</a><br><br>";
@@ -91,7 +91,7 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 			$reg_info[] = 'Пароль не совпадает!';
 		}
 	} else
-		$reg_info[] = 'Пользователя с логином <b>' . $_POST['login'] . '</b> нет в нашей базе!';
+		$reg_info[] = 'Пользователя с логином <b>' . $POST['login'] . '</b> нет в нашей базе!';
 }
 if (isset($_SESSION['user_data'])) {
 	$reg_info_page[] = "Здорово, <b>" . $_SESSION['user_data']['login'] . "</b>! Где шлялся?";

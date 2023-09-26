@@ -5,20 +5,20 @@
         <tr class="active">
           <th style="width: 20%">Страница</th>
           <th style="width: 80%">Описание</th>
-        </tr>
-      </thead>
+				</tr>
+			</thead>
       <tbody>
         <tr>
           <td>P1</td>
           <td>
             До декомпозиции. Один компонент. <br />
             Используется 'my-button'
-          </td>
-        </tr>
+					</td>
+				</tr>
         <tr>
           <td>P2</td>
           <td>Декомпозиция</td>
-        </tr>
+				</tr>
         <tr>
           <td>P3</td>
           <td>
@@ -29,8 +29,8 @@
             4. Добавление в таблицу: controller_insert.php;<br />
             5. Удаление из таблицы: controller_delete.php;<br />
             6. Сортировка в watch;<br />
-          </td>
-        </tr>
+					</td>
+				</tr>
         <tr>
           <td>P4</td>
           <td>
@@ -42,12 +42,12 @@
             --------------------------------------------<br />
             1. При добавлении - нет ID;<br />
             2. При добавлении и удалении - неправильная пагинация;<br />
-          </td>
-        </tr>
+					</td>
+				</tr>
         <tr>
           <td>P5</td>
           <td>1. лента с подгрузкой;<br /></td>
-        </tr>
+				</tr>
         <tr>
           <td>P6</td>
           <td>
@@ -56,27 +56,34 @@
             2. Создаем собственные директивы V-INTERSECTION и V-FOCUS;<br />
             --------------------------------------------<br />
             1. Вначале загружает две страницы;<br />
-          </td>
-        </tr>
+					</td>
+				</tr>
         <tr>
           <td>P7</td>
           <td>1. Vuex. Глобальное состояние приложения; <br /></td>
-        </tr>
+				</tr>
         <tr>
           <td>P8</td>
           <td>1. Vuex. Все работает; <br /></td>
-        </tr>
+				</tr>
         <tr>
           <td>P9</td>
           <td>1. Composition API<br /></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </template>
 
 <script>
-export default {};
+	export default {
+		data() {
+			return {}
+		},
+		mounted() {
+			alert('Main.vue = ' + this.$route.params.id);
+		},
+	};
 </script>
 
 <style scoped></style>
