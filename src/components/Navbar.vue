@@ -2,7 +2,7 @@
 	<!-- <div class="navbar"> -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#" @click="$router.push('/')">HS</a>
+			<a class="navbar-brand" href="#" @click="$router.push('/1/0')">HS</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
 				<span class="navbar-toggler-icon"></span>
 			</button>

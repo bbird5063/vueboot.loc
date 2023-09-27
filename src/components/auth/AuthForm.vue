@@ -1,4 +1,8 @@
 <template>
+	<!-- Button trigger modal -->
+	<button hidden id="open-code-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-signup-modal">
+		Launch demo modal
+	</button>
 	<!-- Modal v-if="$store.state.auth.authShow" -->
 	<div id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -12,12 +16,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="errHtml" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
-							{{ errHtml }}
+						<div v-if="Login - Form_error" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 						</div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_login.php" method="post" id="Login-Form" role="login-modal-content">
-						<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
+						<div v-if="infoHtml" id="Login-Form_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -162,7 +165,6 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
-							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ isset()&&$route.params.id.length>1?$route.params.id:'' }}">
 							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ isset($route.params.id) && $route.params.id.length>1 ? $route.params.id : '' }}">
 						</div>
 
@@ -295,7 +297,10 @@ export default {
 
 	watch: {
 		nameModal(newNameModal) {
-			this.fadeIn('#' + newNameModal);
+			// alert('AuthForm(watch): ' + newNameModal);
+			// window.$('#login-signup-modal').modal("toggle");
+			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"))
+			this.fadeOutIn('', newNameModal)
 			// $('#' + newNameModal).fadeIn('fast');
 		}
 	},
@@ -427,7 +432,7 @@ export default {
 
 				opacity -= opacity * 0.1;
 			}, 10);
-			return true;
+			// return true;
 		},
 
 		fadeIn(el) {
@@ -448,7 +453,6 @@ export default {
 			}, 10);
 		},
 
-
 		async fade__OutIn(elOut, elIn = '') {
 			try {
 				const response = await this.fadeOut('#' + elOut);
@@ -462,7 +466,6 @@ export default {
 			}
 		},
 
-
 		fade_OutIn(elOut, elIn = '') {
 			console.log('== fadeOutIn ===========');
 			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
@@ -471,26 +474,18 @@ export default {
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
 			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
 		},
+
 		fadeOutIn(elOut, elIn = '') {
 
 			console.log('== fadeOutIn ===========');
 			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
 
 			elOut ? this.fadeOut('#' + elOut) : false;
-			this.fadeIn('#' + elIn);
-			/*
-			$(elOut).fadeOut('fast', function () {
-				$(elIn).fadeIn('fast');
-			});
-			
-			$('#' + elOut).fadeOut('fast');
-			$('#' + elIn).fadeIn('fast');
-			*/
+			elIn ? this.fadeIn('#' + elIn) : false;
+			// this.fadeIn('#' + elIn);
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
 			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
 		},
-
-
 	},
 
 	mounted() {
