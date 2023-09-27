@@ -10,6 +10,11 @@ import RowIdPage from '@/pages/RowIdPage';
 
 const routes = [
 	{
+		path: '/',
+		name: 'Main',
+		component: Main,
+	},
+	{
 		path: '/:authMode/:id',
 		name: 'Main',
 		component: Main,

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="home">
 		<h1>Страница с постами</h1>
 		<my-input v-model="searchQuery" placeholder="Поиск..." />
 		<div class="app_btns">
@@ -101,6 +101,7 @@ export default {
 		},
 
 		showDialog() {
+			$('.home').css('background', 'blue');
 			this.dialodVisible = true;
 		},
 

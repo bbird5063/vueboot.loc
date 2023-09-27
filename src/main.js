@@ -8,17 +8,17 @@ import directives from '@/directives';
 const app = createApp(App);
 
 components.forEach(component => {
-  app.component(component.name, component);
+	app.component(component.name, component);
 });
 
 directives.forEach(directive => {
-  app.directive(directive.name, directive);
+	app.directive(directive.name, directive);
 });
 
-/*
+
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
-*/
+
 import 'popper.js';
 import 'bootstrap';
 import './bootstrap/bootstrap.scss';

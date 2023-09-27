@@ -12,7 +12,6 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<h1>ID = {{ $route.params.id }}</h1>
 						<div v-if="errHtml" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 							{{ errHtml }}
 						</div>
@@ -21,7 +20,7 @@
 						<div v-if="infoHtml" id="Login-Form_info">{{ infoHtml }}</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
@@ -50,7 +49,6 @@
 			<!-- END LOGIN -->
 
 			<!-- START SIGNUP -->
-			<!-- <div v-show="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content"> -->
 			<!-- <div v-if="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content"> -->
 			<div id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
@@ -138,45 +136,11 @@
 					</p>
 					<p v-if="$store.state.auth.authMode == 3">
 						Ваши личные данные:
-						<a id="userModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'user-modal-content')" href="#" for="nextPage">ваш профиль</a>
+						<a id="userModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'user-modal-content')" href="#" for="nextPage">ваш профиль</a>
 					</p>
 				</div>
 			</div>
 			<!-- END FORGOT PASSWORD -->
-
-			<!-- START EXIT -->
-			<!-- <div v-show="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content"> -->
-			<div id="exit-modal-content" class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Выход</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div>
-						<div v-if="errHtml" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
-							{{ errHtml }}
-						</div>
-					</div>
-
-					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_exit.php" id="Exit-Form" method="post" role="exit-modal-content">
-						<div v-if="infoHtml" id="Exit-Form_info">{{ infoHtml }}</div>
-						<div class="input-group mb-3">
-							<!-- <input type="hidden" name="form[test]" value="1" /> -->
-						</div>
-						<div class="d-grid gap-2">
-							<button name="cancel" value="1" type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">
-								Отмена
-							</button>
-							<button name="ok" value="1" type="submit" class="btn btn-success">
-								Выйти
-							</button>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-				</div>
-			</div>
-			<!-- END EXIT -->
 
 			<!-- START CODE -->
 			<!-- <div v-show="$store.state.auth.currModal == 'code-modal-content'" class="modal-content" id="code-modal-content"> -->
@@ -198,7 +162,8 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
-							<input v-focus id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ $route.params.id }}">
+							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ isset()&&$route.params.id.length>1?$route.params.id:'' }}">
+							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ isset($route.params.id) && $route.params.id.length>1 ? $route.params.id : '' }}">
 						</div>
 
 						<div class="d-grid gap-2">
@@ -259,19 +224,48 @@
 
 						<div class="d-grid gap-2">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Создать аккаунт!
+								Изменить пароль!
 							</button>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<p>
-						Имеете аккаунт?
-						<a id="loginModal" @click.prevent="this.$store.commit('auth/setCurrModal', 'login-modal-content')" href="#" for="nextPage">Войти в аккаунт</a>
+						<a id="loginModal" @click.prevent="fadeOutIn('user-modal-content', 'forgot-password-modal-content')" href="#" for="nextPage">Изменить пароль</a>
 					</p>
 				</div>
 			</div>
 			<!-- END USER -->
+
+			<!-- START EXIT -->
+			<!-- <div v-show="$store.state.auth.currModal == 'exit-modal-content'" class="modal-content" id="exit-modal-content"> -->
+			<div id="exit-modal-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Выход</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="errHtml" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+							{{ errHtml }}
+						</div>
+					</div>
+
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_exit.php" id="Exit-Form" method="post" role="exit-modal-content">
+						<div v-if="infoHtml" id="Exit-Form_info">{{ infoHtml }}</div>
+						<div class="input-group mb-3">
+						</div>
+						<div class="d-grid gap-2">
+							<button name="ok" value="1" type="submit" class="btn btn-success">
+								Выйти
+							</button>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+			<!-- END EXIT -->
 
 		</div>
 	</div>
@@ -302,8 +296,7 @@ export default {
 	watch: {
 		nameModal(newNameModal) {
 			this.fadeIn('#' + newNameModal);
-			// this.nameModal = '';
-			// this.fadeOutIn(newNameModal);
+			// $('#' + newNameModal).fadeIn('fast');
 		}
 	},
 
@@ -434,6 +427,7 @@ export default {
 
 				opacity -= opacity * 0.1;
 			}, 10);
+			return true;
 		},
 
 		fadeIn(el) {
@@ -454,7 +448,22 @@ export default {
 			}, 10);
 		},
 
-		fadeOutIn(elOut, elIn = '') {
+
+		async fade__OutIn(elOut, elIn = '') {
+			try {
+				const response = await this.fadeOut('#' + elOut);
+				if (response) {
+					this.fadeIn('#' + elIn);
+					this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
+					!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
+				}
+			} catch (e) {
+				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
+			}
+		},
+
+
+		fade_OutIn(elOut, elIn = '') {
 			console.log('== fadeOutIn ===========');
 			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
 			elOut ? this.fadeOut('#' + elOut) : false;
@@ -462,6 +471,26 @@ export default {
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
 			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
 		},
+		fadeOutIn(elOut, elIn = '') {
+
+			console.log('== fadeOutIn ===========');
+			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
+
+			elOut ? this.fadeOut('#' + elOut) : false;
+			this.fadeIn('#' + elIn);
+			/*
+			$(elOut).fadeOut('fast', function () {
+				$(elIn).fadeIn('fast');
+			});
+			
+			$('#' + elOut).fadeOut('fast');
+			$('#' + elIn).fadeIn('fast');
+			*/
+			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
+			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
+		},
+
+
 	},
 
 	mounted() {
