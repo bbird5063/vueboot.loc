@@ -44,7 +44,7 @@ export default {
 		} else {
 			this.$store.commit('auth/setIsLocalhost', false);
 			// this.$store.actions.auth.updateUser();
-			this.$store.dispatch('auth/updateUser')
+			this.$store.dispatch('auth/updateUser');
 		}
 		console.log('==dataUser========================');
 		console.table(this.$store.state.auth.dataUser);

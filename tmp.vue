@@ -1,7 +1,7 @@
 <template>
 	<!-- Button trigger modal -->
 	<button hidden id="open-code-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-signup-modal">
-		Launch modal
+		Launch demo modal
 	</button>
 	<!-- Modal v-if="$store.state.auth.authShow" -->
 	<div id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -16,11 +16,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="divErr == 'login-modal-content_error'" id="login-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+						<div v-if="Login-Form_error" id="Login-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 						</div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_login.php" method="post" id="Login-Form" role="login-modal-content">
-						<div v-if="divInfo == 'login-modal-content_info'" id="login-modal-content_info"></div>
+						<div v-if="Login-Form_info" id="Login-Form_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -60,11 +60,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="divErr == 'signup-modal-content_error'" id="signup-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
+						<div v-if="Signin-Form_error" id="Signin-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 						</div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
-						<div v-if="divInfo == 'signup-modal-content_info'" id="signup-modal-content_info"></div>
+						<div v-if="Signin-Form_info" id="Signin-Form_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -109,10 +109,10 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="divErr == 'forgot-password-modal-content_error'" id="forgot-password-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
+						<div v-if="Forgot-Password-Form_error" id="Forgot-Password-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_restoration.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
-						<div v-if="divInfo == 'forgot-password-modal-content_info'" id="forgot-password-modal-content_info"></div>
+						<div v-if="Forgot-Password-Form_info" id="Forgot-Password-Form_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="forgot-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -145,21 +145,22 @@
 			<!-- START CODE -->
 			<!-- <div v-show="$store.state.auth.currModal == 'code-modal-content'" class="modal-content" id="code-modal-content"> -->
 			<div class="modal-content" id="code-modal-content">
+
 				<div class="modal-header">
 					<h5 class="modal-title">Восстановление доступа</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="divErr == 'code-modal-content_error'" id="code-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
+						<div v-if="Code-Form_error" id="Code-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
 
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_activate.php" id="Code-Form" method="post" role="code-modal-content">
-						<div v-if="divInfo == 'code-modal-content_info'" id="code-modal-content_info"></div>
+						<div v-if="Code-Form_info" id="Code-Form_info"></div>
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
-							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="">
+							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" @input="id = $event.target.value" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="{{ isset($route.params.id) && $route.params.id.length>1 ? $route.params.id : '' }}">
 						</div>
 
 						<div class="d-grid gap-2">
@@ -185,10 +186,10 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="divErr == 'user-modal-content_error'" id="user-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
+						<div v-if="Signin-Form_error" id="Signin-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
-					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="user-modal-content">
-						<div v-if="divInfo == 'user-modal-content_info'" id="user-modal-content_info"></div>
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
+						<div v-if="Signin-Form_info" id="Signin-Form_info"></div>
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -240,11 +241,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="Exit - Form_error" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
+						<div v-if="Exit-Form_error" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
 
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_exit.php" id="Exit-Form" method="post" role="exit-modal-content">
-						<div v-if="Exit - Form_info" id="Exit-Form_info"></div>
+						<div v-if="Exit-Form_info" id="Exit-Form_info"></div>
 						<div class="input-group mb-3">
 						</div>
 						<div class="d-grid gap-2">
@@ -276,21 +277,19 @@ export default {
 	data() {
 		return {
 			isLoading: false,
-			//divErrId: '',
+			divErrId: '',
 			errHtml: '',
 			infoHtml: '',
-			//errHtmlIn: '',
-			//infoHtmlIn: '',
-			divErr: '',
-			divInfo: '',
-			//id: '',
+			errHtmlIn: '',
+			infoHtmlIn: '',
+			id: '',
 		}
 	},
 
 	watch: {
 		nameModal(newNameModal) {
-			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
-			this.fadeOutIn('', newNameModal);
+			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"))
+			this.fadeOutIn('', newNameModal)
 		}
 	},
 
@@ -313,70 +312,94 @@ export default {
 					post += '&' + formElem.target[key].name + '=' + formElem.target[key].value;
 				}
 				if (formElem.target[key].type == 'checkbox') {
+					objData[formElem.target[key].name] = formElem.target[key].checked; // можно удалить
 					post += '&' + formElem.target[key].name + '=' + formElem.target[key].checked;
 				}
 			}
-			post = post ? post.slice(1) : '';
+			post = post ? post.slice(1) : ''; // удаляем '&' в началеthis.$store.state.auth.authMode(при exit - post пустой)
 			post += post ? '&' : '';
 			post += 'new_num=' + this.$store.state.auth.authMode;
+			// const jsonData = JSON.stringify(objData); // можно удалить // {"login":"bbird5063@gmail.com","password":"Spab1433","remember":"1"}
+			console.log('url: ' + url + '  |  post: ' + post);
+			console.log(this.$store.state.auth.isLocalhost);
+			console.log(this.$store.state.auth.authMode);
+			console.log('=================================');
+			console.log(formElem);
+			console.log(formElem.target.id); // Login-Form
+			// console.log(formElem.target.role); // form_ajax
+			// console.log(formElem.target.for); // undefined нестандартный аргумент
+			console.log('=================================');
 			if (!this.$store.state.auth.isLocalhost) {
 				this.authAxios(url, post, formElem.target.id);
 			}
+
 		},
 
 		async authAxios(url, post, formId) {
-			let
-				errHtml = '',
-				infoHtml = '';
-
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
+				// alert(response.data.test);
+				console.log(response.data);
+				let
+					divRegInfoStart = '<div id="reg_info" style="text-align:center; vertical-align:middle;" class="alert alert-warning">',
+					divRegInfoPageStart = '<div id="reg_info_page" style="text-align:left; vertical-align:middle;" class="">',
+					divRegInfoEnd = '</div>',
+					errHtml = '',
+					infoHtml = '',
+					divErrId = '#' + formId + '_Error',
+					divInfoId = '#' + formId + '_info';
+
+
+
+				// contentOut = formElem.target.for + '-modal-content'; // не будет работать(for)
+
+				console.log('-----------------------');
+				console.log(divRegInfoStart);
+
 				errHtml += response.data.reg_error ? response.data.reg_error : '';
 				errHtml += response.data.reg_info ? response.data.reg_info : '';
-				errHtml += response.data.info_in ? response.data.info_in : '';
-				infoHtml += response.data.reg_info_page ? response.data.reg_info_page : '';
+				// errHtml += response.data.reg_info_page ? response.data.reg_info_page : '';
+				this.errHtml = errHtml ? errHtml : '';
+				this.infoHtml = response.data.reg_info_page ? response.data.reg_info_page : '';
+				// !errHtml && response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';
+				console.log('-----------------------');
+				console.log(errHtml);
+				console.log('-----------------------');
+				console.log(response.data.new_num);
+				console.log('-----------------------');
+				console.table(response.data.user_data);
 
-				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
+				if (!errHtml) {
+					response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
+					// response.data.user_data ? this.$store.commit('auth/setDataUser', response.data.user_data) : '';data.contentIn
 
-				this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
+					this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
 
-				if (response.data.url_act) {
-					console.log('--url_act---------------------');
-					console.log(response.data.url_act);
+					if (response.data.url_act) {
+						console.log('--url_act---------------------');
+						console.log(response.data.url_act);
+					}
+
+					if (response.data.contentIn) {
+						response.data.contentIn = response.data.contentIn.slice(1);
+						this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn);
+						// this.fadeOut('#' + this.$store.state.auth.currModal);
+						// this.fadeIn(response.data.contentIn);
+						// this.$store.commit('auth/setCurrModal', response.data.contentIn);
+						let divErr = document.querySelector('#' + response.data.contentIn + '_error');
+						divErr.innerHTML = response.data.info_in;
+						let divInfo = document.querySelector('#' + response.data.contentIn + '_info');
+						divErr.divInfo = response.data.info_page_in;
+					}
+					else if (this.$store.state.auth.currModal == 'exit-modal-content') {
+						this.fadeOutIn(this.$store.state.auth.currModal);
+					}
+					else {
+						this.fadeOutIn(this.$store.state.auth.currModal);
+					}
+					// this.$store.commit('auth/setCurrModal', response.data.contentIn ? response.data.contentIn : '');
 				}
-
-				if (response.data.contentIn) {
-					response.data.contentIn = response.data.contentIn.slice(1);
-					this.divErr = response.data.contentIn + '_error';
-					this.divInfo = response.data.contentIn + '_info';
-				}
-				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
-
-					document.querySelector(".btn-close").dispatchEvent(new Event("click"));
-					this.fadeOutIn(this.$store.state.auth.currModal)
-					this.$store.dispatch('auth/updateUser');
-					return;
-				}
-				else {
-					this.divErr = this.$store.state.auth.currModal + '_error';
-					this.divInfo = this.$store.state.auth.currModal + '_info';
-				}
-
-				response.data.contentIn ? this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn) : false;
-
-				console.log('===========================');
-				console.log('this.divErr = ' + this.divErr); // this.divErr = login-modal-content_error 
-				console.log('');
-				//const divErr = document.querySelector('#' + this.divErr);
-				const divErr = document.getElementById(this.divErr);
-				console.log(divErr); // null
-				console.log('errHtml = ' + errHtml);
-				divErr.innerHTML = errHtml;
-				//const divInfo = document.querySelector('#' + this.divInfo);
-				const divInfo = document.getElementById(this.divInfo);
-				divInfo.innerHTML = infoHtml;
-
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
 			} finally {
@@ -386,38 +409,81 @@ export default {
 
 		fadeOut(el) {
 			var opacity = 1;
+
 			var timer = setInterval(function () {
 				if (opacity <= 0.1) {
 					clearInterval(timer);
 					document.querySelector(el).style.display = 'none';
 				}
+
 				document.querySelector(el).style.opacity = opacity;
+
 				opacity -= opacity * 0.1;
 			}, 10);
+			// return true;
 		},
 
 		fadeIn(el) {
-			let opacity = 0.01;
+			var opacity = 0.01;
+
+			console.log('== document.querySelector(el).style.display ==');
+			console.log('el = ' + el);
 			document.querySelector(el).style.display = 'block';
-			let timer = setInterval(function () {
+
+			var timer = setInterval(function () {
 				if (opacity >= 1) {
 					clearInterval(timer);
 				}
+
 				document.querySelector(el).style.opacity = opacity;
+
 				opacity += opacity * 0.1;
 			}, 10);
 		},
 
+		async fade__OutIn(elOut, elIn = '') {
+			try {
+				const response = await this.fadeOut('#' + elOut);
+				if (response) {
+					this.fadeIn('#' + elIn);
+					this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
+					!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
+				}
+			} catch (e) {
+				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
+			}
+		},
+
+		fade_OutIn(elOut, elIn = '') {
+			console.log('== fadeOutIn ===========');
+			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
+			elOut ? this.fadeOut('#' + elOut) : false;
+			this.fadeIn('#' + elIn);
+			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
+			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
+		},
+
 		fadeOutIn(elOut, elIn = '') {
+
+			console.log('== fadeOutIn ===========');
+			console.log('elOut = ' + elOut + ' | elIn = ' + elIn);
+
 			elOut ? this.fadeOut('#' + elOut) : false;
 			elIn ? this.fadeIn('#' + elIn) : false;
+			// this.fadeIn('#' + elIn);
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
+			!elIn ? document.querySelector(".btn-close").dispatchEvent(new Event("click")) : false;
 		},
 	},
 
 	mounted() {
+		// alert(this.nameModal);
+		// alert('Auth = ' + this.$route.params.id);
+		// fadeIn('#' + $store.state.auth.currModal);
+		// alert('src\components\auth\AuthForm.vue  ' + this.$route.params.id);
 	},
 	created() {
+		// alert('src\components\auth\AuthForm.vue  ' + this.$route.params.id);
 	},
 };
 </script>
