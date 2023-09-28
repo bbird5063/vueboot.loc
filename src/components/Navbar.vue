@@ -1,5 +1,4 @@
 <template>
-	<!-- <div class="navbar"> -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#" @click="$router.push('/1/0')">HS</a>
@@ -13,7 +12,7 @@
 					</li>
 					<li v-if="$store.state.auth.dataUser" class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							User
+							{{ $store.state.auth.dataUser.login }}
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
 							<li>
@@ -39,7 +38,6 @@
 			</div>
 		</div>
 	</nav>
-	<!-- </div> -->
 </template>
 
 <script>
@@ -48,7 +46,6 @@ export default {
 		return {
 			currentPoint: '',
 			menu: [
-
 				{ path: '/PageTest5', name: 'P5' },
 				{ path: '/PageTest6', name: 'P6' },
 				{ path: '/PageTest7', name: 'P7' },
@@ -63,50 +60,11 @@ export default {
 			this.currentPoint = point.name;
 		},
 		openAuthModal(authModal, authMode) {
-			// let myModal = document.getElementById('login-signup-modal');
-			// let myInput = document.getElementById('login-login');
-			// console.log('----------openAuthModal---------');
-			// console.log(myModal);
-			// myModal.addEventListener('shown.bs.modal', function () {
-			// 	myInput.focus()
-			// })
-
-			// this.$store.commit('auth/setAuthShow', true);
 			this.$store.commit('auth/setCurrModal', authModal);
 			this.$store.commit('auth/setAuthMode', authMode);
 			this.$emit('openModal', authModal);
-			// 'signup-modal-content''login-modal-content'
-			/*
-			// const modal = document.querySelector('#login-signup-modal');
-			const modal = new bootstrap.Modal(
-				document.querySelector('#login-signup-modal')
-			);
-			modal.show();
-			*/
-			// console.log('=======================');
-			/*
-			document.addEventListener('DOMContentLoaded', function () {
-				console.log('---------------');
-				// получим кнопку id="btn" с помощью которой будем открывать модальное окно
-				// const btn = document.querySelector('#btn');
-				// активируем контент id="modal" как модальное окно
-				const modal = new bootstrap.Modal(
-				 document.querySelector('#login-signup-modal')
-				);
-				// при нажатии на кнопку
-				// btn.addEventListener('click', function() {
-				// открываем модальное окно
-	
-				console.log(modal);
-				modal.show();
-				// });
-			});
-			*/
 		},
 	},
-	mounted() {
-		// alert('Nav = ' + this.$route.params.id);
-	}
 };
 </script>
 

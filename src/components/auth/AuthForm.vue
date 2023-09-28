@@ -4,7 +4,7 @@
 		Launch modal
 	</button>
 	<!-- Modal v-if="$store.state.auth.authShow" -->
-	<div id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div @click="fadeOutIn($store.state.auth.currModal)" id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 
 			<!-- START LOGIN -->
@@ -12,7 +12,7 @@
 			<div id="login-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Вход в аккаунт</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('login-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -56,7 +56,7 @@
 			<div id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Регистрация</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('signup-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -105,7 +105,7 @@
 			<div id="forgot-password-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Установка доступа</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('forgot-password-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -147,7 +147,7 @@
 			<div class="modal-content" id="code-modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Восстановление доступа</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('code-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -181,7 +181,7 @@
 			<div id="user-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Ваш профиль</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('user-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -236,15 +236,15 @@
 			<div id="exit-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Выход</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('exit-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="Exit - Form_error" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
+						<div v-if="divErr == 'Exit-Form_error'" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
 
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_exit.php" id="Exit-Form" method="post" role="exit-modal-content">
-						<div v-if="Exit - Form_info" id="Exit-Form_info"></div>
+						<div v-if="divErr == 'Exit-Form_info'" id="Exit-Form_info"></div>
 						<div class="input-group mb-3">
 						</div>
 						<div class="d-grid gap-2">
@@ -276,14 +276,10 @@ export default {
 	data() {
 		return {
 			isLoading: false,
-			//divErrId: '',
 			errHtml: '',
 			infoHtml: '',
-			//errHtmlIn: '',
-			//infoHtmlIn: '',
 			divErr: '',
 			divInfo: '',
-			//id: '',
 		}
 	},
 
@@ -305,11 +301,9 @@ export default {
 			console.log(formElem.srcElement.attributes.action.nodeValue);
 			console.log(formElem.target.length);
 
-			const objData = {}; // можно удалить
 			let post = '';
 			for (let key = 0; key < formElem.target.length; key++) {
 				if (formElem.target[key].type !== 'submit' && formElem.target[key].type !== 'checkbox') {
-					objData[formElem.target[key].name] = formElem.target[key].value; // можно удалить
 					post += '&' + formElem.target[key].name + '=' + formElem.target[key].value;
 				}
 				if (formElem.target[key].type == 'checkbox') {
@@ -353,7 +347,6 @@ export default {
 				}
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
 
-					document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 					this.fadeOutIn(this.$store.state.auth.currModal)
 					this.$store.dispatch('auth/updateUser');
 					return;
@@ -366,7 +359,7 @@ export default {
 				response.data.contentIn ? this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn) : false;
 
 				console.log('===========================');
-				console.log('this.divErr = ' + this.divErr); // this.divErr = login-modal-content_error 
+				console.log('this.divErr = ' + this.divErr);
 				console.log('');
 				//const divErr = document.querySelector('#' + this.divErr);
 				const divErr = document.getElementById(this.divErr);
@@ -410,7 +403,7 @@ export default {
 
 		fadeOutIn(elOut, elIn = '') {
 			elOut ? this.fadeOut('#' + elOut) : false;
-			elIn ? this.fadeIn('#' + elIn) : false;
+			elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));;
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
 		},
 	},

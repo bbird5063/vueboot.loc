@@ -5,11 +5,6 @@
 		<!-- <router-view> - в него будут встраиваться компоненты из router.js -->
 		<router-view @openModal="openModal"></router-view>
 		<auth-form :nameModal="nameModal"></auth-form>
-
-		<!-- Кнопка-триггер модального окна -->
-		<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-			Запустите демо модального окна
-		</button> -->
 	</div>
 </template>
 
@@ -29,13 +24,10 @@ export default {
 	},
 	methods: {
 		openModal(openNameModal) {
-			// alert('openNameModal ' + openNameModal);
 			this.nameModal = openNameModal;
 		}
 	},
 	mounted() {
-		// alert('App = ' + this.$route.params.id);
-		// alert(location);
 		if (
 			location.hostname.includes('192.168.0.100') ||
 			location.hostname.includes('localhost')
@@ -43,7 +35,6 @@ export default {
 			this.$store.commit('auth/setIsLocalhost', true);
 		} else {
 			this.$store.commit('auth/setIsLocalhost', false);
-			// this.$store.actions.auth.updateUser();
 			this.$store.dispatch('auth/updateUser');
 		}
 		console.log('==dataUser========================');

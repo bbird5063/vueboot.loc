@@ -45,7 +45,6 @@ const routes = [
 		component: P9,
 	},
 	{
-		// добавил (:id - динамический параметр)
 		path: '/rows/:id',
 		component: RowIdPage,
 	},
