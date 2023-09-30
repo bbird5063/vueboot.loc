@@ -165,7 +165,6 @@
 						</div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_activate.php" id="Code-Form" method="post" role="code-modal-content">
-						<div v-if="divInfo == 'code-modal-content_info'" id="code-modal-content_info"></div>
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
@@ -280,33 +279,29 @@
 
 <script>
 import axios from 'axios';
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
-	props: {
-		nameModal: {
-			type: String,
-			required: true,
-		},
-	},
-
 	data() {
 		return {
 			isLoading: false,
 			error: {},
-			errHtml: '',
-			infoHtml: '',
-			divErr: '',
-			divInfo: '',
 		}
 	},
 
 	watch: {
 		nameModal(newNameModal) {
 			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
-			this.fadeOutIn('', newNameModal);
+			//this.fadeOutIn('', newNameModal);
+			this.fadeIn('#' + newNameModal);
 		}
 	},
 
 	methods: {
+		...mapActions({
+			fadeOut: 'auth/fadeOut',
+			fadeIn: 'auth/fadeIn',
+		}),
+
 
 		onSubmit(formElem) {
 			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/controller_login.php
@@ -338,9 +333,15 @@ export default {
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
+				console.log('--response.data---------------------');
+				console.log(response.data);
 
 				response.data.reg_error ? this.error.error = response.data.reg_error : delete this.error.error;
 				response.data.reg_info ? this.error.info = response.data.reg_info : delete this.error.info;
+				console.log('--this.error---------------------');
+				console.log(this.error.error);
+				console.log(this.error.info);
+				
 
 				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
 
@@ -356,19 +357,19 @@ export default {
 
 				if (response.data.contentIn) {
 					response.data.contentIn = response.data.contentIn.slice(1);
+					this.fadeOut('#' + this.$store.state.auth.currModal);
+					this.fadeIn('#' + response.data.contentIn);
+					this.$store.commit('auth/setCurrModal', response.data.contentIn);
 				}
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
-					this.fadeOutIn(this.$store.state.auth.currModal)
+					this.fadeOut('#' + this.$store.state.auth.currModal);
+					this.$store.commit('auth/setCurrModal', '');
 					this.$store.dispatch('auth/updateUser');
-					return true;
 				}
-				else {
+				else if (!this.error.error && !this.error.info) {
+					this.fadeOut('#' + this.$store.state.auth.currModal);
+					this.$store.commit('auth/setCurrModal', '');
 				}
-
-				if (!this.error.error && !this.error.info)
-
-					response.data.contentIn ? this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn) : false;
-
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
 			} finally {
@@ -376,39 +377,13 @@ export default {
 			}
 		},
 
-		activateAccount(e) {
-			e.preventDefault();
-			this.fadeOutIn(this.$store.state.auth.currModal, 'code-modal-content')
-		},
-
-		fadeOut(el) {
-			var opacity = 1;
-			var timer = setInterval(function () {
-				if (opacity <= 0.1) {
-					clearInterval(timer);
-					document.querySelector(el).style.display = 'none';
-				}
-				document.querySelector(el).style.opacity = opacity;
-				opacity -= opacity * 0.1;
-			}, 10);
-		},
-
-		fadeIn(el) {
-			let opacity = 0.01;
-			document.querySelector(el).style.display = 'block';
-			let timer = setInterval(function () {
-				if (opacity >= 1) {
-					clearInterval(timer);
-				}
-				document.querySelector(el).style.opacity = opacity;
-				opacity += opacity * 0.1;
-			}, 10);
-		},
-
-		fadeOutIn(elOut, elIn = '') {
-			elOut ? this.fadeOut('#' + elOut) : false;
-			elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));
-			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
+		fadeOutIn(elOut, elIn = '') { // переход по начальным ссылкам
+			this.fadeOut('#' + elOut);
+			// elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));
+			if (elIn) {
+				this.fadeIn('#' + elIn);
+				this.$store.commit('auth/setCurrModal', elIn);
+			}
 		},
 	},
 

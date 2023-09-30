@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';	
 export default {
 	data() {
 		return {
@@ -55,14 +56,19 @@ export default {
 		};
 	},
 	methods: {
+		...mapActions({
+			fadeOut: 'auth/fadeOut',
+			fadeIn: 'auth/fadeIn',
+		}),
 		activePoint(point) {
 			this.$router.push(point.path);
 			this.currentPoint = point.name;
 		},
 		openAuthModal(authModal, authMode) {
+			// this.$emit('openModal', authModal);
+			this.fadeIn('#' + authModal);
 			this.$store.commit('auth/setCurrModal', authModal);
 			this.$store.commit('auth/setAuthMode', authMode);
-			this.$emit('openModal', authModal);
 		},
 	},
 };

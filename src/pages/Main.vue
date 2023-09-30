@@ -76,16 +76,26 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';	
 export default {
 	data() {
 		return {}
+	},
+	methods: {
+		...mapActions({
+			fadeOut: 'auth/fadeOut',
+			fadeIn: 'auth/fadeIn',
+		}),
 	},
 	mounted() {
 		if (this.$route.params.id.length > 1) {
 			// alert('Main.vue = ' + this.$route.params.id);
 
-			this.$emit('openModal', 'code-modal-content');
-			// this.$emit('openModal', 'login-modal-content');
+			// this.$emit('openModal', 'code-modal-content');
+			this.fadeIn('#code-modal-content');
+			this.$store.commit('auth/setCurrModal', '#code-modal-content');
+			this.$store.commit('auth/setAuthMode', this.$route.params.authMode);
+			
 		}
 	},
 };

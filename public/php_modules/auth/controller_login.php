@@ -80,10 +80,13 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 					*/
 			}
 		} elseif (empty($row['activate']) && !empty($row['email'])) {
-			$POST['new_num'] = 2;
+			$data['new_num'] = 1;
+			$data['contentIn'] = '#forgot-password-modal-content';
+
 
 			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!
-				<br>Активировать?<br><br><a onclick='activateAccount();' href='#'>Активация</a><br><br>";
+				<br>Для активизации заполнить поля:<br><br>
+				<br><br>";
 			$_SESSION['login'] = $row['login'];
 			$_SESSION['email'] = $row['email'];
 		} else // не совпадает пароль
