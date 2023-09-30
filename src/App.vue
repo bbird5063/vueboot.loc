@@ -3,8 +3,8 @@
 	<div class="app">
 		<h1>ID = {{ $route.params.id }}</h1>
 		<!-- <router-view> - в него будут встраиваться компоненты из router.js -->
-		<router-view></router-view>
-		<auth-form></auth-form>
+		<router-view @openModal="openModal"></router-view>
+		<auth-form :nameModal="nameModal"></auth-form>
 	</div>
 </template>
 

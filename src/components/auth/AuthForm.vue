@@ -281,6 +281,13 @@
 import axios from 'axios';
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
+	props: {
+		nameModal: {
+			type: String,
+			required: true,
+		},
+	},
+	
 	data() {
 		return {
 			isLoading: false,
