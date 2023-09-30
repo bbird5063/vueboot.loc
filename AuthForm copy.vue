@@ -16,13 +16,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="$store.state.auth.currModal == 'login-modal-content' && error.error" class="alert alert-danger">
-							{{ error.error }}
-						</div>
-						<div v-html="error.info" v-if="$store.state.auth.currModal == 'login-modal-content' && error.info" class="alert alert-warning">
+						<div v-if="divErr == 'login-modal-content_error'" id="login-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 						</div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_login.php" method="post" id="Login-Form" role="login-modal-content">
+						<div v-if="divInfo == 'login-modal-content_info'" id="login-modal-content_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -62,13 +60,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="$store.state.auth.currModal == 'signup-modal-content' && error.error" class="alert alert-danger">
-							{{ error.error }}
-						</div>
-						<div v-html="error.info" v-if="$store.state.auth.currModal == 'signup-modal-content' && error.info" class="alert alert-warning">
+						<div v-if="divErr == 'signup-modal-content_error'" id="signup-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning">
 						</div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
+						<div v-if="divInfo == 'signup-modal-content_info'" id="signup-modal-content_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -113,13 +109,10 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="$store.state.auth.currModal == 'forgot-password-modal-content' && error.error" class="alert alert-danger">
-							{{ error.error }}
-						</div>
-						<div v-html="error.info" v-if="$store.state.auth.currModal == 'forgot-password-modal-content' && error.info" class="alert alert-warning">
-						</div>
+						<div v-if="divErr == 'forgot-password-modal-content_error'" id="forgot-password-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_restoration.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
+						<div v-if="divInfo == 'forgot-password-modal-content_info'" id="forgot-password-modal-content_info"></div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
 							<input v-focus id="forgot-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
@@ -158,12 +151,9 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="$store.state.auth.currModal == 'code-modal-content' && error.error" class="alert alert-danger">
-							{{ error.error }}
-						</div>
-						<div v-html="error.info" v-if="$store.state.auth.currModal == 'code-modal-content' && error.info" class="alert alert-warning">
-						</div>
+						<div v-if="divErr == 'code-modal-content_error'" id="code-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
+
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_activate.php" id="Code-Form" method="post" role="code-modal-content">
 						<div v-if="divInfo == 'code-modal-content_info'" id="code-modal-content_info"></div>
 
@@ -195,13 +185,10 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="$store.state.auth.currModal == 'user-modal-content' && error.error" class="alert alert-danger">
-							{{ error.error }}
-						</div>
-						<div v-html="error.info" v-if="$store.state.auth.currModal == 'user-modal-content' && error.info" class="alert alert-warning">
-						</div>
+						<div v-if="divErr == 'user-modal-content_error'" id="user-modal-content_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="User-Form" role="user-modal-content">
+						<div v-if="divInfo == 'user-modal-content_info'" id="user-modal-content_info"></div>
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -253,13 +240,11 @@
 				</div>
 				<div class="modal-body">
 					<div>
-						<div v-if="$store.state.auth.currModal == 'exit-modal-content' && error.error" class="alert alert-danger">
-							{{ error.error }}
-						</div>
-						<div v-html="error.info" v-if="$store.state.auth.currModal == 'exit-modal-content' && error.info" class="alert alert-warning">
-						</div>
+						<div v-if="divErr == 'Exit-Form_error'" id="Exit-Form_error" style="text-align:center; vertical-align:middle;" class="alert alert-warning"></div>
 					</div>
+
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_exit.php" id="Exit-Form" method="post" role="exit-modal-content">
+						<div v-if="divErr == 'Exit-Form_info'" id="Exit-Form_info"></div>
 						<div class="input-group mb-3">
 						</div>
 						<div class="d-grid gap-2">
@@ -291,7 +276,6 @@ export default {
 	data() {
 		return {
 			isLoading: false,
-			error: {},
 			errHtml: '',
 			infoHtml: '',
 			divErr: '',
@@ -317,6 +301,9 @@ export default {
 			console.log(formElem.srcElement.attributes.action.nodeValue);
 			console.log(formElem.target.length);
 
+			this.divErr = '';
+			this.divInfo = '';
+
 			let post = '';
 			for (let key = 0; key < formElem.target.length; key++) {
 				if (formElem.target[key].type !== 'submit' && formElem.target[key].type !== 'checkbox') {
@@ -335,12 +322,17 @@ export default {
 		},
 
 		async authAxios(url, post, formId) {
+			let
+				errHtml = '',
+				infoHtml = '';
+
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
-
-				response.data.reg_error ? this.error.error = response.data.reg_error : delete this.error.error;
-				response.data.reg_info ? this.error.info = response.data.reg_info : delete this.error.info;
+				errHtml += response.data.reg_error ? response.data.reg_error : '';
+				errHtml += response.data.reg_info ? response.data.reg_info : '';
+				errHtml += response.data.info_in ? response.data.info_in : '';
+				infoHtml += response.data.reg_info_page ? response.data.reg_info_page : '';
 
 				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
 
@@ -353,32 +345,45 @@ export default {
 
 				console.log('==response.data.contentIn==================');
 				console.log(response.data.contentIn);
-
 				if (response.data.contentIn) {
 					response.data.contentIn = response.data.contentIn.slice(1);
+					this.divErr = response.data.contentIn + '_error';
+					this.divInfo = response.data.contentIn + '_info';
 				}
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
+
 					this.fadeOutIn(this.$store.state.auth.currModal)
 					this.$store.dispatch('auth/updateUser');
 					return true;
 				}
 				else {
+					this.divErr = this.$store.state.auth.currModal + '_error';
+					this.divInfo = this.$store.state.auth.currModal + '_info';
 				}
 
-				if (!this.error.error && !this.error.info)
+				response.data.contentIn ? this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn) : false;
 
-					response.data.contentIn ? this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn) : false;
+				console.log('===========================');
+				console.log('this.divErr = ' + this.divErr);
+				console.log('');
 
+				if (this.divErr) {
+					//const divErr = document.querySelector('#' + this.divErr);
+					let divErr = document.getElementById(this.divErr);
+					console.log(divErr); // null
+					console.log('errHtml = ' + errHtml);
+					divErr.innerHTML = errHtml;
+				}
+				if (this.divInfo) {
+					//const divInfo = document.querySelector('#' + this.divInfo);
+					let divInfo = document.getElementById(this.divInfo);
+					divInfo.innerHTML = infoHtml;
+				}
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
 			} finally {
 				this.isLoading = false;
 			}
-		},
-
-		activateAccount(e) {
-			e.preventDefault();
-			this.fadeOutIn(this.$store.state.auth.currModal, 'code-modal-content')
 		},
 
 		fadeOut(el) {
@@ -407,43 +412,36 @@ export default {
 
 		fadeOutIn(elOut, elIn = '') {
 			elOut ? this.fadeOut('#' + elOut) : false;
-			elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));
+			elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));;
 			this.$store.commit('auth/setCurrModal', elIn ? elIn : '');
 		},
 	},
 
 	mounted() {
 	},
-
 	created() {
 	},
 };
 </script>
 
 <style scoped>
-.alert
-{
-	text-align: center;
-	vertical-align: middle;
-}
-
 .fa
 {
 	cursor: pointer;
 }
 
 /* button.close
-	{
+{
 	border-width: 0;
 	background-color: white;
-	} */
+} */
 
 /* .modal-content {
   display: none;
-	} */
+} */
 /*
-	#login-modal-content,
-	*/
+#login-modal-content,
+*/
 #login-modal-content,
 #signup-modal-content,
 #forgot-password-modal-content,

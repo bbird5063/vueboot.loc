@@ -83,7 +83,7 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 			$POST['new_num'] = 2;
 
 			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!
-				<br>Активировать?<br><br><a id='forgotModal-num_0' href='javascript:void(0)'>Активация</a><br><br>";
+				<br>Активировать?<br><br><a onclick='activateAccount();' href='#'>Активация</a><br><br>";
 			$_SESSION['login'] = $row['login'];
 			$_SESSION['email'] = $row['email'];
 		} else // не совпадает пароль

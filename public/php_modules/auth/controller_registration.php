@@ -129,7 +129,7 @@ if ($ok) {
 		}
 
 		if (!$reg_error) {
-			$info_in = 'На почтовый адрес <b>' . $POST['email'] . '</b> отправлен код регистрации';
+			$reg_info[] = 'На почтовый адрес <b>' . $POST['email'] . '</b> отправлен код регистрации';
 
 			$POST['new_num'] = 1;
 			//$data['contentIn'] = "#forgot-password-modal-content";

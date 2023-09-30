@@ -6,6 +6,7 @@ export const authModule = {
 		currModal: '',
 		isLocalhost: false,
 		authMode: 1,
+
 		id: 0,
 		authShow: false,
 		currentPath: '',
@@ -35,12 +36,11 @@ export const authModule = {
 		},
 		setCurrentPath(state, currentPath) {
 			state.currentPath = currentPath;
-		},//
+		},
 	},
 
 	actions: {
 		async updateUser({ state, commit }) {
-
 			try {
 				const response = await axios.post('/php_modules/auth/controller_update.php');
 				console.log('==response.data.user_data===========================');
@@ -52,7 +52,6 @@ export const authModule = {
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
 			}
-
 		}
 	},
 
