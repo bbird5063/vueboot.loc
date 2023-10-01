@@ -12,7 +12,7 @@
 			<div id="login-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Вход в аккаунт</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('login-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -58,7 +58,7 @@
 			<div id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Регистрация</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('signup-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -109,7 +109,7 @@
 			<div id="forgot-password-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Установка доступа</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('forgot-password-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -154,7 +154,7 @@
 			<div class="modal-content" id="code-modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Восстановление доступа</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('code-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -190,7 +190,7 @@
 			<div id="user-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Ваш профиль</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('user-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -248,7 +248,7 @@
 			<div id="exit-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Выход</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="fadeOutIn('exit-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -297,12 +297,9 @@ export default {
 
 	watch: {
 		nameModal(newNameModal) {
-			if (this.$store.state.auth.currModal) {
-				this.fadeOut('#' + this.$store.state.auth.currModal);
-			}
 			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
+			//this.fadeOutIn('', newNameModal);
 			this.fadeIn('#' + newNameModal);
-			this.$store.commit('auth/setCurrModal', newNameModal);
 		}
 	},
 
@@ -367,14 +364,18 @@ export default {
 
 				if (response.data.contentIn) {
 					response.data.contentIn = response.data.contentIn.slice(1);
-					this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn);
+					this.fadeOut('#' + this.$store.state.auth.currModal);
+					this.fadeIn('#' + response.data.contentIn);
+					this.$store.commit('auth/setCurrModal', response.data.contentIn);
 				}
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
-					this.fadeOutIn();
+					this.fadeOut('#' + this.$store.state.auth.currModal);
 					this.$store.dispatch('auth/updateUser');
+					document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
 				}
 				else if (!this.error.error && !this.error.info) {
-					this.fadeOutIn();
+					this.fadeOut('#' + this.$store.state.auth.currModal);
+					document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
 				}
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
@@ -383,9 +384,10 @@ export default {
 			}
 		},
 
-		fadeOutIn(elOut = this.$store.state.auth.currModal, elIn = '') {
-			if (elOut !== elIn && elOut && elIn) {
+		fadeOutIn(elOut = this.$store.state.auth.currModal, elIn = '') { // переход по начальным ссылкам
+			if (elOut !== elIn && elIn) {
 				this.fadeOut('#' + elOut);
+				// elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 				this.fadeIn('#' + elIn);
 				this.$store.commit('auth/setCurrModal', elIn);
 			}

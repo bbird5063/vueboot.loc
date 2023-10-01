@@ -5,7 +5,7 @@ export const authModule = {
 		dataUser: '',
 		currModal: '',
 		isLocalhost: false,
-		authMode: 1,
+		authMode: 0,
 		id: 0,
 
 		authShow: false,
