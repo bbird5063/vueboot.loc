@@ -6,8 +6,8 @@ export const authModule = {
 		currModal: '',
 		isLocalhost: false,
 		authMode: 1,
-
 		id: 0,
+
 		authShow: false,
 		currentPath: '',
 	}),

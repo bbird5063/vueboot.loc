@@ -168,9 +168,9 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
-							<input v-focus :value="$route.params.id == 0 ? '' : $route.params.id" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="">
+							<input v-focus :value="$store.state.auth.id == 0 ? '' : $store.state.auth.id" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="">
 						</div>
-
+						<!-- $route.params.id == 0 ? '' : $route.params.id  |   -->
 						<div class="d-grid gap-2">
 							<div class="d-grid gap-2">
 								<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
@@ -287,7 +287,7 @@ export default {
 			required: true,
 		},
 	},
-	
+
 	data() {
 		return {
 			isLoading: false,
@@ -348,7 +348,7 @@ export default {
 				console.log('--this.error---------------------');
 				console.log(this.error.error);
 				console.log(this.error.info);
-				
+
 
 				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
 
@@ -372,10 +372,12 @@ export default {
 					this.fadeOut('#' + this.$store.state.auth.currModal);
 					this.$store.commit('auth/setCurrModal', '');
 					this.$store.dispatch('auth/updateUser');
+					document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
 				}
 				else if (!this.error.error && !this.error.info) {
 					this.fadeOut('#' + this.$store.state.auth.currModal);
 					this.$store.commit('auth/setCurrModal', '');
+					document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
 				}
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);

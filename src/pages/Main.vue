@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';	
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
 	data() {
 		return {}
@@ -89,13 +89,11 @@ export default {
 	},
 	mounted() {
 		if (this.$route.params.id.length > 1) {
-			// alert('Main.vue = ' + this.$route.params.id);
-			this.$emit('openModal', 'code-modal-content');
-			// this.$emit('openModal', 'code-modal-content');
-			// this.fadeIn('#code-modal-content');
 			this.$store.commit('auth/setCurrModal', '#code-modal-content');
-			// this.$store.commit('auth/setAuthMode', this.$route.params.authMode);
-			
+			this.$store.commit('auth/setAuthMode', this.$route.params.authMode);
+			this.$store.commit('auth/setId', this.$route.params.id);
+			this.$emit('openModal', 'code-modal-content');
+			this.$router.push('/' + this.$route.params.authMode + '/0');
 		}
 	},
 };
