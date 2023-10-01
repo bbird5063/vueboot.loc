@@ -89,7 +89,7 @@ export default {
 	},
 	mounted() {
 		if (this.$route.params.id.length > 1) {
-			this.$store.commit('auth/setCurrModal', '#code-modal-content');
+			this.$store.commit('auth/setCurrModal', 'code-modal-content');
 			this.$store.commit('auth/setAuthMode', this.$route.params.authMode);
 			this.$store.commit('auth/setId', this.$route.params.id);
 			this.$emit('openModal', 'code-modal-content');

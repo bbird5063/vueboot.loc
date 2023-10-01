@@ -74,7 +74,8 @@ if ($ok) {
 
 			$POST['new_num'] = 2;
 
-			$addstr = " с e-mail: <b>" . $row['email'] . "</b>, но он не активирован! <br>Активировать?<br><br><a id='forgotModal-num_1' href='javascript:void(0)'>Активация</a><br><br>";
+			$addstr = " с e-mail: <b>" . $row['email'] . "</b>, но он не активирован! <br>Активировать?<br>
+			<br>Для активизации заполнить поля:";";
 			$_SESSION['login'] = $row['login'];
 			$_SESSION['email'] = $row['email'];
 		}

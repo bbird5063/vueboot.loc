@@ -9,16 +9,5 @@
 	$data['reg_error'] = $reg_error;
 	if (!empty($reg_info))
 	$data['reg_info'] = getInfo($reg_info);
-
-
-
-	if (!empty($reg_info_page)) // можно удалить
-	$data['reg_info_page'] = getInfo($reg_info_page);
-	
-	
-	if (!empty($info_in))
-	$data['info_in'] = $info_in; // можно удалить
-	if (!empty($info_page_in))
-	$data['info_page_in'] = $info_page_in; // можно удалить
 	
 	echo json_encode($data);

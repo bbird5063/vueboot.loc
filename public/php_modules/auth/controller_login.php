@@ -80,11 +80,11 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 					*/
 			}
 		} elseif (empty($row['activate']) && !empty($row['email'])) {
-			$data['new_num'] = 1;
+			$data['new_num'] = 2;
 			$data['contentIn'] = '#forgot-password-modal-content';
 
 
-			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!
+			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!<br>
 				<br>Для активизации заполнить поля:";
 			$_SESSION['login'] = $row['login'];
 			$_SESSION['email'] = $row['email'];
@@ -93,13 +93,8 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 			$reg_info[] = 'Пароль не совпадает!';
 		}
 	} else
-		$reg_info[] = 'Пользователя с логином <b>' . $POST['login'] . '</b> нет в нашей базе!';
+		$reg_info[] = 'Пользователя с логином <b>' . $POST['login'] . '</b> нет в нашей базе данных!';
 }
-if (isset($_SESSION['user_data'])) {
-	$reg_info_page[] = "Здорово, <b>" . $_SESSION['user_data']['login'] . "</b>! Где шлялся?";
-	//reDirect('page=guest', 'rem=read');
-} else
-	$reg_info_page[] = 'Введите логин и пароль:';
 
 /*		
 ===================================================================
