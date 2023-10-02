@@ -72,15 +72,14 @@ if ($ok) {
 			/*$addstr = ' с e-mail: <b>' . $row['email'] . '</b>, но он не активирован! <br>Активировать?<br><br><a href=' . href('reg=restoration','id=0' ,'num=2') . '>Активация</a><br><br>';*/
 			/*$addstr = ' с e-mail: <b>' . $row['email'] . '</b>, но он не активирован! <br>Активировать?<br><br><a id="forgotModal-num_1" href="javascript:void(0)">Активация</a><br><br>';*/
 
-			$POST['new_num'] = 2;
+			$data['new_num'] = 2;
 
 			$addstr = " с e-mail: <b>" . $row['email'] . "</b>, но он не активирован! <br>Активировать?<br>
 			<br>Для активизации заполнить поля:";
-			$_SESSION['login'] = $row['login'];
-			$_SESSION['email'] = $row['email'];
+			$data['login'] = $row['login'];
+			$data['email'] = $row['email'];
 		}
-		$reg_info[] = 'Есть у нас уже один <b>' . htmlspecialchars($POST['login']) . '!</b><br>' . $addstr;
-		$POST['login'] = '';
+		$reg_info[] = 'Есть у нас уже один <b>' . htmlspecialchars($data['login']) . '!</b><br>' . $addstr;
 	}
 
 	/**   
@@ -109,12 +108,12 @@ if ($ok) {
 		$subject = "Активация учетной записи";
 		$message = "С Вашего электронного почтового адреса поступила заявка на 
                         aктивацию учетной записи на сайте <b>" . $_SERVER['HTTP_HOST'] . "</b><br>\n 
-                        Для доступа в аккаунт пройдите по <a href=\"" .	$url . "/" . $POST['new_num'] . "/" . $hash . "\" >этой ссылке</a><br /> 
+                        Для доступа в аккаунт пройдите по <a href=\"" .	$url . "/" . $data['new_num'] . "/" . $hash . "\" >этой ссылке</a><br /> 
                         и введите в поле активации этот код: <b>" . $hash . "</b><br>\n 
                         Код действителен до " . date('d.m.Y', time() + 60 * 60 * 24 * 10);
 		$data['url_act'] = $url_act;
 
-		$POST['new_num'] = 1;
+		$data['new_num'] = 1;
 
 		if (BBR_DBSERVER == 'localhost') {
 			file_put_contents('' . $subject . '.html', $message);
@@ -132,7 +131,7 @@ if ($ok) {
 		if (!$reg_error) {
 			$reg_info[] = 'На почтовый адрес <b>' . $POST['email'] . '</b> отправлен код регистрации';
 
-			$POST['new_num'] = 1;
+			$data['new_num'] = 1;
 			//$data['contentIn'] = "#forgot-password-modal-content";
 			//$data['contentIn'] = $for_contentIn['activate'];
 			$data['contentIn'] = '#code-modal-content';

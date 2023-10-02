@@ -45,9 +45,9 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="FPModal" @click.prevent="fadeOutIn('login-modal-content', 'forgot-password-modal-content')" href="#">Забыли пароль?</a>
+						<a id="FPModal" @click.prevent="fadeOutIn('login-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 2);" href="#">Забыли пароль?</a>
 						|
-						<a id="signupModal" @click.prevent="fadeOutIn('login-modal-content', 'signup-modal-content')" href="#">Регистрация</a>
+						<a id="signupModal" @click.prevent="fadeOutIn('login-modal-content', 'signup-modal-content'); $store.commit('auth/setAuthMode', 1);" href="#">Регистрация</a>
 					</p>
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 				<div class="modal-footer">
 					<p>
 						Имеете аккаунт?
-						<a id="signupModal" @click.prevent="fadeOutIn('signup-modal-content', 'login-modal-content')" href="#">
+						<a id="signupModal" @click.prevent="fadeOutIn('signup-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
 							Войти в аккаунт</a>
 					</p>
 				</div>
@@ -138,12 +138,12 @@
 				<div class="modal-footer">
 					<p v-if="$store.state.auth.authMode <= 2">
 						Вспомнили пароль?
-						<a id="signupModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'login-modal-content')" href="#">
+						<a id="signupModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
 							Войти в аккаунт</a>
 					</p>
 					<p v-if="$store.state.auth.authMode == 3">
 						Ваши личные данные:
-						<a id="userModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'user-modal-content')" href="#" for="nextPage">ваш профиль</a>
+						<a id="userModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'user-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">ваш профиль</a>
 					</p>
 				</div>
 			</div>
@@ -237,7 +237,7 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="loginModal" @click.prevent="fadeOutIn('user-modal-content', 'forgot-password-modal-content')" href="#" for="nextPage">Изменить пароль</a>
+						<a id="loginModal" @click.prevent="fadeOutIn('user-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">Изменить пароль</a>
 					</p>
 				</div>
 			</div>
@@ -318,8 +318,13 @@ export default {
 
 
 		onSubmit(formElem) {
-			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/controller_login.php
-
+			let url;
+			if (formElem.target.role == 'signup-modal-content') {
+				url = this.$store.state.auth.authMode == 1 ? formElem.srcElement.attributes.action.nodeValue : '/php_modules/auth/controller_new_pw.php';
+			} else {
+				url = formElem.srcElement.attributes.action.nodeValue;
+			}
+			// const url = formElem.target.action.nodeValue; // /php_modules/auth/controller_login.php
 			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/php_modules/auth/controller_login.php
 
 			console.log('==onSubmit(formElem)===========================');
@@ -339,16 +344,23 @@ export default {
 			post += post ? '&' : '';
 			post += 'new_num=' + this.$store.state.auth.authMode;
 			if (!this.$store.state.auth.isLocalhost) {
-				this.authAxios(url, post, formElem.target.id);
+				this.authAxios(url, post);
 			}
 		},
 
-		async authAxios(url, post, formId) {
+		async authAxios(url, post) {
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
 				console.log('--response.data---------------------');
 				console.log(response.data);
+
+				if (response.data.user_data) {
+					this.$store.commit('auth/setDataUser', response.data.user_data);
+					this.inputData = response.data.user_data;
+				}
+				if (response.data.login) this.inputData.login = response.data.login;
+				if (response.data.email) this.inputData.email = response.data.email;
 
 				response.data.reg_error ? this.error.error = response.data.reg_error : delete this.error.error;
 				response.data.reg_info ? this.error.info = response.data.reg_info : delete this.error.info;
@@ -360,11 +372,6 @@ export default {
 				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
 
 				/*this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');*/
-
-				if (response.data.user_data) {
-					this.$store.commit('auth/setDataUser', response.data.user_data);
-					this.inputData = response.data.user_data;
-				}
 
 				if (response.data.url_act) {
 					console.log('--url_act---------------------');

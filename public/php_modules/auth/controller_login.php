@@ -86,8 +86,8 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 
 			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!<br>
 				<br>Для активизации заполнить поля:";
-			$_SESSION['login'] = $row['login'];
-			$_SESSION['email'] = $row['email'];
+			$data['login'] = $row['login'];
+			$data['email'] = $row['email'];
 		} else // не совпадает пароль
 		{
 			$reg_info[] = 'Пароль не совпадает!';

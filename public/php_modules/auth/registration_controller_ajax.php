@@ -78,8 +78,8 @@
 				$POST['new_num'] = 2;
 				
 				$addstr = " с e-mail: <b>" . $row['email'] . "</b>, но он не активирован! <br>Активировать?<br><br><a id='forgotModal-num_1' href='javascript:void(0)'>Активация</a><br><br>";
-				$_SESSION['login'] = $row['login'];
-				$_SESSION['email'] = $row['email'];
+				$data['login'] = $row['login'];
+				$data['email'] = $row['email'];
 			}
 			$reg_info[] = 'Есть у нас уже один <b>'. htmlspecialchars($POST['login']) . '!</b><br>' . $addstr;
 			$POST['login'] = '';

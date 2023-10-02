@@ -1,15 +1,17 @@
 <template>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#" @click="$router.push('/1/0')">HS</a>
+			<a class="navbar-brand" href="#" @click="$router.push('/1/0')">HS({{ $store.state.auth.authMode }})</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
 					<li v-for="point in menu" class="nav-item">
 						<a class="nav-link" :class="{ active: point.name == currentPoint }" href="#" @click.prevent="activePoint(point)">{{ point.name }}</a>
 					</li>
+
 					<li v-if="$store.state.auth.dataUser" class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							{{ $store.state.auth.dataUser.login }}
@@ -27,12 +29,12 @@
 								<hr class="dropdown-divider" />
 							</li>
 							<li>
-								<a @click.prevent="openAuthModal('exit-modal-content', $store.state.auth.authMode)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Выход</a>
+								<a @click.prevent="openAuthModal('exit-modal-content', 0)" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Выход</a>
 							</li>
 						</ul>
 					</li>
 					<li v-else class="nav-item navbar-right">
-						<a @click.prevent="openAuthModal('login-modal-content', 1)" href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a>
+						<a @click.prevent="openAuthModal('login-modal-content', 0)" href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#login-signup-modal">Вход</a>
 					</li>
 				</ul>
 			</div>
