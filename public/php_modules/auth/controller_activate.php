@@ -83,8 +83,8 @@ if ($ok && empty($reg_error)) // при "...&& !isset($reg_error)" не рабо
 			WHERE `activate` != 1
 			AND `date` < NOW() - INTERVAL 10 DAY
 			");
-		if ($POST['new_num'] == 1) {
-			//$POST['new_num'] = 0;
+		if ($POST['new_num'] <= 1) {
+			$POST['new_num'] = 0;
 			//$data['contentIn'] = $for_contentIn[''];
 			//reDirect('reg=off', 'num=0', 'id=0');
 		} elseif ($POST['new_num'] == 2) {

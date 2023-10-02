@@ -80,7 +80,7 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 					*/
 			}
 		} elseif (empty($row['activate']) && !empty($row['email'])) {
-			$data['new_num'] = 2;
+			$data['new_num'] = 0;
 			$data['contentIn'] = '#forgot-password-modal-content';
 
 
