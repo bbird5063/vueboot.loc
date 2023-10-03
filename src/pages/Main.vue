@@ -82,10 +82,10 @@ export default {
 		return {}
 	},
 	methods: {
-		...mapActions({
+		/*...mapActions({
 			fadeOut: 'auth/fadeOut',
 			fadeIn: 'auth/fadeIn',
-		}),
+		}),*/
 	},
 	mounted() {
 		if (this.$route.params.id.length > 1) {

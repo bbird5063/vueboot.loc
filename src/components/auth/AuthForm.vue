@@ -3,7 +3,7 @@
 	<button hidden id="open-code-modal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login-signup-modal">
 		Launch modal
 	</button>
-	<!-- Modal  @click="fadeOutIn($store.state.auth.currModal)" -->
+	<!-- Modal -->
 	<div id="login-signup-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 
@@ -45,9 +45,9 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="FPModal" @click.prevent="fadeOutIn('login-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 2);" href="#">Забыли пароль?</a>
+						<a id="FPModal" @click.prevent="fadeInOut('forgot-password-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 2);" href="#">Забыли пароль?</a>
 						|
-						<a id="signupModal" @click.prevent="fadeOutIn('login-modal-content', 'signup-modal-content'); $store.commit('auth/setAuthMode', 1);" href="#">Регистрация</a>
+						<a id="signupModal" @click.prevent="fadeInOut('signup-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 1);" href="#">Регистрация</a>
 					</p>
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 				<div class="modal-footer">
 					<p>
 						Имеете аккаунт?
-						<a id="signupModal" @click.prevent="fadeOutIn('signup-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
+						<a id="signupModal" @click.prevent="fadeInOut('login-modal-content', 'signup-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
 							Войти в аккаунт</a>
 					</p>
 				</div>
@@ -138,12 +138,12 @@
 				<div class="modal-footer">
 					<p v-if="$store.state.auth.authMode <= 2">
 						Вспомнили пароль?
-						<a id="signupModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
+						<a id="signupModal" @click.prevent="fadeInOut('login-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
 							Войти в аккаунт</a>
 					</p>
 					<p v-if="$store.state.auth.authMode == 3">
 						Ваши личные данные:
-						<a id="userModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'user-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">ваш профиль</a>
+						<a id="userModal" @click.prevent="fadeInOut('user-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">ваш профиль</a>
 					</p>
 				</div>
 			</div>
@@ -237,7 +237,7 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="loginModal" @click.prevent="fadeOutIn('user-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">Изменить пароль</a>
+						<a id="loginModal" @click.prevent="fadeInOut('forgot-password-modal-content', 'user-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">Изменить пароль</a>
 					</p>
 				</div>
 			</div>
@@ -279,7 +279,7 @@
 
 <script>
 import axios from 'axios';
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+// import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
 	props: {
 		nameModal: {
@@ -314,10 +314,10 @@ export default {
 	},
 
 	methods: {
-		...mapActions({
+		/*...mapActions({
 			fadeOut: 'auth/fadeOut',
 			fadeIn: 'auth/fadeIn',
-		}),
+		}),*/
 
 
 		onSubmit(formElem) {
@@ -390,14 +390,14 @@ export default {
 
 				if (response.data.contentIn) {
 					response.data.contentIn = response.data.contentIn.slice(1);
-					this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn);
+					this.fadeInOut(response.data.contentIn, this.$store.state.auth.currModal);
 				}
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
-					this.fadeOutIn();
+					this.fadeInOut();
 					this.$store.dispatch('auth/updateUser');
 				}
 				else if (!this.error.error && !this.error.info) {
-					this.fadeOutIn();
+					this.fadeInOut();
 				}
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
@@ -406,8 +406,39 @@ export default {
 			}
 		},
 
-		fadeOutIn(elOut = this.$store.state.auth.currModal, elIn = '') {
+		async fadeOut(el) {
+			try {
+				let opacity = 1;
+				const timer = await setInterval(() => {
+					if (opacity <= 0.1) {
+						clearInterval(timer);
+						document.querySelector(el).style.display = "none";
+					}
+					document.querySelector(el).style.opacity = opacity;
+					opacity -= opacity * 0.1;
+					return true;
+				}, 10);
+
+			} catch (e) {
+				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
+			}
+		},
+
+		fadeIn(el) {
+			var opacity = 0.01;
+			document.querySelector(el).style.display = "block";
+			var timer = setInterval(function () {
+				if (opacity >= 1) {
+					clearInterval(timer);
+				}
+				document.querySelector(el).style.opacity = opacity;
+				opacity += opacity * 0.1;
+			}, 10);
+		},
+
+		fadeInOut(elIn = '', elOut = this.$store.state.auth.currModal) {
 			if (elOut !== elIn && elOut && elIn) {
+
 				this.fadeOut('#' + elOut);
 				this.fadeIn('#' + elIn);
 				this.$store.commit('auth/setCurrModal', elIn);

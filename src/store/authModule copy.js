@@ -54,6 +54,34 @@ export const authModule = {
 			}
 		},
 
+		fadeOut({ state, commit }, el) {
+			let opacity = 1;
+			let timer = setInterval(function () {
+				if (opacity <= 0.1) {
+					clearInterval(timer);
+					document.querySelector(el).style.display = 'none';
+				}
+				document.querySelector(el).style.opacity = opacity;
+				opacity -= opacity * 0.1;
+			}, 10);
+		},
+
+		fadeIn({ state, commit }, el) {
+			let opacity = 0.01;
+			document.querySelector(el).style.display = 'block';
+			let timer = setInterval(function () {
+				if (opacity >= 1) {
+					clearInterval(timer);
+				}
+				document.querySelector(el).style.opacity = opacity;
+				opacity += opacity * 0.1;
+			}, 10);
+		},
+
+		/*activateAccount({ state, commit, actions }) { // не используется
+			actions.fadeOutIn(state.currModal, 'code-modal-content');
+			commit.setCurrModal('setCurrModal', 'code-modal-content')
+		},*/
 	},
 
 	namespaced: true,

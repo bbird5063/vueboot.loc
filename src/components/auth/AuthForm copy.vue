@@ -12,7 +12,7 @@
 			<div id="login-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Вход в аккаунт</h5>
-					<button type="button" @click="fadeOutIn('login-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -25,15 +25,15 @@
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_login.php" method="post" id="Login-Form" role="login-modal-content">
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus v-model="inputData.login" id="login-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
-							<input name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<input v-model="inputData.password" name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
 							<span class="input-group-text"><i class="fa fa-eye"></i></span>
 						</div>
 						<div class="checkbox">
-							<input name="form[remember]" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
+							<input :checked="inputData.remember" v-on:change="inputData.remember = $event.target.checked" name="form[remember]" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
 							<label class="form-check-label" for="flexCheckDefault">Запомнить меня</label>
 						</div>
 						<div class="d-grid gap-2">
@@ -45,9 +45,9 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="FPModal" @click.prevent="fadeOutIn('login-modal-content', 'forgot-password-modal-content')" href="#">Забыли пароль?</a>
+						<a id="FPModal" @click.prevent="fadeOutIn('login-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 2);" href="#">Забыли пароль?</a>
 						|
-						<a id="signupModal" @click.prevent="fadeOutIn('login-modal-content', 'signup-modal-content')" href="#">Регистрация</a>
+						<a id="signupModal" @click.prevent="fadeOutIn('login-modal-content', 'signup-modal-content'); $store.commit('auth/setAuthMode', 1);" href="#">Регистрация</a>
 					</p>
 				</div>
 			</div>
@@ -58,7 +58,7 @@
 			<div id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Регистрация</h5>
-					<button type="button" @click="fadeOutIn('signup-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -71,20 +71,20 @@
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_registration.php" method="post" id="Signin-Form" role="signup-modal-content">
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus v-model="inputData.login" id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
-							<input name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+							<input v-model="inputData.email" name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
-							<input name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<input v-model="inputData.password" name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
 							<span class="input-group-text"><i class="fa fa-eye"></i></span>
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
-							<input name="form[password2]" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
+							<input v-model="inputData.password2" name="form[password2]" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
 							<span class="input-group-text"><i class="fa fa-eye"></i></span>
 						</div>
 						<div class="d-grid gap-2">
@@ -97,7 +97,7 @@
 				<div class="modal-footer">
 					<p>
 						Имеете аккаунт?
-						<a id="signupModal" @click.prevent="fadeOutIn('signup-modal-content', 'login-modal-content')" href="#">
+						<a id="signupModal" @click.prevent="fadeOutIn('signup-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
 							Войти в аккаунт</a>
 					</p>
 				</div>
@@ -109,7 +109,7 @@
 			<div id="forgot-password-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Установка доступа</h5>
-					<button type="button" @click="fadeOutIn('forgot-password-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -122,11 +122,11 @@
 					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_restoration.php" id="Forgot-Password-Form" method="post" role="forgot-password-modal-content">
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus id="forgot-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus v-model="inputData.login" id="forgot-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
-							<input name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+							<input v-model="inputData.email" name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email">
 						</div>
 						<div class="d-grid gap-2">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
@@ -138,12 +138,12 @@
 				<div class="modal-footer">
 					<p v-if="$store.state.auth.authMode <= 2">
 						Вспомнили пароль?
-						<a id="signupModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'login-modal-content')" href="#">
+						<a id="signupModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'login-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
 							Войти в аккаунт</a>
 					</p>
 					<p v-if="$store.state.auth.authMode == 3">
 						Ваши личные данные:
-						<a id="userModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'user-modal-content')" href="#" for="nextPage">ваш профиль</a>
+						<a id="userModal" @click.prevent="fadeOutIn('forgot-password-modal-content', 'user-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">ваш профиль</a>
 					</p>
 				</div>
 			</div>
@@ -154,7 +154,7 @@
 			<div class="modal-content" id="code-modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Восстановление доступа</h5>
-					<button type="button" @click="fadeOutIn('code-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -168,7 +168,7 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-pencil"></i></span>
-							<input v-focus :value="$store.state.auth.id == 0 ? '' : $store.state.auth.id" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" value="">
+							<input v-focus :value="$store.state.auth.id == 0 ? '' : $store.state.auth.id" id="code" name="form[code]" type="text" class="form-control" aria-label="Code" aria-describedby="code" placeholder="Введите код" autocomplete="off">
 						</div>
 						<!-- $route.params.id == 0 ? '' : $route.params.id  |   -->
 						<div class="d-grid gap-2">
@@ -190,7 +190,7 @@
 			<div id="user-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Ваш профиль</h5>
-					<button type="button" @click="fadeOutIn('user-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -204,28 +204,28 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus readonly id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus :value="inputData.login" v-on:input="inputData.login = $event.target.value" readonly id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
-							<input name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email" value="">
+							<input :value="inputData.email" v-on:input="inputData.email = $event.target.value" name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email">
 						</div>
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus readonly id="signin-login" name="form[name_last]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus readonly id="signin-login" name="form[name_last]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus readonly id="signin-login" name="form[name_first]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus readonly id="signin-login" name="form[name_first]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus readonly id="signin-login" name="form[name_patr]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus readonly id="signin-login" name="form[name_patr]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus readonly id="signin-login" name="form[phone_1]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин" value="">
+							<input v-focus readonly id="signin-login" name="form[phone_1]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 
 						<div class="d-grid gap-2">
@@ -237,7 +237,7 @@
 				</div>
 				<div class="modal-footer">
 					<p>
-						<a id="loginModal" @click.prevent="fadeOutIn('user-modal-content', 'forgot-password-modal-content')" href="#" for="nextPage">Изменить пароль</a>
+						<a id="loginModal" @click.prevent="fadeOutIn('user-modal-content', 'forgot-password-modal-content'); $store.commit('auth/setAuthMode', 3);" href="#" for="nextPage">Изменить пароль</a>
 					</p>
 				</div>
 			</div>
@@ -248,7 +248,7 @@
 			<div id="exit-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Выход</h5>
-					<button type="button" @click="fadeOutIn('exit-modal-content')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -292,14 +292,24 @@ export default {
 		return {
 			isLoading: false,
 			error: {},
+			inputData: {
+				login: '',
+				email: '',
+				password: '',
+				password2: '',
+				remember: false,
+			},
 		}
 	},
 
 	watch: {
 		nameModal(newNameModal) {
+			if (this.$store.state.auth.currModal) {
+				this.fadeOut('#' + this.$store.state.auth.currModal);
+			}
 			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
-			//this.fadeOutIn('', newNameModal);
 			this.fadeIn('#' + newNameModal);
+			this.$store.commit('auth/setCurrModal', newNameModal);
 		}
 	},
 
@@ -311,8 +321,17 @@ export default {
 
 
 		onSubmit(formElem) {
-			const url = formElem.srcElement.attributes.action.nodeValue; // /php_modules/auth/controller_login.php
+			let url;
+			/*
+			if (formElem.target.role == 'signup-modal-content') {
+				url = this.$store.state.auth.authMode == 1 ? formElem.srcElement.attributes.action.nodeValue : '/php_modules/auth/controller_new_pw.php';
+			} else {
+				url = formElem.srcElement.attributes.action.nodeValue;
+			}
+			*/
+			url = formElem.srcElement.attributes.action.nodeValue;
 
+			// const url = formElem.target.action.nodeValue; // /php_modules/auth/controller_login.php
 			// ИЛИ const url = formElem.target.action; // http://192.168.0.100:8080/php_modules/auth/controller_login.php
 
 			console.log('==onSubmit(formElem)===========================');
@@ -332,16 +351,23 @@ export default {
 			post += post ? '&' : '';
 			post += 'new_num=' + this.$store.state.auth.authMode;
 			if (!this.$store.state.auth.isLocalhost) {
-				this.authAxios(url, post, formElem.target.id);
+				this.authAxios(url, post);
 			}
 		},
 
-		async authAxios(url, post, formId) {
+		async authAxios(url, post) {
 			try {
 				this.isLoading = true;
 				const response = await axios.post(url, post);
 				console.log('--response.data---------------------');
 				console.log(response.data);
+
+				if (response.data.user_data) {
+					this.$store.commit('auth/setDataUser', response.data.user_data);
+					this.inputData = response.data.user_data;
+				}
+				if (response.data.login) this.inputData.login = response.data.login;
+				if (response.data.email) this.inputData.email = response.data.email;
 
 				response.data.reg_error ? this.error.error = response.data.reg_error : delete this.error.error;
 				response.data.reg_info ? this.error.info = response.data.reg_info : delete this.error.info;
@@ -352,7 +378,7 @@ export default {
 
 				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
 
-				this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');
+				/*this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');*/
 
 				if (response.data.url_act) {
 					console.log('--url_act---------------------');
@@ -364,18 +390,14 @@ export default {
 
 				if (response.data.contentIn) {
 					response.data.contentIn = response.data.contentIn.slice(1);
-					this.fadeOut('#' + this.$store.state.auth.currModal);
-					this.fadeIn('#' + response.data.contentIn);
-					this.$store.commit('auth/setCurrModal', response.data.contentIn);
+					this.fadeOutIn(this.$store.state.auth.currModal, response.data.contentIn);
 				}
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
-					this.fadeOut('#' + this.$store.state.auth.currModal);
+					this.fadeOutIn();
 					this.$store.dispatch('auth/updateUser');
-					document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
 				}
 				else if (!this.error.error && !this.error.info) {
-					this.fadeOut('#' + this.$store.state.auth.currModal);
-					document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
+					this.fadeOutIn();
 				}
 			} catch (e) {
 				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
@@ -384,10 +406,9 @@ export default {
 			}
 		},
 
-		fadeOutIn(elOut = this.$store.state.auth.currModal, elIn = '') { // переход по начальным ссылкам
-			if (elOut !== elIn && elIn) {
+		fadeOutIn(elOut = this.$store.state.auth.currModal, elIn = '') {
+			if (elOut !== elIn && elOut && elIn) {
 				this.fadeOut('#' + elOut);
-				// elIn ? this.fadeIn('#' + elIn) : document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 				this.fadeIn('#' + elIn);
 				this.$store.commit('auth/setCurrModal', elIn);
 			}
@@ -395,6 +416,19 @@ export default {
 				document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 			}
 		},
+
+		clearFields() {
+			//alert('clearFields');
+
+			this.inputData = {
+				login: '',
+				email: '',
+				password: '',
+				password2: '',
+				remember: false,
+			}
+
+		}
 	},
 
 	mounted() {
@@ -438,5 +472,10 @@ export default {
 #exit-modal-content
 {
 	display: none;
+}
+
+.form-check-input
+{
+	margin-right: 5px;
 }
 </style>
