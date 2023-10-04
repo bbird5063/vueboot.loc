@@ -406,40 +406,52 @@ export default {
 			}
 		},
 
-		async fadeOut(el) {
-			try {
-				let opacity = 1;
-				const timer = await setInterval(() => {
-					if (opacity <= 0.1) {
-						clearInterval(timer);
-						document.querySelector(el).style.display = "none";
-					}
-					document.querySelector(el).style.opacity = opacity;
-					opacity -= opacity * 0.1;
-					return true;
-				}, 10);
-
-			} catch (e) {
-				alert('Ошибка ' + e.name + ':' + e.message + '\n' + e.stack);
-			}
-		},
-
 		fadeIn(el) {
 			var opacity = 0.01;
 			document.querySelector(el).style.display = "block";
-			var timer = setInterval(function () {
-				if (opacity >= 1) {
-					clearInterval(timer);
-				}
-				document.querySelector(el).style.opacity = opacity;
-				opacity += opacity * 0.1;
-			}, 10);
+			return new Promise((resolve, reject) => {
+				var timer = setInterval(function () {
+					if (opacity >= 1) {
+						clearInterval(timer);
+					}
+					document.querySelector(el).style.opacity = opacity;
+					opacity += opacity * 0.1;
+					const error = false;
+					if (!error) {
+						resolve();
+					}
+					else {
+						reject('Ошибка: Что-то пошло не так!')
+					}
+				}, 5); // 10
+			})
 		},
 
-		fadeInOut(elIn = '', elOut = this.$store.state.auth.currModal) {
+		fadeOut(el) {
+			let opacity = 1;
+			return new Promise((resolve, reject) => {
+				var timer = setInterval(() => {
+					if (opacity <= 0.1) {
+						clearInterval(timer);
+						document.querySelector(el).style.display = "none";
+						const error = false;
+						if (!error) {
+							resolve();
+						}
+						else {
+							reject('Ошибка: Что-то пошло не так!');
+						}
+					}
+					document.querySelector(el).style.opacity = opacity;
+					opacity -= opacity * 0.1;
+				}, 5); // 10
+			})
+		},
+
+		async fadeInOut(elIn = '', elOut = this.$store.state.auth.currModal) {
 			if (elOut !== elIn && elOut && elIn) {
 
-				this.fadeOut('#' + elOut);
+				await this.fadeOut('#' + elOut);
 				this.fadeIn('#' + elIn);
 				this.$store.commit('auth/setCurrModal', elIn);
 			}
@@ -449,17 +461,14 @@ export default {
 		},
 
 		clearFields() {
-			//alert('clearFields');
-
 			this.inputData = {
 				login: '',
 				email: '',
 				password: '',
 				password2: '',
 				remember: false,
-			}
-
-		}
+			};
+		},
 	},
 
 	mounted() {
