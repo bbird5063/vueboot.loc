@@ -409,22 +409,13 @@ export default {
 		fadeIn(el) {
 			var opacity = 0.01;
 			document.querySelector(el).style.display = "block";
-			return new Promise((resolve, reject) => {
-				var timer = setInterval(function () {
-					if (opacity >= 1) {
-						clearInterval(timer);
-					}
-					document.querySelector(el).style.opacity = opacity;
-					opacity += opacity * 0.1;
-					const error = false;
-					if (!error) {
-						resolve();
-					}
-					else {
-						reject('Ошибка: Что-то пошло не так!')
-					}
-				}, 5); // 10
-			})
+			var timer = setInterval(function () {
+				if (opacity >= 1) {
+					clearInterval(timer);
+				}
+				document.querySelector(el).style.opacity = opacity;
+				opacity += opacity * 0.1;
+			}, 4); // 10
 		},
 
 		fadeOut(el) {
@@ -444,7 +435,7 @@ export default {
 					}
 					document.querySelector(el).style.opacity = opacity;
 					opacity -= opacity * 0.1;
-				}, 5); // 10
+				}, 4); // 10
 			})
 		},
 
