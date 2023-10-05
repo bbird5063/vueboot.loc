@@ -30,10 +30,10 @@
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
 							<input v-model="inputData.password" name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup" autocomplete="off" />
-							<span class="input-group-text"><i class="fa fa-eye"></i></span>
+							<span class="input-group-text"><i @click="visiblePassword" class="fa fa-eye"></i></span>
 						</div>
 						<div class="checkbox">
-							<input :checked="inputData.remember" v-on:change="inputData.remember = $event.target.checked" name="form[remember]" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
+							<input :checked="inputData.remember" @change="inputData.remember = $event.target.checked" name="form[remember]" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
 							<label class="form-check-label" for="flexCheckDefault">Запомнить меня</label>
 						</div>
 						<div class="d-grid gap-2">
@@ -319,6 +319,27 @@ export default {
 			fadeIn: 'auth/fadeIn',
 		}),*/
 
+		visiblePassword(el) {
+			console.log('====visiblePassword(el)=====================');
+			console.log(el.previousSibling);
+			console.log(el.srcElement.attributes.class);
+			console.log(el.srcElement.attributes.class.nodeValue);
+			console.log(el.target.parentNode.nodeValue);
+			console.log(el.target.parentNode.parentNode.nodeValue);
+			console.log('---------------------------------------------------');
+			console.log(el.target.parentNode.parentNode.childNodes[1].attributes.type.nodeValue);
+
+			console.log(el);
+
+			if (el.srcElement.attributes.class.nodeValue == 'fa fa-eye') {
+				el.srcElement.attributes.class.nodeValue = 'fa fa-eye-slash';
+				el.target.parentNode.parentNode.childNodes[1].attributes.type.nodeValue = 'text';
+			}
+			else {
+				el.srcElement.attributes.class.nodeValue = 'fa fa-eye';
+				el.target.parentNode.parentNode.childNodes[1].attributes.type.nodeValue = 'password';
+			}
+		},
 
 		onSubmit(formElem) {
 			let url;
@@ -426,7 +447,7 @@ export default {
 						clearInterval(timer);
 						document.querySelector(el).style.display = "none";
 						const error = false;
-						if (!error) {
+						if (!error) { // после окончания процесса
 							resolve();
 						}
 						else {
