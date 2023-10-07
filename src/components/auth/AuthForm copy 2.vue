@@ -190,7 +190,7 @@
 			<div id="user-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Ваш профиль</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -204,28 +204,28 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-focus v-model="inputData.login" id="user-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input v-focus :value="$store.state.auth.dataUser.login ? $store.state.auth.dataUser.login : ''" id="user-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
-							<input v-model="inputData.email" id="user-email" name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email">
+							<input :value="$store.state.auth.dataUser.email" id="user-email" name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email">
 						</div>
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.name_last" id="user-name_last" name="form[name_last]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input :value="$store.state.auth.dataUser.name_last" id="user-name_last" name="form[name_last]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.name_first" id="user-name_first" name="form[name_first]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input :value="$store.state.auth.dataUser.name_first" id="user-name_first" name="form[name_first]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.name_patr" id="user-name_patr" name="form[name_patr]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input :value="$store.state.auth.dataUser.name_patr" id="user-name_patr" name="form[name_patr]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.phone_1" id="user-phone_1" name="form[phone_1]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input :value="$store.state.auth.dataUser.phone_1" id="user-phone_1" name="form[phone_1]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
 						</div>
 
 						<div class="d-grid gap-2">
@@ -298,10 +298,6 @@ export default {
 				password: '',
 				password2: '',
 				remember: false,
-				name_last: '',
-				name_first: '',
-				name_patr: '',
-				phone_1: '',
 			},
 			visibleEl: {
 				pw0: false,
@@ -333,7 +329,7 @@ export default {
 		},
 
 		onSubmit(formElem) {
-			//this.clearFields();
+			this.clearFields();
 			let url;
 			/*
 			if (formElem.target.role == 'signup-modal-content') {
@@ -377,9 +373,8 @@ export default {
 
 				if (response.data.user_data) {
 					this.$store.commit('auth/setDataUser', response.data.user_data);
-					this.updateFields();
+					this.inputData = response.data.user_data;
 				}
-
 				if (response.data.login) this.inputData.login = response.data.login;
 				if (response.data.email) this.inputData.email = response.data.email;
 
@@ -391,6 +386,8 @@ export default {
 
 
 				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
+
+				/*this.$store.commit('auth/setDataUser', response.data.user_data ? response.data.user_data : '');*/
 
 				if (response.data.url_act) {
 					console.log('--url_act---------------------');
@@ -407,7 +404,6 @@ export default {
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
 					this.fadeInOut();
 					this.$store.dispatch('auth/updateUser');
-					this.clearFields();
 				}
 				else if (!this.error.error && !this.error.info) {
 					this.fadeInOut();
@@ -464,19 +460,6 @@ export default {
 			}
 		},
 
-		updateFields() {
-			console.log('login: ' + this.$store.state.auth.dataUser.login);
-			let val;
-			for (let key in this.inputData) {
-				val = this.$store.state.auth.dataUser ? this.$store.state.auth.dataUser[key] : '';
-				this.inputData[key] = val;
-				console.log('----updateFields()--------------------');
-				// $store.state.auth.dataUser.login
-				console.log(key + ': ' + this.$store.state.auth.dataUser[key]);
-				console.log('val = ' + val);
-			}
-		},
-
 		clearFields() {
 			this.inputData = {
 				login: '',
@@ -484,10 +467,6 @@ export default {
 				password: '',
 				password2: '',
 				remember: false,
-				name_last: '',
-				name_first: '',
-				name_patr: '',
-				phone_1: '',
 			};
 
 			this.visibleEl = {
@@ -500,7 +479,6 @@ export default {
 	},
 
 	mounted() {
-		this.updateFields();
 	},
 
 	created() {

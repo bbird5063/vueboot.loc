@@ -46,7 +46,13 @@ export const authModule = {
 				console.log('==response.data.user_data===========================');
 				console.log(response.data.user_data);
 				console.log(response.data);
-				commit('setDataUser', response.data.user_data);
+				if (response.data.user_data) {
+					commit('setDataUser', response.data.user_data);
+				}
+				else {
+					commit('setDataUser', '');
+				}
+				response.data.new_num ? commit('auth/setAuthMode', response.data.new_num) : '';
 				console.log(state.dataUser);
 
 			} catch (e) {
