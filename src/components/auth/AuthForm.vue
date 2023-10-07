@@ -89,12 +89,12 @@
 						</div>
 						<div class="d-grid gap-2">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Создать аккаунт!
+								{{ $store.state.auth.authMode == 1 ? 'Создать аккаунт' : 'Установить пароль' }}
 							</button>
 						</div>
 					</form>
 				</div>
-				<div class="modal-footer">
+				<div v-if="$store.state.auth.authMode == 1" class="modal-footer">
 					<p>
 						Имеете аккаунт?
 						<a id="signupModal" @click.prevent="fadeInOut('login-modal-content', 'signup-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
@@ -213,24 +213,24 @@
 
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.name_last" id="user-name_last" name="form[name_last]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input v-model="inputData.name_last" id="user-name_last" name="form[name_last]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите фамилию">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.name_first" id="user-name_first" name="form[name_first]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input v-model="inputData.name_first" id="user-name_first" name="form[name_first]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите имя">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.name_patr" id="user-name_patr" name="form[name_patr]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input v-model="inputData.name_patr" id="user-name_patr" name="form[name_patr]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите отчество">
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
-							<input v-model="inputData.phone_1" id="user-phone_1" name="form[phone_1]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+							<input v-model="inputData.phone_1" id="user-phone_1" name="form[phone_1]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите номер телефона">
 						</div>
 
 						<div class="d-grid gap-2">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								Изменить пароль!
+								Сохранить
 							</button>
 						</div>
 					</form>
@@ -316,6 +316,7 @@ export default {
 			if (this.$store.state.auth.currModal) {
 				await this.fadeOut('#' + this.$store.state.auth.currModal);
 			}
+			this.updateFields();
 			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
 			this.fadeIn('#' + newNameModal);
 			this.$store.commit('auth/setCurrModal', newNameModal);
@@ -468,12 +469,14 @@ export default {
 			console.log('login: ' + this.$store.state.auth.dataUser.login);
 			let val;
 			for (let key in this.inputData) {
-				val = this.$store.state.auth.dataUser ? this.$store.state.auth.dataUser[key] : '';
-				this.inputData[key] = val;
-				console.log('----updateFields()--------------------');
-				// $store.state.auth.dataUser.login
-				console.log(key + ': ' + this.$store.state.auth.dataUser[key]);
-				console.log('val = ' + val);
+				if (key !== 'password' && key !== 'password2') {
+					val = this.$store.state.auth.dataUser ? this.$store.state.auth.dataUser[key] : '';
+					this.inputData[key] = val;
+					console.log('----updateFields()--------------------');
+					// $store.state.auth.dataUser.login
+					console.log(key + ': ' + this.$store.state.auth.dataUser[key]);
+					console.log('val = ' + val);
+				}
 			}
 		},
 
@@ -500,7 +503,7 @@ export default {
 	},
 
 	mounted() {
-		this.updateFields();
+		//this.updateFields();
 	},
 
 	created() {
