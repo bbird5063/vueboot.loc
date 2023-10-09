@@ -85,21 +85,12 @@ if ($ok && empty($reg_error)) // при "...&& !isset($reg_error)" не рабо
 			");
 		if ($POST['new_num'] <= 1) {
 			$POST['new_num'] = 0;
-			//$data['contentIn'] = $for_contentIn[''];
-			//reDirect('reg=off', 'num=0', 'id=0');
 		} elseif ($POST['new_num'] == 2) {
-			//$POST['new_num'] = 0;
-			//$data['contentIn'] = $for_contentIn['new_pw'];
-			$data['contentIn'] = '#signup-modal-content';
-			//reDirect('reg=new_pw', 'num=0', 'id=0'); '#password-modal-content'
+			$data['contentIn'] = '#password-modal-content';
 		} elseif ($POST['new_num'] == 3) {
-			//$POST['new_num'] = 0;
-			//$data['contentIn'] = $for_contentIn['new_pw'];
-			$data['contentIn'] = '#signup-modal-content';
-			//reDirect('reg=new_pw', 'num=0', 'id=0'); '#password-modal-content'
+			$data['contentIn'] = '#password-modal-content';
 		}
 	} else {
-		//$reg_info[] = BBR_LANG_INVLID_CODE;
 		$reg_info[] = 'Error!!! - BBR_LANG_INVLID_CODE';
 	}
 }

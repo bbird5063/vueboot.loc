@@ -79,7 +79,9 @@ if ($ok) {
 			$data['login'] = $row['login'];
 			$data['email'] = $row['email'];
 		}
-		$reg_info[] = 'Есть у нас уже один <b>' . htmlspecialchars($data['login']) . '!</b><br>' . $addstr;
+		else {
+			$reg_info[] = 'Есть у нас уже один <b>' . htmlspecialchars($row['login']) . '!</b><br>' . $addstr;
+		}
 	}
 
 	/**   

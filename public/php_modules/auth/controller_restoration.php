@@ -3,7 +3,7 @@
 	
 	/* Заменяем $ok т.к. в variables.php: $ok = !empty($POST['ok'])?true:false; , 
 	а в Ajax и "<button name="ok"...":	$POST['ok'] не передается */
-	$ok = !empty($POST)?true:false; 
+	// $ok = !empty($POST)?true:false; 
 	
 	////////////////////////////////////////////////////////////////////
 	

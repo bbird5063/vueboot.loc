@@ -57,7 +57,9 @@
 			<!-- <div v-if="$store.state.auth.currModal == 'signup-modal-content'" id="signup-modal-content" class="modal-content"> -->
 			<div id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">{{ $store.state.auth.authMode == 1 ? 'Регистрация' : 'Установка пароля' }}</h5>
+					<h5 class="modal-title">
+						Регистраци
+					</h5>
 					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -79,17 +81,17 @@
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
-							<input v-model="inputData.password" :type="visibleEl.pw1 ? 'text' : 'password'" name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[8, 16]" data-parsley-trigger="keyup" autocomplete="off" />
+							<input :type="visibleEl.pw1 ? 'text' : 'password'" name="form[password]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[8, 16]" data-parsley-trigger="keyup" autocomplete="off" />
 							<span class="input-group-text"><i @click.prevent="visiblePassword('pw1')" :class="{ 'fa-eye-slash': visibleEl.pw1, 'fa-eye': !visibleEl.pw1 }" class="fa"></i></span>
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text"><i class="fa fa-lock"></i></span>
-							<input v-model="inputData.password2" :type="visibleEl.pw2 ? 'text' : 'password'" name="form[password2]" type="password" class="form-control input-lg" placeholder="Введите пароль" required data-parsley-length="[8, 16 ]" data-parsley-trigger="keyup" autocomplete="off" />
+							<input :type="visibleEl.pw2 ? 'text' : 'password'" name="form[password2]" type="password" class="form-control input-lg" placeholder="Повторите пароль" required data-parsley-length="[8, 16 ]" data-parsley-trigger="keyup" autocomplete="off" />
 							<span class="input-group-text"><i @click.prevent="visiblePassword('pw2')" :class="{ 'fa-eye-slash': visibleEl.pw2, 'fa-eye': !visibleEl.pw2 }" class="fa"></i></span>
 						</div>
 						<div class="d-grid gap-2">
 							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
-								{{ $store.state.auth.authMode == 1 ? 'Создать аккаунт' : 'Установить пароль' }}
+								Создать аккаунт
 							</button>
 						</div>
 					</form>
@@ -103,6 +105,62 @@
 				</div>
 			</div>
 			<!-- END SIGNUP -->
+
+			<!-- START PASSWORD -->
+			<!-- <div v-if="$store.state.auth.currModal == 'password-modal-content'" id="password-modal-content" class="modal-content"> -->
+			<div id="password-modal-content" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Установка пароля</h5>
+					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div v-if="$store.state.auth.currModal == 'password-modal-content' && error.error" class="alert alert-danger">
+							{{ error.error }}
+						</div>
+						<div v-html="error.info" v-if="$store.state.auth.currModal == 'password-modal-content' && error.info" class="alert alert-warning">
+						</div>
+					</div>
+					<form @submit.prevent="onSubmit" action="/php_modules/auth/controller_new_pw.php" method="post" id="Signin-Form" role="signup-modal-content">
+						<!-- type="hidden" -->
+						<input name="form[id]" :value="$store.state.auth.dataUser.id">
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-user"></i></span>
+							<input v-focus :value="$store.state.auth.dataUser.login"  :disabled="$store.state.auth.dataUser.login ? true : false" id="signin-login" name="form[login]" type="text" class="form-control" aria-label="Username" aria-describedby="login-login" placeholder="Введите логин">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+							<input :value="$store.state.auth.dataUser.email" :disabled="$store.state.auth.dataUser.email ? true : false" name="form[email]" type="text" class="form-control" aria-label="Email" aria-describedby="login-login" placeholder="Введите Email" required data-parsley-type="email">
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-lock"></i></span>
+							<input v-if="$store.state.auth.authMode == 3" :type="visibleEl.pw0 ? 'text' : 'password'" name="form[password]" type="password" class="form-control input-lg" placeholder="Введите текущий пароль" required data-parsley-length="[8, 16]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i @click.prevent="visiblePassword('pw0')" :class="{ 'fa-eye-slash': visibleEl.pw0, 'fa-eye': !visibleEl.pw0 }" class="fa"></i></span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-lock"></i></span>
+							<input :type="visibleEl.pw1 ? 'text' : 'password'" name="form[password1]" type="password" class="form-control input-lg" placeholder="Введите новый пароль" required data-parsley-length="[8, 16]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i @click.prevent="visiblePassword('pw1')" :class="{ 'fa-eye-slash': visibleEl.pw1, 'fa-eye': !visibleEl.pw1 }" class="fa"></i></span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="fa fa-lock"></i></span>
+							<input :type="visibleEl.pw2 ? 'text' : 'password'" name="form[password2]" type="password" class="form-control input-lg" placeholder="Повторите новый пароль" required data-parsley-length="[8, 16 ]" data-parsley-trigger="keyup" autocomplete="off" />
+							<span class="input-group-text"><i @click.prevent="visiblePassword('pw2')" :class="{ 'fa-eye-slash': visibleEl.pw2, 'fa-eye': !visibleEl.pw2 }" class="fa"></i></span>
+						</div>
+						<div class="d-grid gap-2">
+							<button name="ok" value="1" type="submit" class="btn btn-success btn-block btn-lg">
+								Установить пароль
+							</button>
+						</div>
+					</form>
+				</div>
+				<div v-if="$store.state.auth.authMode !== 1" class="modal-footer">
+					<p>
+					</p>
+				</div>
+			</div>
+			<!-- END PASSWORD -->
+
 
 			<!-- START FORGOT PASSWORD -->
 			<!-- <div v-show="$store.state.auth.currModal == 'forgot-password-modal-content'" id="forgot-password-modal-content" class="modal-content"> -->
@@ -293,10 +351,9 @@ export default {
 			isLoading: false,
 			error: {},
 			inputData: {
+				id: 0,
 				login: '',
 				email: '',
-				password: '',
-				password2: '',
 				remember: false,
 				name_last: '',
 				name_first: '',
@@ -383,6 +440,7 @@ export default {
 
 				if (response.data.login) this.inputData.login = response.data.login;
 				if (response.data.email) this.inputData.email = response.data.email;
+				if (this.$store.state.auth.id !== 0) this.$store.commit('auth/setId', 0);
 
 				response.data.reg_error ? this.error.error = response.data.reg_error : delete this.error.error;
 				response.data.reg_info ? this.error.info = response.data.reg_info : delete this.error.info;
@@ -469,23 +527,20 @@ export default {
 			console.log('login: ' + this.$store.state.auth.dataUser.login);
 			let val;
 			for (let key in this.inputData) {
-				if (key !== 'password' && key !== 'password2') {
-					val = this.$store.state.auth.dataUser ? this.$store.state.auth.dataUser[key] : '';
-					this.inputData[key] = val;
-					console.log('----updateFields()--------------------');
-					// $store.state.auth.dataUser.login
-					console.log(key + ': ' + this.$store.state.auth.dataUser[key]);
-					console.log('val = ' + val);
-				}
+				val = this.$store.state.auth.dataUser ? this.$store.state.auth.dataUser[key] : '';
+				this.inputData[key] = val;
+				console.log('----updateFields()--------------------');
+				// $store.state.auth.dataUser.login
+				console.log(key + ': ' + this.$store.state.auth.dataUser[key]);
+				console.log('val = ' + val);
 			}
 		},
 
 		clearFields() {
 			this.inputData = {
+				id: 0,
 				login: '',
 				email: '',
-				password: '',
-				password2: '',
 				remember: false,
 				name_last: '',
 				name_first: '',

@@ -55,23 +55,21 @@
 		Уже вошел в аккаунт
 		Изменение пароля
 	*/
-	$ok       = !empty($_POST['ok']) ? true : false;
-	$delete   = !empty($_POST['delete']) ? true : false;
+	
+	$ok = !empty($_POST)?true:false; 	
 	
 	/**  
 		* Initialization of variables POST  
-		* Инициализация переменных POST  
+		* Инициализация переменных POST (? необходимо для тех, кто не входит в $form[])
 	*/
 	$POST = array(
-	
-	'value1'           =>  '',
-	'value2'           =>  '',
-	'value3'           =>  '',
-	'value4'           =>  '',
+
+	'id'             	 =>  0,
 	'name'             =>  '',
 	'login'            =>  '',
 	'email'            =>  '',
 	'password'         =>  '',
+	'password1'        =>  '',
 	'password2'        =>  '',
 	'code'             =>  '',
 	'remember'         =>  '',
