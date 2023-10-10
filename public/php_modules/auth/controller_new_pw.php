@@ -31,8 +31,10 @@
 	{  
 		require 'mysql.php';   
 		require 'functions.php';            
-		
-		if(!$POST['password'] || !$POST['password1'] || !$POST['password2'])  
+
+		if($POST['new_num'] == 3 && !$POST['password'])
+		$reg_info[] = 'Введите пароль!'; 
+		if(!$POST['password1'] || !$POST['password2'])  
 		$reg_info[] = 'Введите пароль!'; 
 		elseif(mb_strlen($POST['password1']) < 8)  
 		$reg_info[] = 'Пароли должны содержать не менее восьми символов!';   
