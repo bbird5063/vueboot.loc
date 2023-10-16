@@ -67,10 +67,7 @@ export default {
 			this.currentPoint = point.name;
 		},
 		openAuthModal(authModal, authMode) {
-			// this.$emit('openModal', authModal);
-			// this.fadeIn('#' + authModal);
 			this.$emit('openModal', authModal);
-			// this.$store.commit('auth/setCurrModal', authModal);
 			this.$store.commit('auth/setAuthMode', authMode);
 		},
 	},

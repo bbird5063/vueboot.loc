@@ -12,7 +12,7 @@
 			<div id="login-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Вход в аккаунт</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -33,7 +33,8 @@
 							<span class="input-group-text"><i @click.prevent="visiblePassword('pw0')" :class="{ 'fa-eye-slash': visibleEl.pw0, 'fa-eye': !visibleEl.pw0 }" class="fa"></i></span>
 						</div>
 						<div class="checkbox">
-							<input :checked="inputData.remember" @change="inputData.remember = $event.target.checked" name="form[remember]" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
+							<!-- :checked="inputData.remember" @change="inputData.remember = $event.target.checked"-->
+							<input v-model="inputData.remember" name="form[remember]" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
 							<label class="form-check-label" for="flexCheckDefault">Запомнить меня</label>
 						</div>
 						<div class="d-grid gap-2">
@@ -58,9 +59,9 @@
 			<div id="signup-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">
-						Регистраци
+						Регистрация
 					</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -96,7 +97,7 @@
 						</div>
 					</form>
 				</div>
-				<div v-if="$store.state.auth.authMode == 1" class="modal-footer">
+				<div v-if="$store.state.auth.authMode <= 2" class="modal-footer">
 					<p>
 						Имеете аккаунт?
 						<a id="signupModal" @click.prevent="fadeInOut('login-modal-content', 'signup-modal-content'); $store.commit('auth/setAuthMode', 0);" href="#">
@@ -111,7 +112,7 @@
 			<div id="password-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Установка пароля</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -167,7 +168,7 @@
 			<div id="forgot-password-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Установка доступа</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -212,7 +213,7 @@
 			<div class="modal-content" id="code-modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Восстановление доступа</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -248,7 +249,7 @@
 			<div id="user-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Ваш профиль</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -306,7 +307,7 @@
 			<div id="exit-modal-content" class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Выход</h5>
-					<button type="button" @click="clearFields" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -372,11 +373,16 @@ export default {
 	},
 
 	watch: {
-		async nameModal(newNameModal) {
+		nameModal(newNameModal) {
 			console.log('----AuthForm.vue -> watch: nameModal(newNameModal) ------------');
 			console.log(newNameModal);
-			if (this.$store.state.auth.currModal && this.$store.state.auth.currModal !== newNameModal) {
-				await this.fadeOut('#' + this.$store.state.auth.currModal);
+
+			/*this.clearFields();*/
+			if (this.$store.state.auth.currModal) {
+				/*await this.fadeOut('#' + this.$store.state.auth.currModal);*/
+				document.querySelector('#' + this.$store.state.auth.currModal).style.opacity = 0;
+				document.querySelector('#' + this.$store.state.auth.currModal).style.display = "none";
+				this.$store.commit('auth/setCurrModal', '');
 			}
 			this.updateFields();
 			document.querySelector("#open-code-modal").dispatchEvent(new Event("click"));
@@ -434,12 +440,14 @@ export default {
 		async authAxios(url, post) {
 			try {
 				this.isLoading = true;
+				this.error.error = this.error.info = '';
 				const response = await axios.post(url, post);
 				console.log('--response.data---------------------');
 				console.log(response.data);
 
 				if (response.data.user_data) {
-					this.$store.commit('auth/setDataUser', response.data.user_data);
+					/*this.$store.commit('auth/setDataUser', response.data.user_data);*/
+					this.$store.dispatch('auth/updateUser');
 					this.updateFields();
 				}
 
@@ -454,7 +462,7 @@ export default {
 				console.log(this.error.info);
 
 
-				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : '';
+				response.data.new_num ? this.$store.commit('auth/setAuthMode', response.data.new_num) : false;
 
 				if (response.data.url_act) {
 					console.log('--url_act---------------------');
@@ -471,6 +479,7 @@ export default {
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
 					this.fadeInOut();
 					this.$store.dispatch('auth/updateUser');
+					
 					this.clearFields();
 				}
 				else if (!this.error.error && !this.error.info) {
@@ -517,13 +526,16 @@ export default {
 		},
 
 		async fadeInOut(elIn = '', elOut = this.$store.state.auth.currModal) {
-			if (elOut !== elIn && elOut && elIn) {
-
+			if (elOut !== elIn && elOut) {
 				await this.fadeOut('#' + elOut);
-				this.fadeIn('#' + elIn);
+				if(elIn) {
+					this.error.error = this.error.info = '';
+					this.fadeIn('#' + elIn);
+				}
 				this.$store.commit('auth/setCurrModal', elIn);
 			}
 			if (!elIn) {
+				/*this.$store.commit('auth/setCurrModal', ''); // это есть в watch: nameModal() */
 				document.querySelector(".btn-close").dispatchEvent(new Event("click"));
 			}
 		},
@@ -532,7 +544,7 @@ export default {
 			console.log('login: ' + this.$store.state.auth.dataUser.login);
 			let val;
 			for (let key in this.inputData) {
-				if (!key.includes('password')) {
+				if (!key.includes('password') && !key.includes('remember')) {
 					val = this.$store.state.auth.dataUser ? this.$store.state.auth.dataUser[key] : '';
 					this.inputData[key] = val;
 				}
@@ -605,6 +617,7 @@ export default {
 #exit-modal-content
 {
 	display: none;
+	opacity: 0;
 }
 
 .form-check-input

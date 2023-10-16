@@ -4,7 +4,7 @@
 		$data['user_data'] = $_SESSION['user_data'];
 	}
 	else {
-		$data=[];
+		$data='';
 	}
 	
 	echo json_encode($data);

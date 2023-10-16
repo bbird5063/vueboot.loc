@@ -68,7 +68,7 @@
 			
 			//include_once './modules/register/functions.php';  
 			mysqlQuery("UPDATE `". BBR_DBPREFIX ."user`    
-			SET  `password` = '". md5($POST['password'] . BBR_SALT) ."'   
+			SET  `password` = '". md5($POST['password1'] . BBR_SALT) ."'   
 			WHERE `id` = '". $_SESSION['user_data']['id'] ."'   
 			") ;             
 			

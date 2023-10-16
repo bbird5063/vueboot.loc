@@ -79,7 +79,11 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 					Предупреждение: попытка доступа к смещению массива для значения типа null в C:xampphtdocsirbis_guest_boot_ajax.bbrwwwmodulesregisterread_controller.php в строке 60
 					*/
 			}
-		} elseif (empty($row['activate']) && !empty($row['email'])) {
+		} 
+		elseif ($row['password'] !== md5($POST['password'] . BBR_SALT)) {
+			$reg_info[] = 'Пароль не совпадает!';
+		}
+		elseif (empty($row['activate'])) {
 			$data['new_num'] = 0;
 			$data['contentIn'] = '#forgot-password-modal-content';
 
@@ -87,11 +91,8 @@ if (!$ok && isset($_COOKIE['hash'])) /* Первая загрузка сайта
 			$reg_info[] = "Aккаунт <b>" . $row['login'] . "</b> не активирован!<br>
 				<br>Для активизации заполнить поля:";
 			$data['login'] = $row['login'];
-			$data['email'] = $row['email'];
-		} else // не совпадает пароль
-		{
-			$reg_info[] = 'Пароль не совпадает!';
-		}
+			//$data['email'] = $row['email'];
+		} 
 	} else
 		$reg_info[] = 'Пользователя с логином <b>' . $POST['login'] . '</b> нет в нашей базе данных!';
 }
