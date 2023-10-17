@@ -479,7 +479,7 @@ export default {
 				else if (this.$store.state.auth.currModal == 'exit-modal-content') {
 					this.fadeInOut();
 					this.$store.dispatch('auth/updateUser');
-					
+
 					this.clearFields();
 				}
 				else if (!this.error.error && !this.error.info) {
@@ -528,8 +528,8 @@ export default {
 		async fadeInOut(elIn = '', elOut = this.$store.state.auth.currModal) {
 			if (elOut !== elIn && elOut) {
 				await this.fadeOut('#' + elOut);
-				if(elIn) {
-					this.error.error = this.error.info = '';
+				if (elIn) {
+					//this.error.error = this.error.info = '';
 					this.fadeIn('#' + elIn);
 				}
 				this.$store.commit('auth/setCurrModal', elIn);
